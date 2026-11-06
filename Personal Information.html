@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carlos Blanca | Personal Information</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* Page-specific styles (you can move these into styles.css) */
+.eyebrow{display:block;margin-bottom:.75rem;font:500 .85rem var(--mono);color:var(--signal)}
+.side h1 span{background:linear-gradient(100deg,#6A47E0,#2F7CF6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.about p{margin:0 0 1rem;max-width:42rem}
+.about p:last-child{margin:0}
+.about .hl{font-weight:500;color:var(--accent)}
+h2.tag{display:flex;align-items:center;gap:.6rem}
+h2.tag::before{content:"//";font:500 .95rem var(--mono);color:var(--signal)}
+.ticks{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem 2rem}
+.ticks li{position:relative;padding:.55rem .9rem .55rem 2rem;background:rgba(255,255,255,.65);border:1px solid var(--line);border-radius:12px;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.ticks li::before{content:"";position:absolute;left:.85rem;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--blue));box-shadow:0 0 8px rgba(124,92,255,.5)}
+.ticks li:hover{transform:translateX(4px);border-color:var(--accent);box-shadow:0 8px 20px -12px rgba(106,71,224,.5)}
+.ticks strong{font-weight:600}
+.ticks small{display:block;font-size:.9rem;line-height:1.4;color:var(--muted)}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;align-items:start}
+.trio h2{margin-bottom:.75rem}
+.trio .ticks{grid-template-columns:1fr;gap:.5rem}
+.trio .ticks li{padding:.45rem .7rem .45rem 1.7rem;font-size:.95rem;line-height:1.35}
+.trio .ticks li::before{left:.7rem}
+@media(max-width:1000px){.trio{grid-template-columns:1fr}}
+.block{animation:fade-up .7s ease backwards}
+.block:nth-child(1){animation-delay:.1s}.block:nth-child(2){animation-delay:.2s}.block:nth-child(3){animation-delay:.3s}.block:nth-child(4){animation-delay:.4s}.block:nth-child(5){animation-delay:.5s}
+@media(max-width:819px){.ticks{grid-template-columns:1fr}}
+/* Compact layout */
+.page{gap:3rem;padding:1.5rem 0 3rem}
+.side h1{font-size:2rem}
+.block{margin-bottom:1.5rem;padding-bottom:1.5rem}
+h2{margin-bottom:.6rem}
+.about p{margin-bottom:.6rem;font-size:1rem;line-height:1.6}
+.kv div{padding:.4rem 0;font-size:.98rem}
+.trio h2{margin-bottom:.6rem}
+@media(min-width:1001px){.kv{display:grid;grid-template-columns:1fr 1fr;column-gap:2rem}.kv div{grid-template-columns:5.5rem 1fr;gap:.75rem}}
+/* Emphasized Quick Facts */
+.facts{padding:1.25rem 1.5rem 1rem;border:2px solid transparent;border-image:none;border-radius:18px;background:linear-gradient(rgba(255,255,255,.92),rgba(255,255,255,.92)) padding-box,linear-gradient(120deg,#7c5cff,#2f7cf6 55%,#b28cff) border-box;box-shadow:0 18px 40px -24px rgba(91,63,209,.55)}
+.facts h2{font-size:1.25rem;margin-bottom:.4rem}
+.facts dt{align-self:center;font:500 .78rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.facts dd{font-weight:500}
+@media(min-width:1001px){.facts .kv div{grid-template-columns:6rem 1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="index.html">carlos<span>_</span></a>
+<button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+<nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html" aria-current="page">Personal Information</a><a href="achievements.html">Achievements</a><a href="parents.html">Parents</a></nav>
+</header>
+
+<main id="main" class="page">
+<aside class="side">
+<span class="eyebrow">&lt;about /&gt;</span>
+<h1>Personal <span>Information</span></h1>
+<p>A little more about who I am, what I enjoy, and what I bring to the table.</p>
+</aside>
+
+<div>
+<section class="block about" aria-labelledby="about-h">
+<h2 id="about-h" class="tag">About Me</h2>
+<p>Hi, I’m <span class="hl">Carlos David A. Blanca</span>, a Bachelor of Science in Computer Science student at the University of the Cordilleras. I’m curious about how software works behind the scenes, and I enjoy turning ideas into things people can actually click, read, and use.</p>
+<p>I like learning by building: breaking problems into small steps, testing, and improving until it works. This portfolio is part of that journey, and I’m always looking for new skills to pick up and new projects to grow with.</p>
+</section>
+
+<section class="block facts" aria-labelledby="facts-h">
+<h2 id="facts-h" class="tag">Quick Facts</h2>
+<dl class="kv">
+<div><dt>Full name</dt><dd>Carlos David A. Blanca</dd></div>
+<div><dt>Course</dt><dd>BS Computer Science</dd></div>
+<div><dt>School</dt><dd>University of the Cordilleras</dd></div>
+<div><dt>Birthday</dt><dd>Month DD, YYYY</dd></div>
+</dl>
+</section>
+
+<section class="block trio" aria-label="Interests, hobbies and strengths">
+<div>
+<h2 class="tag">Interests</h2>
+<ul class="ticks"><li>Web development</li><li>Programming and problem solving</li><li>Artificial intelligence</li><li>Technology and gadgets</li></ul>
+</div>
+<div>
+<h2 class="tag">Hobbies</h2>
+<ul class="ticks"><li>Playing video games</li><li>Listening to music</li><li>Watching movies and series</li><li>Exploring new apps and tools</li></ul>
+</div>
+<div>
+<h2 class="tag">Strengths</h2>
+<ul class="ticks"><li>Quick learner</li><li>Analytical thinker</li><li>Detail-oriented</li><li>Team player</li></ul>
+</div>
+</section>
+</div>
+</main>
+
+<footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
+<script src="script.js"></script>
+</body>
+</html>
