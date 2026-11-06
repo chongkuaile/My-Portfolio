@@ -43,7 +43,7 @@ nav a{width:max-content;padding:.5rem .95rem;color:var(--muted);font-size:.95rem
 @keyframes photo-in{from{opacity:0;transform:translateY(28px) scale(.92) rotate(-2deg)}}
 @keyframes spin{to{--a:360deg}}
 @keyframes float{50%{transform:translateY(-10px) rotate(.6deg)}}
-@keyframes blink{50%{opacity:0}}}
+@keyframes blink{50%{opacity:0}}
 
 /* ---------- Inner pages ---------- */
 .page{flex:1;display:grid;grid-template-columns:15rem minmax(0,1fr);gap:4rem;width:min(1080px,100% - 3rem);margin:0 auto;padding:3rem 0 5rem}
