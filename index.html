@@ -10,26 +10,180 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-/* Home additions (you can move these to the end of styles.css) */
-.links{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.75rem 0 0;animation:fade-up .8s ease 1.05s backwards}
-.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.7rem 1.25rem;font-weight:500;font-size:1rem;color:var(--ink);border:2px solid transparent;border-radius:14px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#7c5cff 0%,#2f7cf6 55%,#b28cff 100%) border-box;transition:transform .25s ease,box-shadow .25s ease}
-.btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(91,63,209,.6)}
-.btn.fill{color:#fff;background:linear-gradient(120deg,#7c5cff,#2f7cf6) border-box}
-.btn svg{width:1.2rem;height:1.2rem;flex:none}
-.btn .gh{fill:currentColor}
-.btn .ml{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/* Big picture filling the right half of the screen (desktop) */
-@media(min-width:820px){
-  .hero{width:100%;margin:0;gap:2rem;grid-template-columns:1fr 1fr;align-items:center;min-height:max(30rem,calc(100vh - 11rem));padding:0 1.5rem 1.5rem 0}
-  .hero>div{padding-left:max(1.5rem,calc((100vw - 1080px)/2))}
-  .photo,.frame,.mat{display:flex}
-  .photo{justify-self:stretch;align-self:stretch;width:100%}
-  .frame{flex:1}
-  .mat{flex:1;position:relative}
-  .mat img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);aspect-ratio:auto;object-position:50% 25%}
+/* Lock viewport height so the page never scrolls */
+html, body {
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
-@media(min-width:1200px){.hero{padding-right:4rem}}
+
+/* Compact header and footer to save vertical space */
+.bar {
+  padding: clamp(0.4rem, 1.5vh, 1.25rem) 0;
+  flex-shrink: 0;
+}
+footer {
+  padding: clamp(0.35rem, 1.2vh, 1rem);
+  font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+  flex-shrink: 0;
+}
+
+/* Flex container for main so hero stays within available height */
+.home {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 1.2vw, 0.75rem);
+  margin: clamp(0.6rem, 2vh, 1.75rem) 0 0;
+  animation: fade-up .8s ease 1.05s backwards;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: clamp(0.45rem, 1.1vh, 0.7rem) clamp(0.85rem, 1.8vw, 1.25rem);
+  font-weight: 500;
+  font-size: clamp(0.82rem, 1.6vh, 1rem);
+  color: var(--ink);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: linear-gradient(#fff,#fff) padding-box,
+              linear-gradient(120deg,#7c5cff 0%,#2f7cf6 55%,#b28cff 100%) border-box;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -12px rgba(91,63,209,.6);
+}
+.btn.fill {
+  color: #fff;
+  background: linear-gradient(120deg,#7c5cff,#2f7cf6) border-box;
+}
+.btn svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+}
+.btn .gh {
+  fill: currentColor;
+}
+.btn .ml {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.lead:empty {
+  display: none;
+}
+
+/* Desktop layout (>= 820px) */
+@media (min-width: 820px) {
+  .hero {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 1.5rem clamp(0.5rem, 2vh, 1.5rem) 0;
+  }
+  .hero > div {
+    padding-left: max(1.5rem, calc((100vw - 1080px) / 2));
+  }
+  .hero h1 {
+    font-size: clamp(2rem, min(5.5vw, 8vh), 4.75rem);
+  }
+  .role {
+    margin-top: clamp(0.5rem, 1.5vh, 1rem);
+    font-size: clamp(1rem, 2.2vh, 1.35rem);
+  }
+  .photo, .frame, .mat {
+    display: flex;
+    min-height: 0;
+  }
+  .photo {
+    justify-self: stretch;
+    align-self: stretch;
+    width: 100%;
+    height: 100%;
+  }
+  .frame {
+    flex: 1;
+  }
+  .mat {
+    flex: 1;
+    position: relative;
+  }
+  .mat img {
+    position: absolute;
+    inset: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    aspect-ratio: auto;
+    object-position: 50% 25%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    padding-right: 4rem;
+  }
+}
+
+/* Small screen & mobile layout (< 820px) */
+@media (max-width: 819px) {
+  .hero {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(0.5rem, 1.5vh, 1.25rem);
+    padding: clamp(0.25rem, 1vh, 0.75rem) 0 clamp(0.5rem, 1.5vh, 1.25rem);
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(1.5rem, min(7vw, 4.2vh), 2.5rem);
+  }
+  .role {
+    margin-top: clamp(0.25rem, 0.8vh, 0.6rem);
+    font-size: clamp(0.85rem, 1.8vh, 1.1rem);
+  }
+  .photo {
+    justify-self: center;
+    align-self: stretch;
+    height: 100%;
+    min-height: 0;
+    width: auto;
+    max-width: min(100%, 20rem);
+    aspect-ratio: 3 / 4;
+    display: flex;
+  }
+  .frame, .mat {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+  .mat img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: 50% 25%;
+  }
+}
 </style>
 </head>
 <body>
