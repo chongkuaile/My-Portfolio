@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Carlos Blanca | Personal Information</title>
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,11 +10,19 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-/* Lock viewport height so the page never scrolls */
+/* Base: the page can scroll (phones, tablets, short windows) */
 html, body {
-  height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Lock the viewport height only on screens large enough to fit everything */
+@media (min-width: 820px) and (min-height: 640px) {
+  html, body {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
 }
 
 /* Balanced header and footer */
@@ -148,6 +156,8 @@ h2.tag::before {
 }
 .facts dd {
   font-weight: 500;
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 /* 3-Column Lists (Interests, Hobbies, Strengths) */
@@ -193,85 +203,148 @@ h2.tag::before {
   box-shadow: 0 8px 20px -12px rgba(106,71,224,.5);
 }
 
-/* Mobile & small tablet layout (< 820px) - centered cohesive unit, no voids */
+/* Short desktop windows: let the page scroll and use fixed, readable sizes */
+@media (min-width: 820px) and (max-height: 639px) {
+  .page {
+    align-content: start;
+    padding: 1.25rem 0 1.5rem;
+  }
+  .content-col {
+    gap: 1.25rem;
+  }
+}
+
+/* Tablet and mobile (< 820px): stacked, scrollable, fixed readable sizes */
 @media (max-width: 819px) {
   .bar {
     width: min(1080px, 100% - 2rem);
+    padding: 0.75rem 0;
+  }
+  footer {
+    padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
+    font-size: 0.78rem;
   }
   .page {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: clamp(0.65rem, 1.8vh, 1.15rem);
+    justify-content: flex-start;
+    gap: 1.1rem;
     width: min(1080px, 100% - 2rem);
-    padding: clamp(0.25rem, 0.8vh, 0.6rem) 0;
+    padding: 0.75rem 0 1.5rem;
   }
   .side {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0.25rem 0.65rem;
-    padding-bottom: clamp(0.35rem, 1vh, 0.65rem);
+    padding-bottom: 0.85rem;
     border-bottom: 1px solid var(--line);
   }
   .side .eyebrow {
     margin: 0;
-    font-size: clamp(0.72rem, 1.4vh, 0.82rem);
+    font-size: 0.8rem;
   }
   .side h1 {
-    font-size: clamp(1.3rem, 2.8vh, 1.65rem);
+    font-size: 1.6rem;
+    line-height: 1.15;
     margin: 0;
   }
   .side p {
     width: 100%;
-    font-size: clamp(0.78rem, 1.5vh, 0.9rem);
-    line-height: 1.38;
+    font-size: 0.92rem;
+    line-height: 1.5;
     margin: 0;
   }
   .content-col {
-    gap: clamp(0.65rem, 1.8vh, 1.15rem);
+    justify-content: flex-start;
+    gap: 1.1rem;
   }
   .block {
-    padding-bottom: clamp(0.65rem, 1.8vh, 1.15rem);
+    padding-bottom: 0;
+  }
+  h2.tag {
+    font-size: 1rem;
+    margin-bottom: 0.55rem;
+  }
+  h2.tag::before {
+    font-size: 0.85rem;
   }
   .about p {
-    font-size: clamp(0.78rem, 1.55vh, 0.92rem);
-    line-height: 1.44;
-    margin-bottom: clamp(0.3rem, 0.8vh, 0.5rem);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.65rem;
   }
   .facts {
-    padding: clamp(0.55rem, 1.4vh, 0.9rem) clamp(0.75rem, 2vw, 1.1rem);
+    padding: 0.9rem 1rem;
   }
   .facts .kv {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.2rem, 0.6vh, 0.35rem) 0.75rem;
+    gap: 0.35rem 1rem;
   }
   .facts .kv div {
     grid-template-columns: 1fr;
-    gap: 0.05rem;
-    padding: clamp(0.15rem, 0.45vh, 0.3rem) 0;
-    font-size: clamp(0.75rem, 1.45vh, 0.88rem);
+    gap: 0.1rem;
+    padding: 0.3rem 0;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+  .facts dt {
+    font-size: 0.7rem;
   }
   .trio {
-    gap: 0.45rem;
-  }
-  .trio h2.tag {
-    font-size: clamp(0.8rem, 1.6vh, 0.95rem);
-    margin-bottom: clamp(0.25rem, 0.7vh, 0.45rem);
+    gap: 0.75rem;
   }
   .ticks {
-    gap: clamp(0.25rem, 0.7vh, 0.42rem);
+    gap: 0.45rem;
   }
   .ticks li {
-    padding: clamp(0.28rem, 0.8vh, 0.45rem) 0.45rem clamp(0.28rem, 0.8vh, 0.45rem) 1.1rem;
-    font-size: clamp(0.68rem, 1.38vh, 0.82rem);
-    line-height: 1.25;
+    padding: 0.5rem 0.55rem 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
   }
   .ticks li::before {
-    left: 0.4rem;
+    left: 0.45rem;
     width: 5px;
     height: 5px;
     margin-top: -2.5px;
+  }
+  .ticks li:hover {
+    transform: none;
+  }
+}
+
+/* Phones (< 600px): single-column lists so nothing gets squeezed */
+@media (max-width: 599px) {
+  .facts .kv {
+    grid-template-columns: 1fr;
+  }
+  .facts .kv div {
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: baseline;
+  }
+  .trio {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .ticks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Very small phones (< 360px) */
+@media (max-width: 359px) {
+  .ticks {
+    grid-template-columns: 1fr;
+  }
+  .side h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block {
+    animation: none;
   }
 }
 </style>
