@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Carlos Blanca | Achievements</title>
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+html, body {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+@media (min-width: 820px) and (min-height: 640px) {
+  html, body { height: 100dvh; max-height: 100dvh; overflow: hidden; }
+}
+@media (max-width: 819px) and (min-height: 560px) {
+  html, body { height: 100dvh; max-height: 100dvh; overflow: hidden; }
+}
+
+.bar { padding: clamp(0.6rem, 1.8vh, 1.35rem) 0; flex-shrink: 0; }
+footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh, 0.85rem); flex-shrink: 0; }
+
+.eyebrow {
+  display: block;
+  margin-bottom: clamp(0.25rem, 0.8vh, 0.65rem);
+  font: 500 clamp(0.75rem, 1.5vh, 0.88rem) var(--mono);
+  color: var(--signal);
+}
+.side h1 {
+  font-size: clamp(1.5rem, 3.4vh, 2.25rem);
+  line-height: 1.12;
+  margin: 0 0 clamp(0.35rem, 1vh, 0.75rem);
+}
+.side h1 span {
+  background: linear-gradient(100deg, #6A47E0, #2F7CF6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.side p {
+  font-size: clamp(0.82rem, 1.65vh, 0.98rem);
+  line-height: 1.5;
+}
+
+.page {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 15.5rem minmax(0, 1fr);
+  gap: clamp(1.5rem, 3.5vw, 3.5rem);
+  align-content: center;
+  align-items: start;
+  width: min(1080px, 100% - 3rem);
+  margin: 0 auto;
+  padding: clamp(0.4rem, 1.2vh, 1.25rem) 0;
+}
+.side { position: static; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, clamp(10rem, 33dvh, 17rem)));
+  gap: clamp(0.7rem, 2vh, 1.25rem);
+  min-height: 0;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: clamp(0.65rem, 1.6vh, 1.1rem) clamp(0.8rem, 1.6vw, 1.15rem);
+  background: rgba(255,255,255,.75);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  animation: fade-up 0.7s ease backwards;
+}
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 clamp(0.15rem, 0.5vh, 0.35rem);
+  font-size: clamp(0.9rem, 1.85vh, 1.1rem);
+}
+.card h2::before {
+  content: "//";
+  font: 500 clamp(0.78rem, 1.6vh, 0.95rem) var(--mono);
+  color: var(--signal);
+}
+.card p {
+  margin: 0 0 clamp(0.4rem, 1vh, 0.7rem);
+  font-size: clamp(0.76rem, 1.5vh, 0.9rem);
+  line-height: 1.4;
+  color: var(--muted, inherit);
+}
+.slots {
+  flex: 1;
+  min-height: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.35rem, 0.9vw, 0.6rem);
+}
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  text-align: center;
+  font: 500 clamp(0.62rem, 1.25vh, 0.74rem) var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: rgba(124,92,255,.06);
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+}
+.slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (min-width: 820px) and (max-height: 639px) {
+  .page { align-content: start; padding: 1.25rem 0 1.5rem; }
+}
+
+@media (max-width: 819px) {
+  .bar { width: min(1080px, 100% - 2rem); padding: clamp(0.4rem, 1.2dvh, 0.75rem) 0; }
+  footer {
+    padding: clamp(0.3rem, 1dvh, 0.6rem) 1rem calc(clamp(0.3rem, 1dvh, 0.6rem) + env(safe-area-inset-bottom, 0px));
+    font-size: 0.72rem;
+  }
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1.3dvh, 0.9rem);
+    width: min(1080px, 100% - 2rem);
+    padding: clamp(0.25rem, 0.8dvh, 0.6rem) 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .side {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.6rem;
+    padding-bottom: clamp(0.3rem, 0.9dvh, 0.6rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .side .eyebrow { margin: 0; font-size: 0.75rem; }
+  .side h1 { font-size: clamp(1.25rem, 3dvh, 1.6rem); margin: 0; }
+  .side p { width: 100%; margin: 0; font-size: clamp(0.72rem, 1.6dvh, 0.88rem); line-height: 1.4; }
+  .cards {
+    flex: 1;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+  .card { padding: clamp(0.45rem, 1.2dvh, 0.75rem) 0.6rem; border-radius: 12px; }
+  .card h2 { font-size: clamp(0.78rem, 1.7dvh, 0.95rem); gap: 0.3rem; }
+  .card h2::before { font-size: 0.7rem; }
+  .card p { font-size: clamp(0.64rem, 1.35dvh, 0.78rem); line-height: 1.3; margin-bottom: 0.35rem; }
+  .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
+  .slot:nth-child(3) { display: none; }
+  .slot { font-size: 0.6rem; letter-spacing: 0.03em; border-radius: 8px; }
+}
+@media (max-width: 819px) and (max-height: 700px) {
+  .side p { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+<a class="brand" href="index.html">carlos<span>_</span></a>
+<button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+<nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html" aria-current="page">Achievements</a><a href="parents.html">Parents</a></nav>
+</header>
+
+<main id="main" class="page">
+<aside class="side">
+<span class="eyebrow">&lt;achievements /&gt;</span>
+<h1>My <span>Achievements</span></h1>
+<p>Awards, grades, and activities, each with its supporting proof.</p>
+</aside>
+
+<div class="cards">
+<section class="card" aria-labelledby="ach-h">
+<h2 id="ach-h">Achievements</h2>
+<p>Awards, certificates, recognitions, and other accomplishments.</p>
+<div class="slots">
+<figure class="slot" style="margin:0">Certificate</figure>
+<figure class="slot" style="margin:0">Award</figure>
+<figure class="slot" style="margin:0">Photo</figure>
+</div>
+</section>
+
+<section class="card" aria-labelledby="acad-h">
+<h2 id="acad-h">Academic Performance</h2>
+<p>Academic records, grades, honors, and evidence of progress.</p>
+<div class="slots">
+<figure class="slot" style="margin:0">Grades</figure>
+<figure class="slot" style="margin:0">Honors</figure>
+<figure class="slot" style="margin:0">Record</figure>
+</div>
+</section>
+
+<section class="card" aria-labelledby="extra-h">
+<h2 id="extra-h">Extracurricular Activities</h2>
+<p>Activities and involvement outside regular academic classes.</p>
+<div class="slots">
+<figure class="slot" style="margin:0">Photo</figure>
+<figure class="slot" style="margin:0">Certificate</figure>
+<figure class="slot" style="margin:0">Activity</figure>
+</div>
+</section>
+
+<section class="card" aria-labelledby="co-h">
+<h2 id="co-h">Co-curricular Activities</h2>
+<p>School-related activities, organizations, seminars, and events.</p>
+<div class="slots">
+<figure class="slot" style="margin:0">Seminar</figure>
+<figure class="slot" style="margin:0">Organization</figure>
+<figure class="slot" style="margin:0">Photo</figure>
+</div>
+</section>
+</div>
+</main>
+
+<footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
+<script src="script.js"></script>
+</body>
+</html>
