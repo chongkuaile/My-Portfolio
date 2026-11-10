@@ -17,18 +17,18 @@ html, body {
   overflow: hidden;
 }
 
-/* Compact header and footer to save vertical space */
+/* Balanced header and footer */
 .bar {
-  padding: clamp(0.4rem, 1.5vh, 1.25rem) 0;
+  padding: clamp(0.6rem, 1.8vh, 1.35rem) 0;
   flex-shrink: 0;
 }
 footer {
-  padding: clamp(0.35rem, 1.2vh, 1rem);
-  font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+  padding: clamp(0.45rem, 1.4vh, 1rem);
+  font-size: clamp(0.72rem, 1.45vh, 0.85rem);
   flex-shrink: 0;
 }
 
-/* Flex container for main so hero stays within available height */
+/* Flex container for main */
 .home {
   flex: 1;
   min-height: 0;
@@ -40,16 +40,16 @@ footer {
   display: flex;
   flex-wrap: wrap;
   gap: clamp(0.5rem, 1.2vw, 0.75rem);
-  margin: clamp(0.6rem, 2vh, 1.75rem) 0 0;
+  margin: clamp(0.75rem, 2.2vh, 1.75rem) 0 0;
   animation: fade-up .8s ease 1.05s backwards;
 }
 .btn {
   display: inline-flex;
   align-items: center;
   gap: .55rem;
-  padding: clamp(0.45rem, 1.1vh, 0.7rem) clamp(0.85rem, 1.8vw, 1.25rem);
+  padding: clamp(0.5rem, 1.2vh, 0.7rem) clamp(0.95rem, 2vw, 1.25rem);
   font-weight: 500;
-  font-size: clamp(0.82rem, 1.6vh, 1rem);
+  font-size: clamp(0.85rem, 1.65vh, 1rem);
   color: var(--ink);
   border: 2px solid transparent;
   border-radius: 14px;
@@ -101,11 +101,11 @@ footer {
     padding-left: max(1.5rem, calc((100vw - 1080px) / 2));
   }
   .hero h1 {
-    font-size: clamp(2rem, min(5.5vw, 8vh), 4.75rem);
+    font-size: clamp(2.25rem, min(5.5vw, 8vh), 4.75rem);
   }
   .role {
-    margin-top: clamp(0.5rem, 1.5vh, 1rem);
-    font-size: clamp(1rem, 2.2vh, 1.35rem);
+    margin-top: clamp(0.6rem, 1.6vh, 1rem);
+    font-size: clamp(1.05rem, 2.2vh, 1.35rem);
   }
   .photo, .frame, .mat {
     display: flex;
@@ -140,34 +140,48 @@ footer {
   }
 }
 
-/* Small screen & mobile layout (< 820px) */
+/* Mobile & small tablet layout (< 820px) - centered cohesive unit, no voids */
 @media (max-width: 819px) {
+  .bar {
+    width: min(1080px, 100% - 2rem);
+  }
   .hero {
     flex: 1;
     min-height: 0;
-    height: 100%;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: clamp(0.5rem, 1.5vh, 1.25rem);
-    padding: clamp(0.25rem, 1vh, 0.75rem) 0 clamp(0.5rem, 1.5vh, 1.25rem);
+    width: min(1080px, 100% - 2rem);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    text-align: center;
+    gap: clamp(1rem, 2.8vh, 1.85rem);
+    padding: clamp(0.25rem, 1vh, 0.75rem) 0;
+  }
+  .hero > div {
+    width: 100%;
+    max-width: 28rem;
   }
   .hero h1 {
-    font-size: clamp(1.5rem, min(7vw, 4.2vh), 2.5rem);
+    font-size: clamp(1.85rem, min(8vw, 4.8vh), 2.75rem);
+    line-height: 1.06;
   }
   .role {
-    margin-top: clamp(0.25rem, 0.8vh, 0.6rem);
-    font-size: clamp(0.85rem, 1.8vh, 1.1rem);
+    margin-top: clamp(0.4rem, 1.2vh, 0.75rem);
+    font-size: clamp(0.95rem, 2vh, 1.15rem);
+  }
+  .links {
+    justify-content: center;
+    margin-top: clamp(0.75rem, 2vh, 1.25rem);
   }
   .photo {
     justify-self: center;
-    align-self: stretch;
-    height: 100%;
-    min-height: 0;
+    height: clamp(12.5rem, 42dvh, 21rem);
     width: auto;
-    max-width: min(100%, 20rem);
+    max-width: min(86vw, 18rem);
     aspect-ratio: 3 / 4;
     display: flex;
+    min-height: 0;
   }
   .frame, .mat {
     display: flex;
