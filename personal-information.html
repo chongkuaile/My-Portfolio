@@ -10,14 +10,21 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-/* Base: the page can scroll (phones, tablets, short windows) */
+/* Base: never scroll sideways */
 html, body {
   min-height: 100dvh;
   overflow-x: hidden;
 }
 
-/* Lock the viewport height only on screens large enough to fit everything */
+/* Lock the page to the screen so everything is visible without scrolling */
 @media (min-width: 820px) and (min-height: 640px) {
+  html, body {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+}
+@media (max-width: 819px) and (min-height: 560px) {
   html, body {
     height: 100dvh;
     max-height: 100dvh;
@@ -203,7 +210,7 @@ h2.tag::before {
   box-shadow: 0 8px 20px -12px rgba(106,71,224,.5);
 }
 
-/* Short desktop windows: let the page scroll and use fixed, readable sizes */
+/* Short desktop windows: let the page scroll */
 @media (min-width: 820px) and (max-height: 639px) {
   .page {
     align-content: start;
@@ -214,131 +221,113 @@ h2.tag::before {
   }
 }
 
-/* Tablet and mobile (< 820px): stacked, scrollable, fixed readable sizes */
+/* Tablet and mobile (< 820px): compact layout that scales with screen height */
 @media (max-width: 819px) {
   .bar {
     width: min(1080px, 100% - 2rem);
-    padding: 0.75rem 0;
+    padding: clamp(0.4rem, 1.2dvh, 0.75rem) 0;
   }
   footer {
-    padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
-    font-size: 0.78rem;
+    padding: clamp(0.3rem, 1dvh, 0.6rem) 1rem calc(clamp(0.3rem, 1dvh, 0.6rem) + env(safe-area-inset-bottom, 0px));
+    font-size: 0.72rem;
   }
   .page {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 1.1rem;
+    justify-content: space-evenly;
+    gap: clamp(0.4rem, 1.3dvh, 0.9rem);
     width: min(1080px, 100% - 2rem);
-    padding: 0.75rem 0 1.5rem;
+    padding: clamp(0.25rem, 0.8dvh, 0.6rem) 0;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   .side {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.25rem 0.65rem;
-    padding-bottom: 0.85rem;
+    gap: 0.15rem 0.6rem;
+    padding-bottom: clamp(0.3rem, 0.9dvh, 0.6rem);
     border-bottom: 1px solid var(--line);
   }
   .side .eyebrow {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   .side h1 {
-    font-size: 1.6rem;
+    font-size: clamp(1.25rem, 3dvh, 1.6rem);
     line-height: 1.15;
     margin: 0;
   }
   .side p {
     width: 100%;
-    font-size: 0.92rem;
-    line-height: 1.5;
     margin: 0;
+    font-size: clamp(0.72rem, 1.6dvh, 0.88rem);
+    line-height: 1.4;
   }
   .content-col {
     justify-content: flex-start;
-    gap: 1.1rem;
+    gap: clamp(0.45rem, 1.4dvh, 0.95rem);
   }
   .block {
     padding-bottom: 0;
   }
   h2.tag {
-    font-size: 1rem;
-    margin-bottom: 0.55rem;
+    font-size: clamp(0.82rem, 1.8dvh, 0.98rem);
+    margin-bottom: clamp(0.2rem, 0.6dvh, 0.45rem);
   }
   h2.tag::before {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
   .about p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 0.65rem;
+    font-size: clamp(0.72rem, 1.6dvh, 0.9rem);
+    line-height: 1.4;
+    margin-bottom: clamp(0.25rem, 0.7dvh, 0.5rem);
   }
   .facts {
-    padding: 0.9rem 1rem;
+    padding: clamp(0.4rem, 1.1dvh, 0.8rem) 0.85rem;
   }
   .facts .kv {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.35rem 1rem;
+    gap: 0.1rem 0.8rem;
   }
   .facts .kv div {
     grid-template-columns: 1fr;
-    gap: 0.1rem;
-    padding: 0.3rem 0;
-    font-size: 0.92rem;
-    line-height: 1.35;
-  }
-  .facts dt {
-    font-size: 0.7rem;
-  }
-  .trio {
-    gap: 0.75rem;
-  }
-  .ticks {
-    gap: 0.45rem;
-  }
-  .ticks li {
-    padding: 0.5rem 0.55rem 0.5rem 1.2rem;
-    font-size: 0.85rem;
+    gap: 0;
+    padding: clamp(0.1rem, 0.4dvh, 0.25rem) 0;
+    font-size: clamp(0.72rem, 1.55dvh, 0.86rem);
     line-height: 1.3;
   }
+  .facts dt {
+    font-size: 0.62rem;
+  }
+  .trio {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  .trio h2.tag {
+    font-size: clamp(0.76rem, 1.6dvh, 0.9rem);
+  }
+  .ticks {
+    gap: clamp(0.2rem, 0.6dvh, 0.35rem);
+  }
+  .ticks li {
+    padding: clamp(0.22rem, 0.6dvh, 0.38rem) 0.4rem;
+    font-size: clamp(0.62rem, 1.35dvh, 0.76rem);
+    line-height: 1.22;
+    border-radius: 8px;
+  }
   .ticks li::before {
-    left: 0.45rem;
-    width: 5px;
-    height: 5px;
-    margin-top: -2.5px;
+    display: none;
   }
   .ticks li:hover {
     transform: none;
   }
 }
 
-/* Phones (< 600px): single-column lists so nothing gets squeezed */
-@media (max-width: 599px) {
-  .facts .kv {
-    grid-template-columns: 1fr;
-  }
-  .facts .kv div {
-    grid-template-columns: 5.25rem minmax(0, 1fr);
-    gap: 0.6rem;
-    align-items: baseline;
-  }
-  .trio {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .ticks {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Very small phones (< 360px) */
-@media (max-width: 359px) {
-  .ticks {
-    grid-template-columns: 1fr;
-  }
-  .side h1 {
-    font-size: 1.4rem;
+/* Shorter phones: drop the intro line under the title to save space */
+@media (max-width: 819px) and (max-height: 700px) {
+  .side p {
+    display: none;
   }
 }
 
