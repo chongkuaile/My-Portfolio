@@ -21,10 +21,16 @@ html, body {
 .bar {
   padding: clamp(0.6rem, 1.8vh, 1.35rem) 0;
   flex-shrink: 0;
+  z-index: 10;
 }
 footer {
+  position: relative;
+  z-index: 5;
   padding: clamp(0.45rem, 1.4vh, 1rem);
   font-size: clamp(0.72rem, 1.45vh, 0.85rem);
+  background: rgba(243, 244, 250, 0.78);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   flex-shrink: 0;
 }
 
@@ -36,34 +42,93 @@ footer {
   flex-direction: column;
 }
 
+/* Hero container */
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Eyebrow Status Badge */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.32rem 0.85rem;
+  margin-bottom: clamp(0.6rem, 1.6vh, 1.15rem);
+  border-radius: 999px;
+  font: 500 clamp(0.68rem, 1.35vh, 0.8rem) var(--mono);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(106, 71, 224, 0.25);
+  box-shadow: 0 8px 20px -12px rgba(91, 63, 209, 0.35);
+  animation: fade-up 0.7s ease 0.05s backwards;
+}
+.hero-badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 8px var(--signal);
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+/* Typography & Bio */
+.hero h1 .greeting {
+  display: block;
+  font-size: 0.52em;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--muted);
+  margin-bottom: 0.15em;
+}
+.role {
+  margin: clamp(0.5rem, 1.4vh, 0.9rem) 0 0;
+  font-size: clamp(1rem, 2.1vh, 1.3rem);
+  font-weight: 500;
+  color: var(--accent);
+  animation: fade-up .8s ease .85s backwards;
+}
+.lead {
+  max-width: 33rem;
+  margin: clamp(0.5rem, 1.4vh, 0.95rem) 0 0;
+  font-size: clamp(0.84rem, 1.65vh, 1.02rem);
+  line-height: 1.55;
+  color: var(--muted);
+  animation: fade-up .8s ease .95s backwards;
+}
+.lead:empty {
+  display: none;
+}
+
+/* Action Buttons */
 .links {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(0.5rem, 1.2vw, 0.75rem);
-  margin: clamp(0.75rem, 2.2vh, 1.75rem) 0 0;
+  gap: clamp(0.5rem, 1.2vw, 0.8rem);
+  margin: clamp(0.85rem, 2.2vh, 1.65rem) 0 0;
   animation: fade-up .8s ease 1.05s backwards;
 }
 .btn {
   display: inline-flex;
   align-items: center;
   gap: .55rem;
-  padding: clamp(0.5rem, 1.2vh, 0.7rem) clamp(0.95rem, 2vw, 1.25rem);
+  padding: clamp(0.5rem, 1.2vh, 0.72rem) clamp(0.95rem, 2vw, 1.3rem);
   font-weight: 500;
-  font-size: clamp(0.85rem, 1.65vh, 1rem);
+  font-size: clamp(0.84rem, 1.6vh, 0.98rem);
   color: var(--ink);
   border: 2px solid transparent;
   border-radius: 14px;
-  background: linear-gradient(#fff,#fff) padding-box,
-              linear-gradient(120deg,#7c5cff 0%,#2f7cf6 55%,#b28cff 100%) border-box;
+  background: linear-gradient(#fff, #fff) padding-box,
+              linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
   transition: transform .25s ease, box-shadow .25s ease;
 }
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -12px rgba(91,63,209,.6);
+  box-shadow: 0 12px 24px -12px rgba(91, 63, 209, .6);
 }
 .btn.fill {
   color: #fff;
-  background: linear-gradient(120deg,#7c5cff,#2f7cf6) border-box;
+  background: linear-gradient(120deg, #7c5cff, #2f7cf6) border-box;
 }
 .btn svg {
   width: 1.15rem;
@@ -80,22 +145,14 @@ footer {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.lead:empty {
-  display: none;
-}
 
-/* Hero: text + photo share one centered container, aligned with the header */
-.hero {
-  position: relative;
-  isolation: isolate;
-}
-
-/* Cutout photo: no frame, stands on the footer line, glow bleeds behind the text */
+/* Cutout photo: stands flush on the footer line with a glowing backdrop halo */
 .photo {
   background: none !important;
   border: 0 !important;
   box-shadow: none !important;
   outline: 0 !important;
+  animation: photo-in 1s cubic-bezier(.2, .8, .2, 1) .35s backwards;
 }
 .photo::before, .photo::after {
   display: none !important;
@@ -106,45 +163,72 @@ footer {
   align-items: flex-end;
   justify-content: center;
 }
-/* soft violet / blue / silver glow that spans photo and headline so they read as one scene */
+
+/* Soft ambient glow bridging the photo and headline */
 .cutout::before {
   content: "";
   position: absolute;
-  inset: -4% -22% 0 -85%;
-  z-index: -1;
+  inset: 2% -15% 0 -45%;
+  z-index: -2;
   background:
-    radial-gradient(30% 46% at 66% 42%, rgba(124,92,255,.34), transparent 72%),
-    radial-gradient(26% 40% at 82% 60%, rgba(47,124,246,.26), transparent 74%),
-    radial-gradient(30% 40% at 46% 66%, rgba(178,140,255,.22), transparent 74%),
-    radial-gradient(44% 26% at 66% 100%, rgba(190,196,218,.55), transparent 76%);
-  filter: blur(20px);
+    radial-gradient(38% 48% at 62% 45%, rgba(124, 92, 255, .32), transparent 72%),
+    radial-gradient(32% 42% at 78% 62%, rgba(47, 124, 246, .26), transparent 74%),
+    radial-gradient(45% 24% at 60% 98%, rgba(124, 92, 255, .22), transparent 76%);
+  filter: blur(24px);
   opacity: .95;
   transition: opacity .5s ease, transform .5s ease;
   pointer-events: none;
 }
+
+/* Subtle architectural halo circle behind the cutout subject */
+.cutout::after {
+  content: "";
+  position: absolute;
+  width: min(76%, 25rem, 52dvh);
+  aspect-ratio: 1;
+  bottom: 8%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.75), rgba(124, 92, 255, 0.14) 58%, rgba(47, 124, 246, 0.2) 100%);
+  border: 1.5px solid rgba(124, 92, 255, 0.24);
+  box-shadow:
+    inset 0 0 36px rgba(124, 92, 255, 0.14),
+    0 24px 50px -20px rgba(91, 63, 209, 0.28);
+  translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
+  transition: translate 0.3s ease-out, transform 0.5s ease, border-color 0.4s ease;
+  pointer-events: none;
+}
+
 .cutout img {
   display: block;
   width: auto !important;
   height: auto !important;
   max-width: 100%;
-  max-height: min(100%, 88vh);
+  max-height: 100%;
   aspect-ratio: auto !important;
   object-fit: contain !important;
+  object-position: bottom center !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   background: none !important;
-  filter: drop-shadow(0 10px 24px rgba(91,63,209,.18));
+  filter: drop-shadow(0 16px 32px rgba(28, 27, 56, .22)) drop-shadow(0 4px 12px rgba(91, 63, 209, .16));
   transform-origin: 50% 100%;
-  transition: transform .5s ease, filter .5s ease;
+  translate: calc(var(--px, 0) * 8px) 0;
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1), translate .25s ease-out, filter .5s ease;
 }
 .cutout:hover img {
   transform: scale(1.025);
-  filter: drop-shadow(0 12px 30px rgba(91,63,209,.32));
+  filter: drop-shadow(0 20px 38px rgba(91, 63, 209, .32));
 }
 .cutout:hover::before {
   opacity: 1;
   transform: scale(1.04);
+}
+.cutout:hover::after {
+  transform: scale(1.03);
+  border-color: rgba(106, 71, 224, 0.45);
 }
 
 /* Desktop layout (>= 820px) */
@@ -153,39 +237,43 @@ footer {
     flex: 1;
     min-height: 0;
     height: 100%;
-    width: min(1080px, 100% - 3rem);
+    width: min(1120px, 100% - 3rem);
     margin: 0 auto;
     padding: 0;
-    gap: clamp(1rem, 3vw, 3rem);
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: end;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    grid-template-columns: 1.12fr 0.88fr;
+    align-items: center;
   }
-  .hero > div {
-    padding: 0 0 clamp(1.25rem, 9vh, 6rem) 0;
+  .hero-copy {
+    align-self: center;
+    padding-bottom: clamp(1rem, 4vh, 2.5rem);
+    z-index: 2;
   }
   .hero h1 {
-    font-size: clamp(2.25rem, min(5vw, 7.5vh), 4.25rem);
-  }
-  .role {
-    margin-top: clamp(0.6rem, 1.6vh, 1rem);
-    font-size: clamp(1.05rem, 2.2vh, 1.35rem);
+    font-size: clamp(2.35rem, min(4.8vw, 7.4vh), 4.35rem);
+    line-height: 1.04;
   }
   .photo {
     display: flex;
     min-height: 0;
     justify-self: stretch;
-    align-self: stretch;
-    width: calc(100% + clamp(0rem, 3vw, 3rem));
+    align-self: end;
+    width: 100%;
     height: 100%;
-    margin: 0 calc(-1 * clamp(0rem, 3vw, 3rem)) 0 0;
+    max-height: calc(100dvh - 6.5rem);
+    margin: 0;
   }
   .cutout {
     flex: 1;
+    height: 100%;
     min-height: 0;
+  }
+  .cutout img {
+    max-height: min(100%, 78dvh);
   }
 }
 
-/* Mobile & small tablet layout (< 820px) - centered cohesive unit, no voids */
+/* Mobile & small tablet layout (< 820px) - centered above, cutout grounded on footer */
 @media (max-width: 819px) {
   .bar {
     width: min(1080px, 100% - 2rem);
@@ -193,48 +281,80 @@ footer {
   .hero {
     flex: 1;
     min-height: 0;
+    height: 100%;
     width: min(1080px, 100% - 2rem);
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
     align-items: center;
+    justify-items: center;
     text-align: center;
-    gap: clamp(0.75rem, 2.2vh, 1.5rem);
-    padding: clamp(0.25rem, 1vh, 0.75rem) 0 0;
+    gap: clamp(0.4rem, 1.2vh, 0.85rem);
+    padding: clamp(0.15rem, 0.6vh, 0.5rem) 0 0;
   }
-  .hero > div {
+  .hero-copy {
     width: 100%;
     max-width: 28rem;
+    z-index: 2;
+  }
+  .hero-badge {
+    margin-bottom: clamp(0.3rem, 0.8vh, 0.6rem);
+    padding: 0.22rem 0.65rem;
+    font-size: clamp(0.62rem, 1.2vh, 0.72rem);
   }
   .hero h1 {
-    font-size: clamp(1.85rem, min(8vw, 4.8vh), 2.75rem);
+    font-size: clamp(1.65rem, min(7.5vw, 4.3vh), 2.5rem);
     line-height: 1.06;
   }
   .role {
-    margin-top: clamp(0.4rem, 1.2vh, 0.75rem);
-    font-size: clamp(0.95rem, 2vh, 1.15rem);
+    margin-top: clamp(0.25rem, 0.8vh, 0.5rem);
+    font-size: clamp(0.88rem, 1.8vh, 1.08rem);
+  }
+  .lead {
+    margin: clamp(0.25rem, 0.8vh, 0.5rem) auto 0;
+    font-size: clamp(0.75rem, 1.45vh, 0.88rem);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .links {
     justify-content: center;
-    margin-top: clamp(0.75rem, 2vh, 1.25rem);
+    margin-top: clamp(0.5rem, 1.4vh, 0.9rem);
+    gap: 0.5rem;
+  }
+  .btn {
+    padding: clamp(0.4rem, 1vh, 0.55rem) clamp(0.8rem, 2vw, 1rem);
+    font-size: clamp(0.78rem, 1.5vh, 0.9rem);
   }
   .photo {
     display: flex;
+    align-self: stretch;
+    justify-self: center;
     margin: 0;
     min-height: 0;
-    width: min(86vw, 22rem);
-    height: clamp(12.5rem, 44dvh, 22rem);
-    flex: none;
+    width: 100%;
+    height: 100%;
   }
   .cutout {
     flex: 1;
     width: 100%;
     height: 100%;
     min-height: 0;
+    align-items: flex-end;
   }
   .cutout::before {
-    inset: 0 -12% 0 -12%;
+    inset: 0 -10% 0 -10%;
+  }
+  .cutout::after {
+    width: min(62vw, 32dvh);
+    bottom: 6%;
+  }
+  .cutout img {
+    max-height: 100%;
+    width: auto !important;
   }
 }
 </style>
@@ -246,22 +366,32 @@ footer {
 <button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
 <nav id="nav" aria-label="Main"><a href="index.html" aria-current="page">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html">Achievements</a><a href="parents.html">Parents</a></nav>
 </header>
+
 <main id="main" class="home">
 <section class="hero">
-<div>
-<h1 aria-label="Hello, I’m Carlos David A. Blanca!"><span class="w" aria-hidden="true"><span>Hello,</span></span> <span class="w" aria-hidden="true"><span>I’m</span></span> <span class="w" aria-hidden="true"><span>Carlos David A. Blanca!</span></span></h1>
-<p class="role">BSCS Student from the University of the Cordilleras.<i class="caret" aria-hidden="true"></i></p>
-<div class="links">
-<a class="btn fill" href="https://mail.google.com/mail/?view=cm&fs=1&to=carlosblancaschool@gmail.com" target="_blank" rel="noopener"><svg class="ml" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email me</a>
-<a class="btn" href="https://github.com/chongkuaile" target="_blank" rel="noopener"><svg class="gh" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
-</div>
-<p class="lead"></p>
-</div>
-<figure class="photo">
-<div class="cutout"><img src="images/profile.png" width="1100" height="1275" alt="Carlos in a black suit and tie with a University of the Cordilleras lanyard"></div>
-</figure>
+  <div class="hero-copy">
+    <div class="hero-badge"><span class="dot" aria-hidden="true"></span><span>&lt;cs_undergrad /&gt; &bull; Baguio City</span></div>
+    <h1 aria-label="Hello, I’m Carlos David A. Blanca!">
+      <span class="greeting"><span class="w" aria-hidden="true"><span>Hello,</span></span> <span class="w" aria-hidden="true"><span>I’m</span></span></span>
+      <span class="w" aria-hidden="true"><span>Carlos David A. Blanca!</span></span>
+    </h1>
+    <p class="role">BSCS Student from the University of the Cordilleras.<i class="caret" aria-hidden="true"></i></p>
+    <p class="lead">Aspiring software engineer crafting clean, practical interfaces and turning ideas into things people can click, read, and use.</p>
+    <div class="links">
+      <a class="btn fill" href="https://mail.google.com/mail/?view=cm&fs=1&to=carlosblancaschool@gmail.com" target="_blank" rel="noopener"><svg class="ml" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email me</a>
+      <a class="btn" href="https://github.com/chongkuaile" target="_blank" rel="noopener"><svg class="gh" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>GitHub</a>
+      <a class="btn" href="personal-information.html">About Me &rarr;</a>
+    </div>
+  </div>
+
+  <figure class="photo">
+    <div class="cutout">
+      <img src="images/profile.png" width="1100" height="1275" alt="Carlos in a black suit and tie with a University of the Cordilleras lanyard">
+    </div>
+  </figure>
 </section>
 </main>
+
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
 <script src="script.js"></script>
 </body>
