@@ -50,3 +50,108 @@
   <div class="ach-body">
     <aside class="side">
       <span class="eyebrow">&lt;achievements /&gt;</span>
+      <h1>My <span>Achievements</span></h1>
+      <p>Awards, grades, and activities, each with its supporting proof.</p>
+    </aside>
+
+    <div class="tabs-grid">
+      <!-- Tab 1: Achievements (conduct.jpg + attendance.jpg cycled via arrows when expanded) -->
+      <section class="tab-card" aria-labelledby="ach-1"
+               data-extra='[{"src":"images/attendance.jpg","label":"Perfect Attendance Award"}]'>
+        <div class="tab-head">
+          <h2 id="ach-1" class="tag">Achievements</h2>
+          <button type="button" class="expand-btn" aria-label="Expand Achievements"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
+        </div>
+        <p>Awards, certificates, recognitions, and other accomplishments.</p>
+        <div class="slots">
+          <div class="slot">
+            <img src="images/conduct.jpg" alt="Conduct Awardee Certificate">
+            <span>Conduct Awardee</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Academic Performance (honors.png + Report of Grades + Grade 12 SF9 Record) -->
+      <section class="tab-card" aria-labelledby="ach-2"
+               data-extra='[{"src":"images/IMG_20261112_222942.png","label":"Report of Grades"},{"src":"images/IMG_20261112_222912.png","label":"Grade 12 SF9 Record"}]'>
+        <div class="tab-head">
+          <h2 id="ach-2" class="tag">Academic Performance</h2>
+          <button type="button" class="expand-btn" aria-label="Expand Academic Performance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
+        </div>
+        <p>Academic records, grades, honors, and evidence of progress.</p>
+        <div class="slots">
+          <div class="slot">
+            <img src="images/honors.png" alt="With Honors and With High Honors Certificates">
+            <span>Academic Honors</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 3: Extracurricular Activities (quizbee.png + quizbee2.png cycled via arrows when expanded) -->
+      <section class="tab-card" aria-labelledby="ach-3"
+               data-extra='[{"src":"images/quizbee2.png","label":"UN Quiz Bee"}]'>
+        <div class="tab-head">
+          <h2 id="ach-3" class="tag">Extracurricular Activities</h2>
+          <button type="button" class="expand-btn" aria-label="Expand Extracurricular Activities"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
+        </div>
+        <p>Activities and involvement outside regular academic classes.</p>
+        <div class="slots">
+          <div class="slot">
+            <img src="images/quizbee.png" alt="Champion in the Grade 12 United Nations Quiz Bee">
+            <span>UN Quiz Bee Champion</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 4: Co-curricular Activities (workimmersion.png + hoj.jpg cycled via arrows when expanded) -->
+      <section class="tab-card" aria-labelledby="ach-4"
+               data-extra='[{"src":"images/hoj.jpg","label":"Heart of Jesus Hospital Immersion"}]'>
+        <div class="tab-head">
+          <h2 id="ach-4" class="tag">Co-curricular Activities</h2>
+          <button type="button" class="expand-btn" aria-label="Expand Co-curricular Activities"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
+        </div>
+        <p>School-related activities, organizations, seminars, and events.</p>
+        <div class="slots">
+          <div class="slot">
+            <img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital">
+            <span>Work Immersion</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- Automatically strips pure black cutout backgrounds from certificate photos -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <filter id="remove-black-bg" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="
+      1 0 0 0 0
+      0 1 0 0 0
+      0 0 1 0 0
+      12 12 12 -1.2 0" />
+  </filter>
+</svg>
+
+<!-- Modal Backdrop & Expanded 16:9 Window -->
+<div id="preview-backdrop" class="preview-backdrop" aria-hidden="true"></div>
+<aside id="preview-win" class="preview-win" role="dialog" aria-modal="true" aria-labelledby="win-title" aria-hidden="true">
+  <div class="win-bar">
+    <div class="win-title-wrap">
+      <div class="win-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h3 id="win-title" class="win-title">Achievements</h3>
+      <p id="win-sub" class="win-sub"></p>
+    </div>
+    <div class="win-actions">
+      <span id="win-count" class="win-count"></span>
+      <button type="button" id="win-close" class="win-close">Close [Esc]</button>
+    </div>
+  </div>
+  <!-- 16:9 Image Holder with Left/Right Cycling Arrows -->
+  <div id="win-gallery" class="win-gallery"></div>
+</aside>
+
+<footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
+<script src="script.js"></script>
+</body>
+</html>
