@@ -9,583 +9,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-/* Lock viewport height so the page never scrolls */
-html, body {
-  height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden;
-}
-
-/* Wider container so the 4 tabs have much more room to expand */
-.bar {
-  width: min(1260px, 100% - 3rem);
-  padding: clamp(0.5rem, 1.5vh, 1.15rem) 0;
-  flex-shrink: 0;
-}
-footer {
-  padding: clamp(0.4rem, 1.2vh, 0.85rem);
-  font-size: clamp(0.72rem, 1.4vh, 0.85rem);
-  flex-shrink: 0;
-}
-
-/* Main wrapper: stacks the School Banner above the Sidebar + 4 Tabs */
-.ach-wrap {
-  flex: 1;
-  min-height: 0;
-  width: min(1260px, 100% - 3rem);
-  margin: 0 auto;
-  padding: clamp(0.25rem, 1vh, 0.85rem) 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(0.65rem, 1.8vh, 1.35rem);
-}
-
-/* Top School Picture & Name Banner */
-.school-banner {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.85rem, 2vw, 1.5rem);
-  padding: clamp(0.6rem, 1.5vh, 1.05rem) clamp(1rem, 2.2vw, 1.65rem);
-  border-radius: 18px;
-  border: 2px solid transparent;
-  background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)) padding-box,
-              linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
-  box-shadow: 0 16px 36px -22px rgba(91, 63, 209, 0.45);
-  flex-shrink: 0;
-  animation: fade-up 0.6s ease backwards;
-}
-.school-pic {
-  position: relative;
-  width: clamp(3.2rem, 6.8vh, 4.75rem);
-  height: clamp(3.2rem, 6.8vh, 4.75rem);
-  border-radius: 14px;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: linear-gradient(135deg, rgba(124, 92, 255, 0.14), rgba(47, 124, 246, 0.14));
-  border: 1px solid rgba(106, 71, 224, 0.35);
-  display: grid;
-  place-items: center;
-  font: 500 0.72rem var(--mono);
-  color: var(--accent);
-}
-.school-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.school-info {
-  min-width: 0;
-}
-.school-info .eyebrow {
-  margin-bottom: 0.15rem;
-  font: 500 clamp(0.68rem, 1.3vh, 0.8rem) var(--mono);
-  color: var(--signal);
-  display: block;
-}
-.school-info h2 {
-  margin: 0;
-  font-size: clamp(1rem, 2.3vh, 1.5rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  background: linear-gradient(100deg, var(--ink) 30%, #6A47E0 80%, #2F7CF6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.school-info p {
-  margin: 0.15rem 0 0;
-  font-size: clamp(0.75rem, 1.5vh, 0.92rem);
-  color: var(--muted);
-  line-height: 1.3;
-}
-
-/* Body grid: compact sidebar + expansive 2x2 grid for the 4 tabs */
-.ach-body {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 12.5rem minmax(0, 1fr);
-  gap: clamp(1.25rem, 2.5vw, 2.5rem);
-  align-items: stretch;
-}
-.side {
-  position: static;
-  align-self: start;
-  padding-top: 0.25rem;
-}
-.eyebrow {
-  display: block;
-  margin-bottom: clamp(0.2rem, 0.6vh, 0.5rem);
-  font: 500 clamp(0.72rem, 1.4vh, 0.85rem) var(--mono);
-  color: var(--signal);
-}
-.side h1 {
-  font-size: clamp(1.45rem, 3.1vh, 2.15rem);
-  line-height: 1.1;
-  margin: 0 0 clamp(0.3rem, 0.8vh, 0.6rem);
-}
-.side h1 span {
-  display: block;
-  background: linear-gradient(100deg, #6A47E0, #2F7CF6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.side p {
-  font-size: clamp(0.78rem, 1.55vh, 0.94rem);
-  line-height: 1.45;
-  color: var(--muted);
-}
-
-/* Larger 2x2 Grid for the 4 Tabs */
-.tabs-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.75rem, 1.8vh, 1.35rem);
-  min-height: 0;
-  height: 100%;
-}
-.tab-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(0.75rem, 1.8vh, 1.25rem) clamp(0.9rem, 1.8vw, 1.4rem);
-  background: rgba(255, 255, 255, 0.86);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  box-shadow: 0 14px 32px -20px rgba(91, 63, 209, 0.28);
-  min-height: 0;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-  animation: fade-up 0.7s ease backwards;
-}
-.tab-card:nth-child(1) { animation-delay: 0.1s; }
-.tab-card:nth-child(2) { animation-delay: 0.18s; }
-.tab-card:nth-child(3) { animation-delay: 0.26s; }
-.tab-card:nth-child(4) { animation-delay: 0.34s; }
-
-.tab-card:hover, .tab-card.active-tab {
-  border-color: rgba(106, 71, 224, 0.45);
-  box-shadow: 0 18px 38px -18px rgba(91, 63, 209, 0.45);
-}
-
-/* Card Header with Top-Right Expand Button */
-.tab-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: clamp(0.15rem, 0.4vh, 0.3rem);
-}
-.tab-card h2.tag {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: clamp(0.92rem, 1.85vh, 1.12rem);
-  margin: 0;
-  min-width: 0;
-}
-.tab-card h2.tag::before {
-  content: "//";
-  font: 500 clamp(0.8rem, 1.6vh, 0.95rem) var(--mono);
-  color: var(--signal);
-}
-
-/* Top-Right Expand Button */
-.expand-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: clamp(0.22rem, 0.6vh, 0.35rem) clamp(0.45rem, 1vw, 0.7rem);
-  font: 500 clamp(0.65rem, 1.3vh, 0.75rem) var(--mono);
-  color: var(--accent);
-  border: 1.5px solid transparent;
-  border-radius: 10px;
-  background:
-    linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
-}
-.expand-btn:hover {
-  transform: translateY(-1px);
-  color: #fff;
-  background: linear-gradient(120deg, #7c5cff, #2f7cf6) border-box;
-  box-shadow: 0 8px 18px -8px rgba(91, 63, 209, 0.6);
-}
-.expand-btn svg {
-  width: 0.85rem;
-  height: 0.85rem;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  fill: none;
-}
-
-.tab-card > p {
-  margin: 0 0 clamp(0.4rem, 1vh, 0.75rem);
-  font-size: clamp(0.74rem, 1.45vh, 0.88rem);
-  line-height: 1.35;
-  color: var(--muted);
-}
-
-/* Proof Slots inside each Tab (automatically adjusts columns based on how many slots are inside) */
-.slots {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: clamp(0.45rem, 1vw, 0.85rem);
-}
-
-/* Website-Themed Mat Background for Slots & Expanded View */
-.slot, .win-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0.5rem;
-  border-radius: 12px;
-  background-color: #F3F4FA;
-  background-image:
-    radial-gradient(circle at 85% 15%, rgba(124, 92, 255, 0.22), transparent 60%),
-    radial-gradient(circle at 15% 85%, rgba(47, 124, 246, 0.18), transparent 60%),
-    linear-gradient(rgba(124, 92, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(124, 92, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(145deg, #F8F9FD, #E8E6FA);
-  background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px, 100% 100%;
-  border: 1px solid rgba(106, 71, 224, 0.28);
-  font: 500 clamp(0.62rem, 1.25vh, 0.75rem) var(--mono);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--accent);
-  overflow: hidden;
-  cursor: pointer;
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-}
-.slot:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px -12px rgba(91, 63, 209, 0.45);
-}
-
-/* Uniform Orientation & Black Cutout Background Removal for Certificate Photos */
-.slot img, .win-item img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  padding: 0.35rem 0.35rem 1.65rem;
-  filter: url(#remove-black-bg) drop-shadow(0 8px 16px rgba(91, 63, 209, 0.22));
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.slot:hover img {
-  transform: scale(1.04);
-}
-.slot span {
-  position: absolute;
-  bottom: 0.35rem;
-  left: 0.35rem;
-  right: 0.35rem;
-  z-index: 1;
-  padding: 0.18rem 0.4rem;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.88);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(106, 71, 224, 0.18);
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ---------- Modal Backdrop + Expanded Window ---------- */
-.preview-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 49;
-  background: rgba(28, 27, 56, 0.32);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-}
-.preview-backdrop.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.preview-win {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -46%) scale(0.94);
-  width: min(1040px, 94vw);
-  height: min(620px, 80dvh);
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(1rem, 2.2vh, 1.5rem) clamp(1.15rem, 2.5vw, 1.75rem);
-  border-radius: 22px;
-  border: 2px solid transparent;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.98), rgba(248, 249, 253, 0.98)) padding-box,
-    linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
-  box-shadow: 0 35px 80px -20px rgba(28, 27, 56, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
-              visibility 0.25s;
-}
-.preview-win.open {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* Window Top Bar */
-.win-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.75rem;
-  margin-bottom: 0.85rem;
-  border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
-.win-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
-}
-.win-dots {
-  display: flex;
-  gap: 0.4rem;
-}
-.win-dots i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--line);
-}
-.win-dots i:nth-child(1) { background: #ff6b8b; }
-.win-dots i:nth-child(2) { background: #ffc061; }
-.win-dots i:nth-child(3) { background: #4cd97b; }
-
-.win-title {
-  margin: 0;
-  font-size: clamp(1.05rem, 2.2vh, 1.35rem);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-.win-title::before {
-  content: "//";
-  font: 500 0.95rem var(--mono);
-  color: var(--signal);
-}
-.win-sub {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--muted);
-  display: none;
-}
-@media (min-width: 720px) {
-  .win-sub { display: block; }
-}
-.win-close {
-  font: 500 0.78rem var(--mono);
-  padding: 0.4rem 0.8rem;
-  border-radius: 10px;
-  border: 1.5px solid var(--line);
-  background: #fff;
-  color: var(--ink);
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, transform 0.2s;
-}
-.win-close:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-1px);
-}
-
-/* Bigger Pictures Grid inside the Popup Window */
-.win-gallery {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: clamp(0.75rem, 1.8vw, 1.35rem);
-}
-.win-item {
-  border-radius: 16px;
-  border: 2px solid rgba(106, 71, 224, 0.25);
-  box-shadow: 0 14px 28px -16px rgba(91, 63, 209, 0.3);
-  cursor: default;
-}
-.win-item:hover, .win-item.focused {
-  transform: scale(1.02);
-  border-color: var(--accent);
-  box-shadow: 0 20px 38px -14px rgba(91, 63, 209, 0.55);
-  z-index: 2;
-}
-.win-item img {
-  padding: 0.85rem 0.85rem 2.75rem;
-}
-.win-item:hover img {
-  transform: scale(1.04);
-}
-.win-label {
-  position: absolute;
-  bottom: 0.65rem;
-  left: 0.75rem;
-  right: 0.75rem;
-  padding: 0.4rem 0.65rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(106, 71, 224, 0.2);
-  font: 500 0.78rem var(--mono);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink);
-  text-align: center;
-  box-shadow: 0 8px 18px -10px rgba(28, 27, 56, 0.25);
-}
-
-/* Small screen & Mobile Responsive (< 900px) */
-@media (max-width: 899px) {
-  .bar, .ach-wrap {
-    width: min(1260px, 100% - 1.75rem);
-  }
-  .ach-wrap {
-    gap: clamp(0.4rem, 1.1vh, 0.75rem);
-  }
-  .school-banner {
-    padding: clamp(0.45rem, 1.1vh, 0.75rem) clamp(0.75rem, 2vw, 1rem);
-    gap: 0.75rem;
-    border-radius: 14px;
-  }
-  .school-pic {
-    width: clamp(2.5rem, 5.2vh, 3.25rem);
-    height: clamp(2.5rem, 5.2vh, 3.25rem);
-    border-radius: 10px;
-  }
-  .school-info h2 {
-    font-size: clamp(0.85rem, 1.85vh, 1.15rem);
-  }
-  .school-info p {
-    font-size: clamp(0.68rem, 1.35vh, 0.8rem);
-  }
-  .ach-body {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: clamp(0.4rem, 1vh, 0.65rem);
-  }
-  .side {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.15rem 0.5rem;
-    padding: 0;
-  }
-  .side .eyebrow {
-    margin: 0;
-    font-size: clamp(0.65rem, 1.25vh, 0.75rem);
-  }
-  .side h1 {
-    font-size: clamp(1.1rem, 2.2vh, 1.35rem);
-    margin: 0;
-  }
-  .side h1 span {
-    display: inline;
-  }
-  .side p {
-    width: 100%;
-    font-size: clamp(0.68rem, 1.35vh, 0.8rem);
-    margin: 0;
-  }
-  .tabs-grid {
-    gap: clamp(0.45rem, 1.1vh, 0.75rem);
-  }
-  .tab-card {
-    padding: clamp(0.45rem, 1.1vh, 0.75rem) clamp(0.55rem, 1.4vw, 0.85rem);
-    border-radius: 14px;
-  }
-  .tab-card h2.tag {
-    font-size: clamp(0.74rem, 1.45vh, 0.9rem);
-    gap: 0.25rem;
-  }
-  .expand-btn {
-    padding: 0.18rem 0.4rem;
-    font-size: 0.6rem;
-    border-radius: 8px;
-  }
-  .expand-btn span {
-    display: none;
-  }
-  .tab-card > p {
-    font-size: clamp(0.62rem, 1.2vh, 0.74rem);
-    margin-bottom: clamp(0.25rem, 0.7vh, 0.45rem);
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .slots {
-    gap: 0.35rem;
-  }
-  .slot {
-    padding: 0.25rem;
-    border-radius: 8px;
-    font-size: clamp(0.5rem, 1vh, 0.62rem);
-  }
-  .slot img {
-    padding: 0.2rem 0.2rem 1.25rem;
-  }
-  .slot span {
-    bottom: 0.2rem;
-    left: 0.2rem;
-    right: 0.2rem;
-    padding: 0.1rem 0.25rem;
-  }
-  .preview-win {
-    width: 94vw;
-    height: 82dvh;
-    padding: 0.85rem;
-  }
-  .win-gallery {
-    grid-template-columns: 1fr;
-    grid-auto-rows: minmax(0, 1fr);
-    gap: 0.6rem;
-  }
-}
-</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="bar">
+<header class="bar wide">
 <a class="brand" href="index.html">carlos<span>_</span></a>
 <button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
 <nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html" aria-current="page">Achievements</a><a href="parents.html">Parents</a></nav>
@@ -604,7 +31,7 @@ footer {
     </div>
   </section>
 
-  <!-- Sidebar + 4 Large Achievement Tabs -->
+  <!-- Sidebar + 4 Large Achievement Tabs (1 Image Per Unexpanded Tab) -->
   <div class="ach-body">
     <aside class="side">
       <span class="eyebrow">&lt;achievements /&gt;</span>
@@ -613,7 +40,7 @@ footer {
     </aside>
 
     <div class="tabs-grid">
-      <!-- Tab 1: Achievements -->
+      <!-- Tab 1: Achievements (1 image shown) -->
       <section class="tab-card" aria-labelledby="ach-1">
         <div class="tab-head">
           <h2 id="ach-1" class="tag">Achievements</h2>
@@ -623,17 +50,14 @@ footer {
         <div class="slots">
           <div class="slot">
             <img src="images/Awards.jpg" alt="Conduct Awardee and Perfect Attendance Certificates">
-            <span>Conduct &amp; Attendance</span>
-          </div>
-          <div class="slot">
-            <img src="images/IMG_20261113_002428.png" alt="Recognition Award">
-            <span>Recognition</span>
+            <span>Conduct &amp; Perfect Attendance</span>
           </div>
         </div>
       </section>
 
-      <!-- Tab 2: Academic Performance -->
-      <section class="tab-card" aria-labelledby="ach-2">
+      <!-- Tab 2: Academic Performance (1 image shown in unexpanded tab; extra records available in 16:9 expanded view) -->
+      <section class="tab-card" aria-labelledby="ach-2"
+               data-extra='[{"src":"images/IMG_20261112_222942.png","label":"Report of Grades"},{"src":"images/IMG_20261112_222912.png","label":"Grade 12 SF9 Record"},{"src":"images/IMG_20261112_222936.png","label":"Grade 11 SF9 Record"}]'>
         <div class="tab-head">
           <h2 id="ach-2" class="tag">Academic Performance</h2>
           <button type="button" class="expand-btn" aria-label="Expand Academic Performance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
@@ -644,18 +68,10 @@ footer {
             <img src="images/honors.png" alt="With Honors and With High Honors Certificates">
             <span>Academic Honors</span>
           </div>
-          <div class="slot">
-            <img src="images/IMG_20261112_222942.png" alt="Report on Learning Progress and Achievement">
-            <span>Report of Grades</span>
-          </div>
-          <div class="slot">
-            <img src="images/IMG_20261112_222912.png" alt="SF9 Grade 12 Academic Record">
-            <span>Grade 12 SF9</span>
-          </div>
         </div>
       </section>
 
-      <!-- Tab 3: Extracurricular Activities -->
+      <!-- Tab 3: Extracurricular Activities (1 image shown) -->
       <section class="tab-card" aria-labelledby="ach-3">
         <div class="tab-head">
           <h2 id="ach-3" class="tag">Extracurricular Activities</h2>
@@ -670,7 +86,7 @@ footer {
         </div>
       </section>
 
-      <!-- Tab 4: Co-curricular Activities -->
+      <!-- Tab 4: Co-curricular Activities (1 image shown) -->
       <section class="tab-card" aria-labelledby="ach-4">
         <div class="tab-head">
           <h2 id="ach-4" class="tag">Co-curricular Activities</h2>
@@ -681,10 +97,6 @@ footer {
           <div class="slot">
             <img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital">
             <span>Work Immersion</span>
-          </div>
-          <div class="slot">
-            <img src="images/IMG_20261112_222936.png" alt="Grade 11 SF9 Attendance and School Record">
-            <span>Grade 11 SF9</span>
           </div>
         </div>
       </section>
@@ -703,7 +115,7 @@ footer {
   </filter>
 </svg>
 
-<!-- Modal Backdrop & Expanded Window for Bigger Pictures -->
+<!-- Modal Backdrop & Expanded 16:9 Window -->
 <div id="preview-backdrop" class="preview-backdrop" aria-hidden="true"></div>
 <aside id="preview-win" class="preview-win" role="dialog" aria-modal="true" aria-labelledby="win-title" aria-hidden="true">
   <div class="win-bar">
@@ -712,75 +124,16 @@ footer {
       <h3 id="win-title" class="win-title">Achievements</h3>
       <p id="win-sub" class="win-sub"></p>
     </div>
-    <button type="button" id="win-close" class="win-close">Close [Esc]</button>
+    <div class="win-actions">
+      <div id="win-switcher" class="win-switcher"></div>
+      <button type="button" id="win-close" class="win-close">Close [Esc]</button>
+    </div>
   </div>
+  <!-- 16:9 Image Holder -->
   <div id="win-gallery" class="win-gallery"></div>
 </aside>
 
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
 <script src="script.js"></script>
-<script>
-{
-  const win = document.getElementById('preview-win');
-  const backdrop = document.getElementById('preview-backdrop');
-  const winTitle = document.getElementById('win-title');
-  const winSub = document.getElementById('win-sub');
-  const winGallery = document.getElementById('win-gallery');
-  const winClose = document.getElementById('win-close');
-  const cards = document.querySelectorAll('.tab-card');
-
-  const openPreview = (card, focusIndex = -1) => {
-    cards.forEach(c => c.classList.toggle('active-tab', c === card));
-
-    const title = card.querySelector('h2').textContent;
-    const desc = card.querySelector('p').textContent;
-    const slots = Array.from(card.querySelectorAll('.slot'));
-
-    winTitle.textContent = title;
-    winSub.textContent = '— ' + desc;
-
-    winGallery.innerHTML = slots.map((slot, idx) => {
-      const label = slot.textContent.trim();
-      const imgEl = slot.querySelector('img');
-      const imgSrc = (imgEl && imgEl.getAttribute('src')) || slot.dataset.img || '';
-      const focusedClass = idx === focusIndex ? ' focused' : '';
-
-      return `<div class="win-item${focusedClass}">
-        <img src="${imgSrc}" alt="${label} - ${title}">
-        <span class="win-label">${label}</span>
-      </div>`;
-    }).join('');
-
-    backdrop.classList.add('open');
-    win.classList.add('open');
-    win.setAttribute('aria-hidden', 'false');
-  };
-
-  const closePreview = () => {
-    backdrop.classList.remove('open');
-    win.classList.remove('open');
-    win.setAttribute('aria-hidden', 'true');
-    cards.forEach(c => c.classList.remove('active-tab'));
-  };
-
-  cards.forEach(card => {
-    const expandBtn = card.querySelector('.expand-btn');
-    const slots = card.querySelectorAll('.slot');
-
-    expandBtn.addEventListener('click', () => openPreview(card));
-
-    slots.forEach((slot, idx) => {
-      slot.addEventListener('click', () => openPreview(card, idx));
-    });
-  });
-
-  winClose.addEventListener('click', closePreview);
-  backdrop.addEventListener('click', closePreview);
-
-  addEventListener('keydown', e => {
-    if (e.key === 'Escape' && win.classList.contains('open')) closePreview();
-  });
-}
-</script>
 </body>
 </html>
