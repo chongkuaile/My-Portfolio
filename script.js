@@ -20,38 +20,75 @@ if (menu && nav) {
   }
 }
 
-// Achievements Page: Expand Button & Big Picture Modal Window
+// Achievements Page: Expand Button & 16:9 Big Picture Modal Window
 {
   const win = document.getElementById('preview-win');
   const backdrop = document.getElementById('preview-backdrop');
   const winTitle = document.getElementById('win-title');
   const winSub = document.getElementById('win-sub');
   const winGallery = document.getElementById('win-gallery');
+  const winSwitcher = document.getElementById('win-switcher');
   const winClose = document.getElementById('win-close');
   const cards = document.querySelectorAll('.tab-card');
 
   if (win && backdrop && cards.length) {
-    const openPreview = (card, focusIndex = -1) => {
+    let currentItems = [];
+
+    const renderSlide = (index, title) => {
+      const item = currentItems[index];
+      if (!item) return;
+
+      winGallery.innerHTML = `<div class="win-item">
+        <img src="${item.src}" alt="${item.label} - ${title}">
+        <span class="win-label">${item.label}</span>
+      </div>`;
+
+      if (winSwitcher) {
+        Array.from(winSwitcher.children).forEach((btn, idx) => {
+          btn.classList.toggle('active', idx === index);
+        });
+      }
+    };
+
+    const openPreview = card => {
       cards.forEach(c => c.classList.toggle('active-tab', c === card));
 
       const title = card.querySelector('h2').textContent;
       const desc = card.querySelector('p').textContent;
       const slots = Array.from(card.querySelectorAll('.slot'));
 
+      currentItems = slots.map(slot => {
+        const label = slot.textContent.trim();
+        const imgEl = slot.querySelector('img');
+        const src = (imgEl && imgEl.getAttribute('src')) || slot.dataset.img || '';
+        return { src, label };
+      });
+
+      // Include any extra images defined in data-extra so the unexpanded card stays 1-image clean
+      if (card.dataset.extra) {
+        try {
+          const extras = JSON.parse(card.dataset.extra);
+          currentItems.push(...extras);
+        } catch (e) {}
+      }
+
       winTitle.textContent = title;
       winSub.textContent = '— ' + desc;
 
-      winGallery.innerHTML = slots.map((slot, idx) => {
-        const label = slot.textContent.trim();
-        const imgEl = slot.querySelector('img');
-        const imgSrc = (imgEl && imgEl.getAttribute('src')) || slot.dataset.img || '';
-        const focusedClass = idx === focusIndex ? ' focused' : '';
+      if (winSwitcher) {
+        if (currentItems.length > 1) {
+          winSwitcher.innerHTML = currentItems.map((it, idx) =>
+            `<button type="button" class="win-tab${idx === 0 ? ' active' : ''}" data-idx="${idx}">${it.label}</button>`
+          ).join('');
+          winSwitcher.querySelectorAll('.win-tab').forEach(btn => {
+            btn.addEventListener('click', () => renderSlide(Number(btn.dataset.idx), title));
+          });
+        } else {
+          winSwitcher.innerHTML = '';
+        }
+      }
 
-        return `<div class="win-item${focusedClass}">
-          <img src="${imgSrc}" alt="${label} - ${title}">
-          <span class="win-label">${label}</span>
-        </div>`;
-      }).join('');
+      renderSlide(0, title);
 
       backdrop.classList.add('open');
       win.classList.add('open');
@@ -72,8 +109,8 @@ if (menu && nav) {
       if (expandBtn) {
         expandBtn.addEventListener('click', () => openPreview(card));
       }
-      slots.forEach((slot, idx) => {
-        slot.addEventListener('click', () => openPreview(card, idx));
+      slots.forEach(slot => {
+        slot.addEventListener('click', () => openPreview(card));
       });
     });
 
