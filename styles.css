@@ -79,7 +79,7 @@ a:focus-visible, button:focus-visible {
 .skip {
   position: absolute;
   left: 1rem;
-  top: -4rem;
+  top:-4rem;
   padding: .5rem 1rem;
   background: var(--accent);
   color: #fff;
@@ -847,7 +847,7 @@ h2.tag::before {
   text-overflow: ellipsis;
 }
 
-/* ---------- Achievements Expand Modal Window (16:9 Image Holder) ---------- */
+/* ---------- Achievements Expand Modal Window (16:9 Image Holder + Cycling Arrows) ---------- */
 .preview-backdrop {
   position: fixed;
   inset: 0;
@@ -953,34 +953,17 @@ h2.tag::before {
 .win-actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.6rem;
 }
-.win-switcher {
-  display: flex;
-  gap: 0.35rem;
-}
-.win-switcher:empty {
-  display: none;
-}
-.win-tab {
-  font: 500 0.72rem var(--mono);
-  padding: 0.32rem 0.65rem;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: #F8F9FD;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.win-tab:hover {
-  border-color: var(--accent);
+.win-count {
+  font: 500 0.78rem var(--mono);
   color: var(--accent);
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  background: rgba(124, 92, 255, 0.1);
 }
-.win-tab.active {
-  background: linear-gradient(120deg, #7c5cff, #2f7cf6);
-  color: #fff;
-  border-color: transparent;
+.win-count:empty {
+  display: none;
 }
 
 .win-close {
@@ -1015,13 +998,14 @@ h2.tag::before {
   cursor: default;
 }
 .win-item img {
-  padding: 0.65rem 0.65rem 2.6rem;
+  padding: 0.65rem 3.5rem 2.6rem;
 }
 .win-label {
   position: absolute;
   bottom: 0.6rem;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 2;
   padding: 0.35rem 0.9rem;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.94);
@@ -1034,6 +1018,44 @@ h2.tag::before {
   color: var(--ink);
   text-align: center;
   box-shadow: 0 8px 18px -10px rgba(28, 27, 56, 0.25);
+}
+
+/* Left & Right Cycling Arrows inside the 16:9 Holder */
+.win-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: clamp(2.35rem, 4.5vw, 3rem);
+  height: clamp(2.35rem, 4.5vw, 3rem);
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)) padding-box,
+    linear-gradient(120deg, #7c5cff, #2f7cf6) border-box;
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(28, 27, 56, 0.35);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.win-nav.prev { left: clamp(0.5rem, 1.5vw, 1rem); }
+.win-nav.next { right: clamp(0.5rem, 1.5vw, 1rem); }
+.win-nav:hover {
+  transform: translateY(-50%) scale(1.08);
+  color: #fff;
+  background: linear-gradient(120deg, #7c5cff, #2f7cf6) border-box;
+  box-shadow: 0 14px 28px -8px rgba(91, 63, 209, 0.65);
+}
+.win-nav svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
 }
 
 /* ---------- Animations ---------- */
@@ -1154,7 +1176,7 @@ h2.tag::before {
   .slot span { bottom: 0.2rem; padding: 0.1rem 0.45rem; }
   .preview-win { padding: 0.75rem; }
   .win-item { width: 90vw; aspect-ratio: 16 / 9; }
-  .win-item img { padding: 0.4rem 0.4rem 2.1rem; }
+  .win-item img { padding: 0.4rem 2.6rem 2.1rem; }
   .win-label { bottom: 0.35rem; font-size: 0.65rem; padding: 0.2rem 0.6rem; }
 }
 
