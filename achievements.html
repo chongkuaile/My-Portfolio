@@ -9,11 +9,26 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.brand-logo {
+  width: clamp(2rem, 3.8vh, 2.4rem);
+  height: clamp(2rem, 3.8vh, 2.4rem);
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(91, 63, 209, 0.25));
+}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar wide">
-<a class="brand" href="index.html">carlos<span>_</span></a>
+<a class="brand" href="index.html"><img class="brand-logo" src="images/UC_Official_Seal.png" alt="UC Logo"><span>carlos<span>_</span></span></a>
 <button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
 <nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html" aria-current="page">Achievements</a><a href="parents.html">Parents</a></nav>
 </header>
@@ -40,8 +55,9 @@
     </aside>
 
     <div class="tabs-grid">
-      <!-- Tab 1: Achievements (Only Awards.jpg, recognition pic removed) -->
-      <section class="tab-card" aria-labelledby="ach-1">
+      <!-- Tab 1: Achievements (conduct.jpg + attendance.jpg cycled via arrows when expanded) -->
+      <section class="tab-card" aria-labelledby="ach-1"
+               data-extra='[{"src":"images/attendance.jpg","label":"Perfect Attendance Award"}]'>
         <div class="tab-head">
           <h2 id="ach-1" class="tag">Achievements</h2>
           <button type="button" class="expand-btn" aria-label="Expand Achievements"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
@@ -49,8 +65,8 @@
         <p>Awards, certificates, recognitions, and other accomplishments.</p>
         <div class="slots">
           <div class="slot">
-            <img src="images/Awards.jpg" alt="Conduct Awardee and Perfect Attendance Certificates">
-            <span>Conduct &amp; Perfect Attendance</span>
+            <img src="images/conduct.jpg" alt="Conduct Awardee Certificate">
+            <span>Conduct Awardee</span>
           </div>
         </div>
       </section>
