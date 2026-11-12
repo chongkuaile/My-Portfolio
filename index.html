@@ -84,6 +84,67 @@ footer {
   display: none;
 }
 
+/* Cutout photo: no frame, blends into the page with a soft gradient glow */
+.photo {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+.photo::before, .photo::after {
+  display: none !important;
+}
+.cutout {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  isolation: isolate;
+}
+/* soft violet / blue / silver glow behind the subject */
+.cutout::before {
+  content: "";
+  position: absolute;
+  inset: 4% -6% 0 -6%;
+  z-index: -1;
+  background:
+    radial-gradient(46% 40% at 50% 34%, rgba(124,92,255,.38), transparent 70%),
+    radial-gradient(42% 38% at 70% 58%, rgba(47,124,246,.28), transparent 72%),
+    radial-gradient(40% 36% at 28% 64%, rgba(178,140,255,.26), transparent 72%),
+    radial-gradient(60% 50% at 50% 78%, rgba(200,204,220,.35), transparent 75%);
+  filter: blur(18px);
+  opacity: .9;
+  transition: opacity .5s ease, transform .5s ease;
+  pointer-events: none;
+}
+.cutout img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  object-position: 50% 100% !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: none !important;
+  /* fade the bottom edge into the page */
+  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+  filter: drop-shadow(0 10px 22px rgba(91,63,209,.18));
+  transform-origin: 50% 100%;
+  transition: transform .5s ease, filter .5s ease;
+}
+.cutout:hover img {
+  transform: scale(1.025);
+  filter: drop-shadow(0 12px 28px rgba(91,63,209,.32));
+}
+.cutout:hover::before {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
 /* Desktop layout (>= 820px) */
 @media (min-width: 820px) {
   .hero {
@@ -107,30 +168,17 @@ footer {
     margin-top: clamp(0.6rem, 1.6vh, 1rem);
     font-size: clamp(1.05rem, 2.2vh, 1.35rem);
   }
-  .photo, .frame, .mat {
+  .photo {
     display: flex;
     min-height: 0;
-  }
-  .photo {
     justify-self: stretch;
     align-self: stretch;
     width: 100%;
     height: 100%;
   }
-  .frame {
+  .cutout {
     flex: 1;
-  }
-  .mat {
-    flex: 1;
-    position: relative;
-  }
-  .mat img {
-    position: absolute;
-    inset: 6px;
-    width: calc(100% - 12px);
-    height: calc(100% - 12px);
-    aspect-ratio: auto;
-    object-position: 50% 25%;
+    min-height: 0;
   }
 }
 
@@ -183,19 +231,11 @@ footer {
     display: flex;
     min-height: 0;
   }
-  .frame, .mat {
-    display: flex;
+  .cutout {
     flex: 1;
     width: 100%;
     height: 100%;
     min-height: 0;
-  }
-  .mat img {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;
-    object-fit: cover;
-    object-position: 50% 25%;
   }
 }
 </style>
@@ -219,7 +259,7 @@ footer {
 <p class="lead"></p>
 </div>
 <figure class="photo">
-<div class="frame"><div class="mat"><img src="images/profile.jpg" width="1000" height="1326" alt="Carlos in a black zip-up jacket, standing on a lawn under weeping trees"></div></div>
+<div class="cutout"><img src="images/profile.webp" width="1100" height="1275" alt="Carlos in a black suit and tie with a University of the Cordilleras lanyard"></div>
 </figure>
 </section>
 </main>
