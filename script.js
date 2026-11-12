@@ -44,18 +44,19 @@ if (menu && nav) {
       currentIndex = (index + currentItems.length) % currentItems.length;
       const item = currentItems[currentIndex];
       const hasMultiple = currentItems.length > 1;
-
+      const photoClass = item.isPhoto ? ' photo-proof' : '';
+    
       if (winCount) {
         winCount.textContent = hasMultiple ? `${currentIndex + 1} / ${currentItems.length}` : '';
       }
-
-      winGallery.innerHTML = `<div class="win-item">
+    
+      winGallery.innerHTML = `<div class="win-item${photoClass}">
         ${hasMultiple ? `<button type="button" class="win-nav prev" aria-label="Previous image">${leftArrowSVG}</button>` : ''}
         <img src="${item.src}" alt="${item.label} - ${currentTitle}">
         <span class="win-label">${item.label}</span>
         ${hasMultiple ? `<button type="button" class="win-nav next" aria-label="Next image">${rightArrowSVG}</button>` : ''}
       </div>`;
-
+    
       if (hasMultiple) {
         winGallery.querySelector('.win-nav.prev').addEventListener('click', e => {
           e.stopPropagation();
