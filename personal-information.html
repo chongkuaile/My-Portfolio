@@ -32,10 +32,23 @@ html, body {
   }
 }
 
-/* Balanced header and footer */
+/* Balanced header and footer + Top-left UC Seal logo */
 .bar {
   padding: clamp(0.6rem, 1.8vh, 1.35rem) 0;
   flex-shrink: 0;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.brand-logo {
+  width: clamp(2rem, 3.8vh, 2.4rem);
+  height: clamp(2rem, 3.8vh, 2.4rem);
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(91, 63, 209, 0.25));
 }
 footer {
   padding: clamp(0.45rem, 1.4vh, 1rem);
@@ -341,7 +354,7 @@ h2.tag::before {
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar">
-<a class="brand" href="index.html">carlos<span>_</span></a>
+<a class="brand" href="index.html"><img class="brand-logo" src="images/UC_Official_Seal.png" alt="UC Logo"><span>carlos<span>_</span></span></a>
 <button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
 <nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html" aria-current="page">Personal Information</a><a href="achievements.html">Achievements</a><a href="parents.html">Parents</a></nav>
 </header>
