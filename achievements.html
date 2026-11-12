@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carlos Blanca | Achievements</title>
 <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,172 +10,311 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
+/* Lock viewport height so the page never scrolls */
 html, body {
-  min-height: 100dvh;
-  overflow-x: hidden;
-}
-@media (min-width: 820px) and (min-height: 640px) {
-  html, body { height: 100dvh; max-height: 100dvh; overflow: hidden; }
-}
-@media (max-width: 819px) and (min-height: 560px) {
-  html, body { height: 100dvh; max-height: 100dvh; overflow: hidden; }
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
 
-.bar { padding: clamp(0.6rem, 1.8vh, 1.35rem) 0; flex-shrink: 0; }
-footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh, 0.85rem); flex-shrink: 0; }
+/* Wider container so the 4 tabs have much more room to expand */
+.bar {
+  width: min(1260px, 100% - 3rem);
+  padding: clamp(0.5rem, 1.5vh, 1.15rem) 0;
+  flex-shrink: 0;
+}
+footer {
+  padding: clamp(0.4rem, 1.2vh, 0.85rem);
+  font-size: clamp(0.72rem, 1.4vh, 0.85rem);
+  flex-shrink: 0;
+}
 
+/* Main wrapper: stacks the School Banner above the Sidebar + 4 Tabs */
+.ach-wrap {
+  flex: 1;
+  min-height: 0;
+  width: min(1260px, 100% - 3rem);
+  margin: 0 auto;
+  padding: clamp(0.25rem, 1vh, 0.85rem) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.65rem, 1.8vh, 1.35rem);
+}
+
+/* Top School Picture & Name Banner */
+.school-banner {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 2vw, 1.5rem);
+  padding: clamp(0.6rem, 1.5vh, 1.05rem) clamp(1rem, 2.2vw, 1.65rem);
+  border-radius: 18px;
+  border: 2px solid transparent;
+  background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)) padding-box,
+              linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
+  box-shadow: 0 16px 36px -22px rgba(91, 63, 209, 0.45);
+  flex-shrink: 0;
+  animation: fade-up 0.6s ease backwards;
+}
+.school-pic {
+  position: relative;
+  width: clamp(3.2rem, 6.8vh, 4.75rem);
+  height: clamp(3.2rem, 6.8vh, 4.75rem);
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.14), rgba(47, 124, 246, 0.14));
+  border: 1px solid rgba(106, 71, 224, 0.35);
+  display: grid;
+  place-items: center;
+  font: 500 0.72rem var(--mono);
+  color: var(--accent);
+}
+.school-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.school-info {
+  min-width: 0;
+}
+.school-info .eyebrow {
+  margin-bottom: 0.15rem;
+  font: 500 clamp(0.68rem, 1.3vh, 0.8rem) var(--mono);
+  color: var(--signal);
+  display: block;
+}
+.school-info h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vh, 1.55rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  background: linear-gradient(100deg, var(--ink) 30%, #6A47E0 80%, #2F7CF6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.school-info p {
+  margin: 0.15rem 0 0;
+  font-size: clamp(0.75rem, 1.5vh, 0.92rem);
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+/* Body grid: compact sidebar + expansive 2x2 grid for the 4 tabs */
+.ach-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 12.5rem minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  align-items: stretch;
+}
+.side {
+  position: static;
+  align-self: start;
+  padding-top: 0.25rem;
+}
 .eyebrow {
   display: block;
-  margin-bottom: clamp(0.25rem, 0.8vh, 0.65rem);
-  font: 500 clamp(0.75rem, 1.5vh, 0.88rem) var(--mono);
+  margin-bottom: clamp(0.2rem, 0.6vh, 0.5rem);
+  font: 500 clamp(0.72rem, 1.4vh, 0.85rem) var(--mono);
   color: var(--signal);
 }
 .side h1 {
-  font-size: clamp(1.5rem, 3.4vh, 2.25rem);
-  line-height: 1.12;
-  margin: 0 0 clamp(0.35rem, 1vh, 0.75rem);
+  font-size: clamp(1.45rem, 3.1vh, 2.15rem);
+  line-height: 1.1;
+  margin: 0 0 clamp(0.3rem, 0.8vh, 0.6rem);
 }
 .side h1 span {
+  display: block;
   background: linear-gradient(100deg, #6A47E0, #2F7CF6);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .side p {
-  font-size: clamp(0.82rem, 1.65vh, 0.98rem);
-  line-height: 1.5;
+  font-size: clamp(0.78rem, 1.55vh, 0.94rem);
+  line-height: 1.45;
+  color: var(--muted);
 }
 
-.page {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 15.5rem minmax(0, 1fr);
-  gap: clamp(1.5rem, 3.5vw, 3.5rem);
-  align-content: center;
-  align-items: start;
-  width: min(1080px, 100% - 3rem);
-  margin: 0 auto;
-  padding: clamp(0.4rem, 1.2vh, 1.25rem) 0;
-}
-.side { position: static; }
-
-.cards {
+/* Larger 2x2 Grid for the 4 Tabs */
+.tabs-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, clamp(10rem, 33dvh, 17rem)));
-  gap: clamp(0.7rem, 2vh, 1.25rem);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.8vh, 1.35rem);
   min-height: 0;
+  height: 100%;
 }
-.card {
+.tab-card {
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  padding: clamp(0.65rem, 1.6vh, 1.1rem) clamp(0.8rem, 1.6vw, 1.15rem);
-  background: rgba(255,255,255,.75);
+  padding: clamp(0.85rem, 2vh, 1.4rem) clamp(1rem, 2vw, 1.5rem);
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 18px;
+  box-shadow: 0 14px 32px -20px rgba(91, 63, 209, 0.28);
+  min-height: 0;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   animation: fade-up 0.7s ease backwards;
 }
-.card:nth-child(1) { animation-delay: 0.1s; }
-.card:nth-child(2) { animation-delay: 0.2s; }
-.card:nth-child(3) { animation-delay: 0.3s; }
-.card:nth-child(4) { animation-delay: 0.4s; }
-.card h2 {
+.tab-card:nth-child(1) { animation-delay: 0.1s; }
+.tab-card:nth-child(2) { animation-delay: 0.18s; }
+.tab-card:nth-child(3) { animation-delay: 0.26s; }
+.tab-card:nth-child(4) { animation-delay: 0.34s; }
+
+.tab-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(106, 71, 224, 0.45);
+  box-shadow: 0 18px 38px -18px rgba(91, 63, 209, 0.45);
+}
+
+.tab-card h2.tag {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  margin: 0 0 clamp(0.15rem, 0.5vh, 0.35rem);
-  font-size: clamp(0.9rem, 1.85vh, 1.1rem);
+  font-size: clamp(0.92rem, 1.85vh, 1.12rem);
+  margin: 0 0 clamp(0.15rem, 0.4vh, 0.35rem);
 }
-.card h2::before {
+.tab-card h2.tag::before {
   content: "//";
-  font: 500 clamp(0.78rem, 1.6vh, 0.95rem) var(--mono);
+  font: 500 clamp(0.8rem, 1.6vh, 0.95rem) var(--mono);
   color: var(--signal);
 }
-.card p {
-  margin: 0 0 clamp(0.4rem, 1vh, 0.7rem);
-  font-size: clamp(0.76rem, 1.5vh, 0.9rem);
-  line-height: 1.4;
-  color: var(--muted, inherit);
+.tab-card > p {
+  margin: 0 0 clamp(0.5rem, 1.2vh, 0.85rem);
+  font-size: clamp(0.74rem, 1.45vh, 0.88rem);
+  line-height: 1.35;
+  color: var(--muted);
 }
+
+/* 3 Proof Slots inside each Tab (stretches to fill the larger card) */
 .slots {
   flex: 1;
-  min-height: 2.5rem;
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(0.35rem, 0.9vw, 0.6rem);
+  gap: clamp(0.45rem, 1vw, 0.85rem);
 }
 .slot {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  overflow: hidden;
   text-align: center;
-  font: 500 clamp(0.62rem, 1.25vh, 0.74rem) var(--mono);
-  text-transform: uppercase;
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(243, 244, 250, 0.85), rgba(235, 232, 252, 0.65));
+  border: 1px dashed rgba(106, 71, 224, 0.32);
+  font: 500 clamp(0.62rem, 1.25vh, 0.76rem) var(--mono);
   letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--accent);
-  background: rgba(124,92,255,.06);
-  border: 1.5px dashed var(--line);
-  border-radius: 10px;
+  overflow: hidden;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
+.slot:hover {
+  border-style: solid;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+}
+/* If you place an <img> inside a .slot later, it automatically fills the box */
 .slot img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-@media (min-width: 820px) and (max-height: 639px) {
-  .page { align-content: start; padding: 1.25rem 0 1.5rem; }
-}
-
-@media (max-width: 819px) {
-  .bar { width: min(1080px, 100% - 2rem); padding: clamp(0.4rem, 1.2dvh, 0.75rem) 0; }
-  footer {
-    padding: clamp(0.3rem, 1dvh, 0.6rem) 1rem calc(clamp(0.3rem, 1dvh, 0.6rem) + env(safe-area-inset-bottom, 0px));
-    font-size: 0.72rem;
+/* Small screen & Mobile Responsive (< 900px) - fits screen without scrolling */
+@media (max-width: 899px) {
+  .bar, .ach-wrap {
+    width: min(1260px, 100% - 1.75rem);
   }
-  .page {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.4rem, 1.3dvh, 0.9rem);
-    width: min(1080px, 100% - 2rem);
-    padding: clamp(0.25rem, 0.8dvh, 0.6rem) 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+  .ach-wrap {
+    gap: clamp(0.4rem, 1.1vh, 0.75rem);
+  }
+  .school-banner {
+    padding: clamp(0.45rem, 1.1vh, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+    gap: 0.75rem;
+    border-radius: 14px;
+  }
+  .school-pic {
+    width: clamp(2.5rem, 5.2vh, 3.25rem);
+    height: clamp(2.5rem, 5.2vh, 3.25rem);
+    border-radius: 10px;
+  }
+  .school-info h2 {
+    font-size: clamp(0.95rem, 2vh, 1.2rem);
+  }
+  .school-info p {
+    font-size: clamp(0.68rem, 1.35vh, 0.8rem);
+  }
+  .ach-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(0.4rem, 1vh, 0.65rem);
   }
   .side {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.15rem 0.6rem;
-    padding-bottom: clamp(0.3rem, 0.9dvh, 0.6rem);
-    border-bottom: 1px solid var(--line);
+    gap: 0.15rem 0.5rem;
+    padding: 0;
   }
-  .side .eyebrow { margin: 0; font-size: 0.75rem; }
-  .side h1 { font-size: clamp(1.25rem, 3dvh, 1.6rem); margin: 0; }
-  .side p { width: 100%; margin: 0; font-size: clamp(0.72rem, 1.6dvh, 0.88rem); line-height: 1.4; }
-  .cards {
-    flex: 1;
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    gap: 0.55rem;
+  .side .eyebrow {
+    margin: 0;
+    font-size: clamp(0.65rem, 1.25vh, 0.75rem);
   }
-  .card { padding: clamp(0.45rem, 1.2dvh, 0.75rem) 0.6rem; border-radius: 12px; }
-  .card h2 { font-size: clamp(0.78rem, 1.7dvh, 0.95rem); gap: 0.3rem; }
-  .card h2::before { font-size: 0.7rem; }
-  .card p { font-size: clamp(0.64rem, 1.35dvh, 0.78rem); line-height: 1.3; margin-bottom: 0.35rem; }
-  .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.35rem; }
-  .slot:nth-child(3) { display: none; }
-  .slot { font-size: 0.6rem; letter-spacing: 0.03em; border-radius: 8px; }
-}
-@media (max-width: 819px) and (max-height: 700px) {
-  .side p { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .card { animation: none; }
+  .side h1 {
+    font-size: clamp(1.1rem, 2.2vh, 1.35rem);
+    margin: 0;
+  }
+  .side h1 span {
+    display: inline;
+  }
+  .side p {
+    width: 100%;
+    font-size: clamp(0.68rem, 1.35vh, 0.8rem);
+    margin: 0;
+  }
+  .tabs-grid {
+    gap: clamp(0.45rem, 1.1vh, 0.75rem);
+  }
+  .tab-card {
+    padding: clamp(0.5rem, 1.2vh, 0.8rem) clamp(0.6rem, 1.5vw, 0.9rem);
+    border-radius: 14px;
+  }
+  .tab-card h2.tag {
+    font-size: clamp(0.76rem, 1.5vh, 0.92rem);
+    gap: 0.3rem;
+  }
+  .tab-card > p {
+    font-size: clamp(0.64rem, 1.25vh, 0.76rem);
+    margin-bottom: clamp(0.3rem, 0.8vh, 0.5rem);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .slots {
+    gap: 0.35rem;
+  }
+  .slot {
+    padding: 0.25rem;
+    border-radius: 8px;
+    font-size: clamp(0.52rem, 1.05vh, 0.65rem);
+    letter-spacing: 0.02em;
+    word-break: break-word;
+  }
 }
 </style>
 </head>
@@ -187,54 +326,70 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 <nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html" aria-current="page">Achievements</a><a href="parents.html">Parents</a></nav>
 </header>
 
-<main id="main" class="page">
-<aside class="side">
-<span class="eyebrow">&lt;achievements /&gt;</span>
-<h1>My <span>Achievements</span></h1>
-<p>Awards, grades, and activities, each with its supporting proof.</p>
-</aside>
+<main id="main" class="ach-wrap">
+  <!-- School Picture & Name Banner -->
+  <section class="school-banner" aria-label="School Information">
+    <div class="school-pic">
+      <!-- Replace images/school.jpg with your actual school logo or campus photo -->
+      <img src="images/school.jpg" alt="University of the Cordilleras" onerror="this.style.display='none';this.parentElement.textContent='UC'">
+    </div>
+    <div class="school-info">
+      <span class="eyebrow">&lt;institution /&gt;</span>
+      <h2>University of the Cordilleras</h2>
+      <p>Bachelor of Science in Computer Science &bull; Baguio City</p>
+    </div>
+  </section>
 
-<div class="cards">
-<section class="card" aria-labelledby="ach-h">
-<h2 id="ach-h">Achievements</h2>
-<p>Awards, certificates, recognitions, and other accomplishments.</p>
-<div class="slots">
-<figure class="slot" style="margin:0">Certificate</figure>
-<figure class="slot" style="margin:0">Award</figure>
-<figure class="slot" style="margin:0">Photo</figure>
-</div>
-</section>
+  <!-- Sidebar + 4 Large Achievement Tabs -->
+  <div class="ach-body">
+    <aside class="side">
+      <span class="eyebrow">&lt;achievements /&gt;</span>
+      <h1>My <span>Achievements</span></h1>
+      <p>Awards, grades, and activities, each with its supporting proof.</p>
+    </aside>
 
-<section class="card" aria-labelledby="acad-h">
-<h2 id="acad-h">Academic Performance</h2>
-<p>Academic records, grades, honors, and evidence of progress.</p>
-<div class="slots">
-<figure class="slot" style="margin:0">Grades</figure>
-<figure class="slot" style="margin:0">Honors</figure>
-<figure class="slot" style="margin:0">Record</figure>
-</div>
-</section>
+    <div class="tabs-grid">
+      <section class="tab-card" aria-labelledby="ach-1">
+        <h2 id="ach-1" class="tag">Achievements</h2>
+        <p>Awards, certificates, recognitions, and other accomplishments.</p>
+        <div class="slots">
+          <div class="slot"><span>Certificate</span></div>
+          <div class="slot"><span>Award</span></div>
+          <div class="slot"><span>Photo</span></div>
+        </div>
+      </section>
 
-<section class="card" aria-labelledby="extra-h">
-<h2 id="extra-h">Extracurricular Activities</h2>
-<p>Activities and involvement outside regular academic classes.</p>
-<div class="slots">
-<figure class="slot" style="margin:0">Photo</figure>
-<figure class="slot" style="margin:0">Certificate</figure>
-<figure class="slot" style="margin:0">Activity</figure>
-</div>
-</section>
+      <section class="tab-card" aria-labelledby="ach-2">
+        <h2 id="ach-2" class="tag">Academic Performance</h2>
+        <p>Academic records, grades, honors, and evidence of progress.</p>
+        <div class="slots">
+          <div class="slot"><span>Grades</span></div>
+          <div class="slot"><span>Honors</span></div>
+          <div class="slot"><span>Record</span></div>
+        </div>
+      </section>
 
-<section class="card" aria-labelledby="co-h">
-<h2 id="co-h">Co-curricular Activities</h2>
-<p>School-related activities, organizations, seminars, and events.</p>
-<div class="slots">
-<figure class="slot" style="margin:0">Seminar</figure>
-<figure class="slot" style="margin:0">Organization</figure>
-<figure class="slot" style="margin:0">Photo</figure>
-</div>
-</section>
-</div>
+      <section class="tab-card" aria-labelledby="ach-3">
+        <h2 id="ach-3" class="tag">Extracurricular Activities</h2>
+        <p>Activities and involvement outside regular academic classes.</p>
+        <div class="slots">
+          <div class="slot"><span>Photo</span></div>
+          <div class="slot"><span>Certificate</span></div>
+          <div class="slot"><span>Activity</span></div>
+        </div>
+      </section>
+
+      <section class="tab-card" aria-labelledby="ach-4">
+        <h2 id="ach-4" class="tag">Co-curricular Activities</h2>
+        <p>School-related activities, organizations, seminars, and events.</p>
+        <div class="slots">
+          <div class="slot"><span>Seminar</span></div>
+          <div class="slot"><span>Organization</span></div>
+          <div class="slot"><span>Photo</span></div>
+        </div>
+      </section>
+    </div>
+  </div>
 </main>
 
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
