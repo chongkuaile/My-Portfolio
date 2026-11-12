@@ -87,7 +87,7 @@ footer {
 }
 .school-info h2 {
   margin: 0;
-  font-size: clamp(1.1rem, 2.4vh, 1.55rem);
+  font-size: clamp(1rem, 2.3vh, 1.5rem);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -155,7 +155,7 @@ footer {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: clamp(0.85rem, 2vh, 1.4rem) clamp(1rem, 2vw, 1.5rem);
+  padding: clamp(0.75rem, 1.8vh, 1.25rem) clamp(0.9rem, 1.8vw, 1.4rem);
   background: rgba(255, 255, 255, 0.86);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -182,7 +182,7 @@ footer {
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-bottom: clamp(0.15rem, 0.4vh, 0.35rem);
+  margin-bottom: clamp(0.15rem, 0.4vh, 0.3rem);
 }
 .tab-card h2.tag {
   display: flex;
@@ -232,21 +232,23 @@ footer {
 }
 
 .tab-card > p {
-  margin: 0 0 clamp(0.5rem, 1.2vh, 0.85rem);
+  margin: 0 0 clamp(0.4rem, 1vh, 0.75rem);
   font-size: clamp(0.74rem, 1.45vh, 0.88rem);
   line-height: 1.35;
   color: var(--muted);
 }
 
-/* 3 Proof Slots inside each Tab */
+/* Proof Slots inside each Tab (automatically adjusts columns based on how many slots are inside) */
 .slots {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: clamp(0.45rem, 1vw, 0.85rem);
 }
-.slot {
+
+/* Website-Themed Mat Background for Slots & Expanded View */
+.slot, .win-item {
   position: relative;
   display: flex;
   align-items: center;
@@ -254,38 +256,60 @@ footer {
   text-align: center;
   padding: 0.5rem;
   border-radius: 12px;
-  background: linear-gradient(160deg, rgba(243, 244, 250, 0.85), rgba(235, 232, 252, 0.65));
-  border: 1px dashed rgba(106, 71, 224, 0.32);
-  font: 500 clamp(0.62rem, 1.25vh, 0.76rem) var(--mono);
-  letter-spacing: 0.05em;
+  background-color: #F3F4FA;
+  background-image:
+    radial-gradient(circle at 85% 15%, rgba(124, 92, 255, 0.22), transparent 60%),
+    radial-gradient(circle at 15% 85%, rgba(47, 124, 246, 0.18), transparent 60%),
+    linear-gradient(rgba(124, 92, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 92, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(145deg, #F8F9FD, #E8E6FA);
+  background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px, 100% 100%;
+  border: 1px solid rgba(106, 71, 224, 0.28);
+  font: 500 clamp(0.62rem, 1.25vh, 0.75rem) var(--mono);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent);
   overflow: hidden;
   cursor: pointer;
-  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 .slot:hover {
-  border-style: solid;
   border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.95);
   transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px rgba(91, 63, 209, 0.45);
 }
-.slot img {
+
+/* Uniform Orientation & Black Cutout Background Removal for Certificate Photos */
+.slot img, .win-item img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.35s ease;
+  object-fit: contain;
+  object-position: center;
+  padding: 0.35rem 0.35rem 1.65rem;
+  filter: url(#remove-black-bg) drop-shadow(0 8px 16px rgba(91, 63, 209, 0.22));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.slot:hover img {
+  transform: scale(1.04);
 }
 .slot span {
-  position: relative;
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0.35rem;
+  right: 0.35rem;
   z-index: 1;
-  padding: 0.2rem 0.45rem;
+  padding: 0.18rem 0.4rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.82);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(106, 71, 224, 0.18);
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ---------- Modal Backdrop + Expanded Window ---------- */
@@ -293,9 +317,9 @@ footer {
   position: fixed;
   inset: 0;
   z-index: 49;
-  background: rgba(28, 27, 56, 0.28);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgba(28, 27, 56, 0.32);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
@@ -310,8 +334,8 @@ footer {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -46%) scale(0.94);
-  width: min(940px, 92vw);
-  height: min(560px, 76dvh);
+  width: min(1040px, 94vw);
+  height: min(620px, 80dvh);
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -410,68 +434,39 @@ footer {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: clamp(0.75rem, 1.8vw, 1.35rem);
 }
 .win-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   border-radius: 16px;
-  overflow: hidden;
-  background: linear-gradient(155deg, #F3F4FA, #E6E3FA);
   border: 2px solid rgba(106, 71, 224, 0.25);
   box-shadow: 0 14px 28px -16px rgba(91, 63, 209, 0.3);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
 }
 .win-item:hover, .win-item.focused {
-  transform: scale(1.03);
+  transform: scale(1.02);
   border-color: var(--accent);
   box-shadow: 0 20px 38px -14px rgba(91, 63, 209, 0.55);
   z-index: 2;
 }
 .win-item img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0.85rem 0.85rem 2.75rem;
 }
 .win-item:hover img {
-  transform: scale(1.06);
-}
-.win-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--accent);
-  text-align: center;
-  padding: 1rem;
-}
-.win-placeholder svg {
-  width: 2.75rem;
-  height: 2.75rem;
-  stroke: var(--accent);
-  stroke-width: 1.5;
-  fill: none;
-  opacity: 0.75;
+  transform: scale(1.04);
 }
 .win-label {
   position: absolute;
-  bottom: 0.75rem;
+  bottom: 0.65rem;
   left: 0.75rem;
   right: 0.75rem;
-  padding: 0.45rem 0.65rem;
+  padding: 0.4rem 0.65rem;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(106, 71, 224, 0.2);
-  font: 500 0.8rem var(--mono);
+  font: 500 0.78rem var(--mono);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--ink);
@@ -498,7 +493,7 @@ footer {
     border-radius: 10px;
   }
   .school-info h2 {
-    font-size: clamp(0.95rem, 2vh, 1.2rem);
+    font-size: clamp(0.85rem, 1.85vh, 1.15rem);
   }
   .school-info p {
     font-size: clamp(0.68rem, 1.35vh, 0.8rem);
@@ -535,7 +530,7 @@ footer {
     gap: clamp(0.45rem, 1.1vh, 0.75rem);
   }
   .tab-card {
-    padding: clamp(0.5rem, 1.2vh, 0.8rem) clamp(0.6rem, 1.5vw, 0.9rem);
+    padding: clamp(0.45rem, 1.1vh, 0.75rem) clamp(0.55rem, 1.4vw, 0.85rem);
     border-radius: 14px;
   }
   .tab-card h2.tag {
@@ -548,13 +543,13 @@ footer {
     border-radius: 8px;
   }
   .expand-btn span {
-    display: none; /* Icon-only on tight mobile cards so titles never cramp */
+    display: none;
   }
   .tab-card > p {
-    font-size: clamp(0.64rem, 1.25vh, 0.76rem);
-    margin-bottom: clamp(0.3rem, 0.8vh, 0.5rem);
+    font-size: clamp(0.62rem, 1.2vh, 0.74rem);
+    margin-bottom: clamp(0.25rem, 0.7vh, 0.45rem);
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -564,18 +559,25 @@ footer {
   .slot {
     padding: 0.25rem;
     border-radius: 8px;
-    font-size: clamp(0.52rem, 1.05vh, 0.65rem);
-    letter-spacing: 0.02em;
-    word-break: break-word;
+    font-size: clamp(0.5rem, 1vh, 0.62rem);
+  }
+  .slot img {
+    padding: 0.2rem 0.2rem 1.25rem;
+  }
+  .slot span {
+    bottom: 0.2rem;
+    left: 0.2rem;
+    right: 0.2rem;
+    padding: 0.1rem 0.25rem;
   }
   .preview-win {
     width: 94vw;
-    height: 78dvh;
+    height: 82dvh;
     padding: 0.85rem;
   }
   .win-gallery {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
     gap: 0.6rem;
   }
 }
@@ -593,13 +595,12 @@ footer {
   <!-- School Picture & Name Banner -->
   <section class="school-banner" aria-label="School Information">
     <div class="school-pic">
-      <!-- Replace images/school.jpg with your actual school logo or campus photo -->
-      <img src="images/school.jpg" alt="University of the Cordilleras" onerror="this.style.display='none';this.parentElement.textContent='UC'">
+      <img src="images/schoolprofile.png" alt="San Jose City National High School Senior High School" onerror="this.style.display='none';this.parentElement.textContent='SJCNHS'">
     </div>
     <div class="school-info">
       <span class="eyebrow">&lt;institution /&gt;</span>
-      <h2>University of the Cordilleras</h2>
-      <p>Bachelor of Science in Computer Science &bull; Baguio City</p>
+      <h2>San Jose City National High School - Senior High School</h2>
+      <p>San Jose City, Nueva Ecija</p>
     </div>
   </section>
 
@@ -612,7 +613,7 @@ footer {
     </aside>
 
     <div class="tabs-grid">
-      <!-- Tab 1: To add real images later, add data-img="images/your-pic.jpg" or put an <img> inside .slot -->
+      <!-- Tab 1: Achievements -->
       <section class="tab-card" aria-labelledby="ach-1">
         <div class="tab-head">
           <h2 id="ach-1" class="tag">Achievements</h2>
@@ -620,13 +621,18 @@ footer {
         </div>
         <p>Awards, certificates, recognitions, and other accomplishments.</p>
         <div class="slots">
-          <div class="slot" data-img=""><span>Certificate</span></div>
-          <div class="slot" data-img=""><span>Award</span></div>
-          <div class="slot" data-img=""><span>Photo</span></div>
+          <div class="slot">
+            <img src="images/Awards.jpg" alt="Conduct Awardee and Perfect Attendance Certificates">
+            <span>Conduct &amp; Attendance</span>
+          </div>
+          <div class="slot">
+            <img src="images/IMG_20261113_002428.png" alt="Recognition Award">
+            <span>Recognition</span>
+          </div>
         </div>
       </section>
 
-      <!-- Tab 2 -->
+      <!-- Tab 2: Academic Performance -->
       <section class="tab-card" aria-labelledby="ach-2">
         <div class="tab-head">
           <h2 id="ach-2" class="tag">Academic Performance</h2>
@@ -634,13 +640,22 @@ footer {
         </div>
         <p>Academic records, grades, honors, and evidence of progress.</p>
         <div class="slots">
-          <div class="slot" data-img=""><span>Grades</span></div>
-          <div class="slot" data-img=""><span>Honors</span></div>
-          <div class="slot" data-img=""><span>Record</span></div>
+          <div class="slot">
+            <img src="images/honors.png" alt="With Honors and With High Honors Certificates">
+            <span>Academic Honors</span>
+          </div>
+          <div class="slot">
+            <img src="images/IMG_20261112_222942.png" alt="Report on Learning Progress and Achievement">
+            <span>Report of Grades</span>
+          </div>
+          <div class="slot">
+            <img src="images/IMG_20261112_222912.png" alt="SF9 Grade 12 Academic Record">
+            <span>Grade 12 SF9</span>
+          </div>
         </div>
       </section>
 
-      <!-- Tab 3 -->
+      <!-- Tab 3: Extracurricular Activities -->
       <section class="tab-card" aria-labelledby="ach-3">
         <div class="tab-head">
           <h2 id="ach-3" class="tag">Extracurricular Activities</h2>
@@ -648,13 +663,14 @@ footer {
         </div>
         <p>Activities and involvement outside regular academic classes.</p>
         <div class="slots">
-          <div class="slot" data-img=""><span>Photo</span></div>
-          <div class="slot" data-img=""><span>Certificate</span></div>
-          <div class="slot" data-img=""><span>Activity</span></div>
+          <div class="slot">
+            <img src="images/quizbee.png" alt="Champion in the Grade 12 United Nations Quiz Bee">
+            <span>UN Quiz Bee Champion</span>
+          </div>
         </div>
       </section>
 
-      <!-- Tab 4 -->
+      <!-- Tab 4: Co-curricular Activities -->
       <section class="tab-card" aria-labelledby="ach-4">
         <div class="tab-head">
           <h2 id="ach-4" class="tag">Co-curricular Activities</h2>
@@ -662,14 +678,30 @@ footer {
         </div>
         <p>School-related activities, organizations, seminars, and events.</p>
         <div class="slots">
-          <div class="slot" data-img=""><span>Seminar</span></div>
-          <div class="slot" data-img=""><span>Organization</span></div>
-          <div class="slot" data-img=""><span>Photo</span></div>
+          <div class="slot">
+            <img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital">
+            <span>Work Immersion</span>
+          </div>
+          <div class="slot">
+            <img src="images/IMG_20261112_222936.png" alt="Grade 11 SF9 Attendance and School Record">
+            <span>Grade 11 SF9</span>
+          </div>
         </div>
       </section>
     </div>
   </div>
 </main>
+
+<!-- Automatically strips pure black cutout backgrounds from certificate photos -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <filter id="remove-black-bg" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="
+      1 0 0 0 0
+      0 1 0 0 0
+      0 0 1 0 0
+      12 12 12 -1.2 0" />
+  </filter>
+</svg>
 
 <!-- Modal Backdrop & Expanded Window for Bigger Pictures -->
 <div id="preview-backdrop" class="preview-backdrop" aria-hidden="true"></div>
@@ -697,8 +729,6 @@ footer {
   const winClose = document.getElementById('win-close');
   const cards = document.querySelectorAll('.tab-card');
 
-  const placeholderSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 20"/></svg>`;
-
   const openPreview = (card, focusIndex = -1) => {
     cards.forEach(c => c.classList.toggle('active-tab', c === card));
 
@@ -715,14 +745,8 @@ footer {
       const imgSrc = (imgEl && imgEl.getAttribute('src')) || slot.dataset.img || '';
       const focusedClass = idx === focusIndex ? ' focused' : '';
 
-      if (imgSrc) {
-        return `<div class="win-item${focusedClass}">
-          <img src="${imgSrc}" alt="${label} - ${title}">
-          <span class="win-label">${label}</span>
-        </div>`;
-      }
       return `<div class="win-item${focusedClass}">
-        <div class="win-placeholder">${placeholderSVG}</div>
+        <img src="${imgSrc}" alt="${label} - ${title}">
         <span class="win-label">${label}</span>
       </div>`;
     }).join('');
@@ -743,10 +767,8 @@ footer {
     const expandBtn = card.querySelector('.expand-btn');
     const slots = card.querySelectorAll('.slot');
 
-    // Clicking the top-right Expand button opens the window
     expandBtn.addEventListener('click', () => openPreview(card));
 
-    // Clicking a specific proof slot also expands the window and highlights that slot
     slots.forEach((slot, idx) => {
       slot.addEventListener('click', () => openPreview(card, idx));
     });
