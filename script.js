@@ -20,32 +20,50 @@ if (menu && nav) {
   }
 }
 
-// Achievements Page: Expand Button & 16:9 Big Picture Modal Window
+// Achievements Page: Expand Button & 16:9 Image Holder with Left/Right Cycling Arrows
 {
   const win = document.getElementById('preview-win');
   const backdrop = document.getElementById('preview-backdrop');
   const winTitle = document.getElementById('win-title');
   const winSub = document.getElementById('win-sub');
   const winGallery = document.getElementById('win-gallery');
-  const winSwitcher = document.getElementById('win-switcher');
+  const winCount = document.getElementById('win-count');
   const winClose = document.getElementById('win-close');
   const cards = document.querySelectorAll('.tab-card');
 
   if (win && backdrop && cards.length) {
     let currentItems = [];
+    let currentIndex = 0;
+    let currentTitle = '';
 
-    const renderSlide = (index, title) => {
-      const item = currentItems[index];
-      if (!item) return;
+    const leftArrowSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>`;
+    const rightArrowSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>`;
+
+    const renderSlide = index => {
+      if (!currentItems.length) return;
+      currentIndex = (index + currentItems.length) % currentItems.length;
+      const item = currentItems[currentIndex];
+      const hasMultiple = currentItems.length > 1;
+
+      if (winCount) {
+        winCount.textContent = hasMultiple ? `${currentIndex + 1} / ${currentItems.length}` : '';
+      }
 
       winGallery.innerHTML = `<div class="win-item">
-        <img src="${item.src}" alt="${item.label} - ${title}">
+        ${hasMultiple ? `<button type="button" class="win-nav prev" aria-label="Previous image">${leftArrowSVG}</button>` : ''}
+        <img src="${item.src}" alt="${item.label} - ${currentTitle}">
         <span class="win-label">${item.label}</span>
+        ${hasMultiple ? `<button type="button" class="win-nav next" aria-label="Next image">${rightArrowSVG}</button>` : ''}
       </div>`;
 
-      if (winSwitcher) {
-        Array.from(winSwitcher.children).forEach((btn, idx) => {
-          btn.classList.toggle('active', idx === index);
+      if (hasMultiple) {
+        winGallery.querySelector('.win-nav.prev').addEventListener('click', e => {
+          e.stopPropagation();
+          renderSlide(currentIndex - 1);
+        });
+        winGallery.querySelector('.win-nav.next').addEventListener('click', e => {
+          e.stopPropagation();
+          renderSlide(currentIndex + 1);
         });
       }
     };
@@ -53,7 +71,7 @@ if (menu && nav) {
     const openPreview = card => {
       cards.forEach(c => c.classList.toggle('active-tab', c === card));
 
-      const title = card.querySelector('h2').textContent;
+      currentTitle = card.querySelector('h2').textContent;
       const desc = card.querySelector('p').textContent;
       const slots = Array.from(card.querySelectorAll('.slot'));
 
@@ -64,7 +82,6 @@ if (menu && nav) {
         return { src, label };
       });
 
-      // Include any extra images defined in data-extra so the unexpanded card stays 1-image clean
       if (card.dataset.extra) {
         try {
           const extras = JSON.parse(card.dataset.extra);
@@ -72,23 +89,10 @@ if (menu && nav) {
         } catch (e) {}
       }
 
-      winTitle.textContent = title;
+      winTitle.textContent = currentTitle;
       winSub.textContent = '— ' + desc;
 
-      if (winSwitcher) {
-        if (currentItems.length > 1) {
-          winSwitcher.innerHTML = currentItems.map((it, idx) =>
-            `<button type="button" class="win-tab${idx === 0 ? ' active' : ''}" data-idx="${idx}">${it.label}</button>`
-          ).join('');
-          winSwitcher.querySelectorAll('.win-tab').forEach(btn => {
-            btn.addEventListener('click', () => renderSlide(Number(btn.dataset.idx), title));
-          });
-        } else {
-          winSwitcher.innerHTML = '';
-        }
-      }
-
-      renderSlide(0, title);
+      renderSlide(0);
 
       backdrop.classList.add('open');
       win.classList.add('open');
@@ -118,7 +122,10 @@ if (menu && nav) {
     backdrop.addEventListener('click', closePreview);
 
     addEventListener('keydown', e => {
-      if (e.key === 'Escape' && win.classList.contains('open')) closePreview();
+      if (!win.classList.contains('open')) return;
+      if (e.key === 'Escape') closePreview();
+      if (e.key === 'ArrowLeft' && currentItems.length > 1) renderSlide(currentIndex - 1);
+      if (e.key === 'ArrowRight' && currentItems.length > 1) renderSlide(currentIndex + 1);
     });
   }
 }
