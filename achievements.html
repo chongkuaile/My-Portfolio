@@ -143,6 +143,7 @@ footer {
 
 /* Larger 2x2 Grid for the 4 Tabs */
 .tabs-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
@@ -151,6 +152,7 @@ footer {
   height: 100%;
 }
 .tab-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: clamp(0.85rem, 2vh, 1.4rem) clamp(1rem, 2vw, 1.5rem);
@@ -161,6 +163,7 @@ footer {
   border-radius: 18px;
   box-shadow: 0 14px 32px -20px rgba(91, 63, 209, 0.28);
   min-height: 0;
+  cursor: pointer;
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   animation: fade-up 0.7s ease backwards;
 }
@@ -169,10 +172,10 @@ footer {
 .tab-card:nth-child(3) { animation-delay: 0.26s; }
 .tab-card:nth-child(4) { animation-delay: 0.34s; }
 
-.tab-card:hover {
+.tab-card:hover, .tab-card.active-tab {
   transform: translateY(-2px);
-  border-color: rgba(106, 71, 224, 0.45);
-  box-shadow: 0 18px 38px -18px rgba(91, 63, 209, 0.45);
+  border-color: var(--accent);
+  box-shadow: 0 20px 42px -18px rgba(91, 63, 209, 0.5);
 }
 
 .tab-card h2.tag {
@@ -194,7 +197,7 @@ footer {
   color: var(--muted);
 }
 
-/* 3 Proof Slots inside each Tab (stretches to fill the larger card) */
+/* 3 Proof Slots inside each Tab */
 .slots {
   flex: 1;
   min-height: 0;
@@ -219,22 +222,203 @@ footer {
   overflow: hidden;
   transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
-.slot:hover {
-  border-style: solid;
-  border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.95);
-  transform: translateY(-2px);
-}
-/* If you place an <img> inside a .slot later, it automatically fills the box */
 .slot img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.slot span {
+  position: relative;
+  z-index: 1;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
-/* Small screen & Mobile Responsive (< 900px) - fits screen without scrolling */
+/* ---------- Hover Popup Window with Bigger Pictures ---------- */
+.preview-win {
+  position: fixed;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -46%) scale(0.94);
+  width: min(940px, 92vw);
+  height: min(560px, 74dvh);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 2.2vh, 1.5rem) clamp(1.15rem, 2.5vw, 1.75rem);
+  border-radius: 22px;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.97), rgba(248, 249, 253, 0.97)) padding-box,
+    linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
+  box-shadow:
+    0 35px 80px -20px rgba(28, 27, 56, 0.45),
+    0 0 0 100vmax rgba(28, 27, 56, 0.18);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              visibility 0.25s;
+}
+.preview-win.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Window Top Bar (macOS/Editor style) */
+.win-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.win-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.win-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+.win-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line);
+}
+.win-dots i:nth-child(1) { background: #ff6b8b; }
+.win-dots i:nth-child(2) { background: #ffc061; }
+.win-dots i:nth-child(3) { background: #4cd97b; }
+
+.win-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.2vh, 1.35rem);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.win-title::before {
+  content: "//";
+  font: 500 0.95rem var(--mono);
+  color: var(--signal);
+}
+.win-sub {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: none;
+}
+@media (min-width: 720px) {
+  .win-sub { display: block; }
+}
+.win-close {
+  font: 500 0.78rem var(--mono);
+  padding: 0.35rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.win-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Bigger Pictures Grid inside the Popup Window */
+.win-gallery {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.8vw, 1.35rem);
+}
+.win-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(155deg, #F3F4FA, #E6E3FA);
+  border: 2px solid rgba(106, 71, 224, 0.25);
+  box-shadow: 0 14px 28px -16px rgba(91, 63, 209, 0.3);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.win-item:hover, .win-item.focused {
+  transform: scale(1.035);
+  border-color: var(--accent);
+  box-shadow: 0 20px 38px -14px rgba(91, 63, 209, 0.55);
+  z-index: 2;
+}
+.win-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.win-item:hover img {
+  transform: scale(1.06);
+}
+.win-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--accent);
+  text-align: center;
+  padding: 1rem;
+}
+.win-placeholder svg {
+  width: 2.75rem;
+  height: 2.75rem;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.75;
+}
+.win-label {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(106, 71, 224, 0.2);
+  font: 500 0.8rem var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  text-align: center;
+  box-shadow: 0 8px 18px -10px rgba(28, 27, 56, 0.25);
+}
+
+/* Small screen & Mobile Responsive (< 900px) */
 @media (max-width: 899px) {
   .bar, .ach-wrap {
     width: min(1260px, 100% - 1.75rem);
@@ -315,6 +499,16 @@ footer {
     letter-spacing: 0.02em;
     word-break: break-word;
   }
+  .preview-win {
+    width: 94vw;
+    height: 78dvh;
+    padding: 0.85rem;
+  }
+  .win-gallery {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
 }
 </style>
 </head>
@@ -349,50 +543,165 @@ footer {
     </aside>
 
     <div class="tabs-grid">
+      <!-- Tab 1: To add real images later, add data-img="images/your-pic.jpg" or put an <img> inside .slot -->
       <section class="tab-card" aria-labelledby="ach-1">
         <h2 id="ach-1" class="tag">Achievements</h2>
         <p>Awards, certificates, recognitions, and other accomplishments.</p>
         <div class="slots">
-          <div class="slot"><span>Certificate</span></div>
-          <div class="slot"><span>Award</span></div>
-          <div class="slot"><span>Photo</span></div>
+          <div class="slot" data-img=""><span>Certificate</span></div>
+          <div class="slot" data-img=""><span>Award</span></div>
+          <div class="slot" data-img=""><span>Photo</span></div>
         </div>
       </section>
 
+      <!-- Tab 2 -->
       <section class="tab-card" aria-labelledby="ach-2">
         <h2 id="ach-2" class="tag">Academic Performance</h2>
         <p>Academic records, grades, honors, and evidence of progress.</p>
         <div class="slots">
-          <div class="slot"><span>Grades</span></div>
-          <div class="slot"><span>Honors</span></div>
-          <div class="slot"><span>Record</span></div>
+          <div class="slot" data-img=""><span>Grades</span></div>
+          <div class="slot" data-img=""><span>Honors</span></div>
+          <div class="slot" data-img=""><span>Record</span></div>
         </div>
       </section>
 
+      <!-- Tab 3 -->
       <section class="tab-card" aria-labelledby="ach-3">
         <h2 id="ach-3" class="tag">Extracurricular Activities</h2>
         <p>Activities and involvement outside regular academic classes.</p>
         <div class="slots">
-          <div class="slot"><span>Photo</span></div>
-          <div class="slot"><span>Certificate</span></div>
-          <div class="slot"><span>Activity</span></div>
+          <div class="slot" data-img=""><span>Photo</span></div>
+          <div class="slot" data-img=""><span>Certificate</span></div>
+          <div class="slot" data-img=""><span>Activity</span></div>
         </div>
       </section>
 
+      <!-- Tab 4 -->
       <section class="tab-card" aria-labelledby="ach-4">
         <h2 id="ach-4" class="tag">Co-curricular Activities</h2>
         <p>School-related activities, organizations, seminars, and events.</p>
         <div class="slots">
-          <div class="slot"><span>Seminar</span></div>
-          <div class="slot"><span>Organization</span></div>
-          <div class="slot"><span>Photo</span></div>
+          <div class="slot" data-img=""><span>Seminar</span></div>
+          <div class="slot" data-img=""><span>Organization</span></div>
+          <div class="slot" data-img=""><span>Photo</span></div>
         </div>
       </section>
     </div>
   </div>
 </main>
 
+<!-- Floating Hover Window for Bigger Pictures -->
+<aside id="preview-win" class="preview-win" aria-hidden="true">
+  <div class="win-bar">
+    <div class="win-title-wrap">
+      <div class="win-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <h3 id="win-title" class="win-title">Achievements</h3>
+      <p id="win-sub" class="win-sub"></p>
+    </div>
+    <button type="button" id="win-close" class="win-close">Close [Esc]</button>
+  </div>
+  <div id="win-gallery" class="win-gallery"></div>
+</aside>
+
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
 <script src="script.js"></script>
+<script>
+{
+  const win = document.getElementById('preview-win');
+  const winTitle = document.getElementById('win-title');
+  const winSub = document.getElementById('win-sub');
+  const winGallery = document.getElementById('win-gallery');
+  const winClose = document.getElementById('win-close');
+  const cards = document.querySelectorAll('.tab-card');
+  let hideTimer = null;
+
+  const placeholderSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 20"/></svg>`;
+
+  const openPreview = (card, focusIndex = -1) => {
+    clearTimeout(hideTimer);
+    cards.forEach(c => c.classList.toggle('active-tab', c === card));
+
+    const title = card.querySelector('h2').textContent;
+    const desc = card.querySelector('p').textContent;
+    const slots = Array.from(card.querySelectorAll('.slot'));
+
+    winTitle.textContent = title;
+    winSub.textContent = '— ' + desc;
+
+    winGallery.innerHTML = slots.map((slot, idx) => {
+      const label = slot.textContent.trim();
+      const imgEl = slot.querySelector('img');
+      const imgSrc = (imgEl && imgEl.getAttribute('src')) || slot.dataset.img || '';
+      const focusedClass = idx === focusIndex ? ' focused' : '';
+
+      if (imgSrc) {
+        return `<div class="win-item${focusedClass}">
+          <img src="${imgSrc}" alt="${label} - ${title}">
+          <span class="win-label">${label}</span>
+        </div>`;
+      }
+      return `<div class="win-item${focusedClass}">
+        <div class="win-placeholder">${placeholderSVG}</div>
+        <span class="win-label">${label}</span>
+      </div>`;
+    }).join('');
+
+    win.classList.add('open');
+    win.setAttribute('aria-hidden', 'false');
+  };
+
+  const scheduleClose = () => {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      win.classList.remove('open');
+      win.setAttribute('aria-hidden', 'true');
+      cards.forEach(c => c.classList.remove('active-tab'));
+    }, 180);
+  };
+
+  cards.forEach(card => {
+    const slots = card.querySelectorAll('.slot');
+
+    // Hovering the tab opens the big picture window
+    card.addEventListener('pointerenter', e => {
+      if (e.pointerType === 'touch') return;
+      openPreview(card);
+    });
+    card.addEventListener('pointerleave', e => {
+      if (e.pointerType === 'touch') return;
+      scheduleClose();
+    });
+
+    // Hovering a specific slot highlights that picture in the window
+    slots.forEach((slot, idx) => {
+      slot.addEventListener('pointerenter', e => {
+        if (e.pointerType === 'touch') return;
+        openPreview(card, idx);
+      });
+    });
+
+    // Clicking/tapping works on both mobile and desktop
+    card.addEventListener('click', () => openPreview(card));
+  });
+
+  // Keep the window open while the user moves their pointer inside the popup window
+  win.addEventListener('pointerenter', () => clearTimeout(hideTimer));
+  win.addEventListener('pointerleave', e => {
+    if (e.pointerType === 'touch') return;
+    scheduleClose();
+  });
+
+  winClose.addEventListener('click', () => {
+    clearTimeout(hideTimer);
+    win.classList.remove('open');
+    win.setAttribute('aria-hidden', 'true');
+    cards.forEach(c => c.classList.remove('active-tab'));
+  });
+
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape') winClose.click();
+  });
+}
+</script>
 </body>
 </html>
