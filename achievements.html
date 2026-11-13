@@ -291,6 +291,17 @@
 .prev { left: 1.25rem; }
 .next { right: 1.25rem; }
 
+/* Junior High: two columns, one wide for the four academic certificates */
+.ac-board.two {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+.ac-tiles.grid2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ac-tiles.one {
+  grid-auto-rows: minmax(0, calc(50% - .375rem));
+}
+
 /* Desktop: lock to one screen, no scrolling */
 @media (min-width: 900px) {
   html, body {
@@ -325,6 +336,9 @@
   }
   .ac-tiles {
     grid-auto-rows: auto;
+  }
+  .ac-board.two {
+    grid-template-columns: minmax(0, 1fr);
   }
   .ac-open {
     flex: none;
@@ -411,7 +425,24 @@
         <h2>San Jose City National High School</h2>
         <p class="ac-where">City, Province</p>
       </div>
-      <div class="ac-empty">Certificates, honors, and activity photos from this school will go here.</div>
+      <!-- "photo" on a figure skips the black-background filter, which these white-background certificates don't need -->
+      <div class="ac-board two">
+        <div class="ac-col">
+          <h3>Achievements</h3>
+          <div class="ac-tiles one">
+            <figure class="photo"><a class="ac-open" href="images/junior-attendance.jpg" target="_blank" rel="noopener"><img src="images/junior-attendance.jpg" alt="Certificate of Commendation for Perfect Attendance, Grade 10, Third Quarter"></a><figcaption>Perfect Attendance, Grade 10 Q3</figcaption></figure>
+          </div>
+        </div>
+        <div class="ac-col">
+          <h3>Academic Performance</h3>
+          <div class="ac-tiles grid2">
+            <figure class="photo"><a class="ac-open" href="images/g10.jpg" target="_blank" rel="noopener"><img src="images/g10.jpg" alt="Katunayan, the Junior High School completion certificate"></a><figcaption>Junior High Completion (Katunayan)</figcaption></figure>
+            <figure class="photo"><a class="ac-open" href="images/junior-q1.jpg" target="_blank" rel="noopener"><img src="images/junior-q1.jpg" alt="Certificate of Academic Excellence with honors, Grade 10, First Quarter"></a><figcaption>Academic Excellence, Grade 10 Q1</figcaption></figure>
+            <figure class="photo"><a class="ac-open" href="images/junior-q2.jpg" target="_blank" rel="noopener"><img src="images/junior-q2.jpg" alt="Certificate of Academic Excellence with honors, Grade 10, Second Quarter"></a><figcaption>Academic Excellence, Grade 10 Q2</figcaption></figure>
+            <figure class="photo"><a class="ac-open" href="images/junior-q3.jpg" target="_blank" rel="noopener"><img src="images/junior-q3.jpg" alt="Certificate of Academic Excellence with honors, Grade 10, Third Quarter"></a><figcaption>Academic Excellence, Grade 10 Q3</figcaption></figure>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Elementary: same as above -->
