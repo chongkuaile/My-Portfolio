@@ -54,6 +54,11 @@
   line-height: 1.15;
   letter-spacing: -.025em;
   font-weight: 600;
+  background: linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 .ac-top p {
   margin: 0;
@@ -177,8 +182,11 @@
   color: var(--accent);
 }
 
-/* Picture viewer */
+/* Picture viewer: pinned to the full screen, picture centered */
 .ac-lb {
+  position: fixed;
+  inset: 0;
+  margin: 0;
   width: 100vw;
   height: 100dvh;
   max-width: none;
@@ -200,6 +208,11 @@
   backdrop-filter: blur(8px);
 }
 .ac-lb img {
+  display: block;
+  align-self: center;
+  margin: 0 auto;
+  width: auto;
+  height: auto;
   max-width: min(90vw, 1100px);
   max-height: 78dvh;
   object-fit: contain;
@@ -210,7 +223,9 @@
 }
 .lb-cap {
   margin: 0;
+  max-width: 90vw;
   padding: .35rem 1rem;
+  text-align: center;
   font: 400 .9rem var(--mono);
   background: rgba(255, 255, 255, .96);
   border-radius: 999px;
