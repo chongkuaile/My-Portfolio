@@ -23,6 +23,179 @@
   flex-shrink: 0;
   filter: drop-shadow(0 4px 10px rgba(91, 63, 209, 0.25));
 }
+
+/* Layout: schools on the left, everything else on the right */
+.ac {
+  display: grid;
+  grid-template-columns: 19rem minmax(0, 1fr);
+  gap: 3.5rem;
+  width: min(1280px, 100% - 3rem);
+  margin: 0 auto;
+  padding: 3rem 0 5rem;
+}
+.ac-side {
+  align-self: start;
+  position: sticky;
+  top: 2rem;
+}
+.ac-eyebrow {
+  font: 400 .85rem var(--mono);
+  color: var(--signal);
+}
+.ac-side h1 {
+  margin: .5rem 0 .75rem;
+  font-size: 2.25rem;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  font-weight: 600;
+}
+.ac-side > p {
+  margin: 0 0 1.75rem;
+  color: var(--muted);
+}
+.ac-schools {
+  display: grid;
+  gap: .75rem;
+}
+.ac-schools a {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .8rem;
+  background: rgba(20, 23, 48, .45);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color .25s, box-shadow .25s;
+}
+.ac-schools a:hover,
+.ac-schools a[aria-current] {
+  border-color: rgba(155, 140, 255, .6);
+  box-shadow: 0 0 24px -8px rgba(155, 140, 255, .5);
+}
+.ac-sp {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3.25rem;
+  height: 3.25rem;
+  overflow: hidden;
+  font: 500 .8rem var(--mono);
+  color: var(--accent);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.ac-sp img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.ac-schools b {
+  display: block;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.ac-schools small {
+  display: block;
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+/* One section per school, newest first */
+.ac-school {
+  scroll-margin-top: 2rem;
+  margin-bottom: 4.5rem;
+}
+.ac-school:last-child {
+  margin-bottom: 0;
+}
+.ac-head {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid;
+  border-image: linear-gradient(90deg, var(--line), transparent) 1;
+}
+.ac-level {
+  font: 400 .85rem var(--mono);
+  color: var(--accent);
+}
+.ac-school h2 {
+  margin: .25rem 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+}
+.ac-where {
+  margin: 0;
+  color: var(--muted);
+}
+.ac-group {
+  margin-bottom: 2.5rem;
+}
+.ac-group h3 {
+  margin: 0 0 .25rem;
+  font-size: 1.15rem;
+}
+.ac-group > p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+/* Every picture is shown in full, uncropped */
+.ac-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+.ac-grid figure {
+  margin: 0;
+  overflow: hidden;
+  background: rgba(10, 12, 24, .6);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color .25s, box-shadow .25s;
+}
+.ac-grid figure:hover {
+  border-color: rgba(155, 140, 255, .6);
+  box-shadow: 0 0 28px -8px rgba(155, 140, 255, .5);
+}
+.ac-grid a {
+  display: block;
+}
+.ac-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* strips pure black cutout backgrounds from certificate photos (not applied to real photos) */
+.ac-grid figure:not(.photo) img {
+  filter: url(#remove-black-bg);
+}
+.ac-grid figcaption {
+  padding: .7rem .9rem;
+  font: 400 .85rem var(--mono);
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+.ac-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+}
+
+@media (max-width: 899px) {
+  .ac {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 1.5rem;
+  }
+  .ac-side {
+    position: static;
+  }
+}
 </style>
 </head>
 <body>
@@ -33,92 +206,95 @@
 <nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html" aria-current="page">Achievements</a><a href="parents.html">Parents</a></nav>
 </header>
 
-<main id="main" class="ach-wrap">
-  <!-- School Picture & Name Banner -->
-  <section class="school-banner" aria-label="School Information">
-    <div class="school-pic">
-      <img src="images/schoolprofile.png" alt="San Jose City National High School Senior High School" onerror="this.style.display='none';this.parentElement.textContent='SJCNHS'">
-    </div>
-    <div class="school-info">
-      <span class="eyebrow">&lt;institution /&gt;</span>
-      <h2>San Jose City National High School - Senior High School</h2>
-      <p>San Jose City, Nueva Ecija</p>
-    </div>
-  </section>
+<main id="main" class="ac">
+  <aside class="ac-side">
+    <span class="ac-eyebrow">&lt;achievements /&gt;</span>
+    <h1>My Achievements</h1>
+    <p>Awards, grades, and activities, each with its supporting proof.</p>
+    <nav class="ac-schools" aria-label="Schools">
+      <a href="#senior-high" aria-current="true">
+        <span class="ac-sp"><img src="images/schoolprofile.png" alt="" onerror="this.style.display='none';this.parentElement.textContent='SJCNHS'"></span>
+        <span><b>San Jose City National High School</b><small>Senior High School</small></span>
+      </a>
+      <a href="#junior-high">
+        <span class="ac-sp">JHS</span>
+        <span><b>Junior High School Name</b><small>Junior High School</small></span>
+      </a>
+      <a href="#elementary">
+        <span class="ac-sp">ELEM</span>
+        <span><b>Elementary School Name</b><small>Elementary</small></span>
+      </a>
+    </nav>
+  </aside>
 
-  <!-- Sidebar + 4 Large Achievement Tabs (1 Image Per Unexpanded Tab) -->
-  <div class="ach-body">
-    <aside class="side">
-      <span class="eyebrow">&lt;achievements /&gt;</span>
-      <h1>My <span>Achievements</span></h1>
-      <p>Awards, grades, and activities, each with its supporting proof.</p>
-    </aside>
+  <div class="ac-content">
 
-    <div class="tabs-grid">
-      <!-- Tab 1: Achievements (conduct.jpg + attendance.jpg cycled via arrows when expanded) -->
-      <section class="tab-card" aria-labelledby="ach-1"
-               data-extra='[{"src":"images/attendance.jpg","label":"Perfect Attendance Award"}]'>
-        <div class="tab-head">
-          <h2 id="ach-1" class="tag">Achievements</h2>
-          <button type="button" class="expand-btn" aria-label="Expand Achievements"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
-        </div>
+    <!-- Senior High School -->
+    <section id="senior-high" class="ac-school" aria-labelledby="shs-h">
+      <div class="ac-head">
+        <span class="ac-level">Senior High School</span>
+        <h2 id="shs-h">San Jose City National High School - Senior High School</h2>
+        <p class="ac-where">San Jose City, Nueva Ecija</p>
+      </div>
+
+      <div class="ac-group">
+        <h3>Achievements</h3>
         <p>Awards, certificates, recognitions, and other accomplishments.</p>
-        <div class="slots">
-          <div class="slot">
-            <img src="images/conduct.jpg" alt="Conduct Awardee Certificate">
-            <span>Conduct Awardee</span>
-          </div>
+        <div class="ac-grid">
+          <figure><a href="images/conduct.jpg" target="_blank" rel="noopener"><img src="images/conduct.jpg" alt="Conduct Awardee Certificate"></a><figcaption>Conduct Awardee</figcaption></figure>
+          <figure><a href="images/attendance.jpg" target="_blank" rel="noopener"><img src="images/attendance.jpg" alt="Perfect Attendance Award certificate"></a><figcaption>Perfect Attendance Award</figcaption></figure>
         </div>
-      </section>
+      </div>
 
-      <!-- Tab 2: Academic Performance (honors.png + Report of Grades + Grade 12 SF9 Record) -->
-      <section class="tab-card" aria-labelledby="ach-2"
-               data-extra='[{"src":"images/IMG_20261112_222942.png","label":"Report of Grades"},{"src":"images/IMG_20261112_222912.png","label":"Grade 12 SF9 Record"}]'>
-        <div class="tab-head">
-          <h2 id="ach-2" class="tag">Academic Performance</h2>
-          <button type="button" class="expand-btn" aria-label="Expand Academic Performance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
-        </div>
+      <div class="ac-group">
+        <h3>Academic Performance</h3>
         <p>Academic records, grades, honors, and evidence of progress.</p>
-        <div class="slots">
-          <div class="slot">
-            <img src="images/honors.png" alt="With Honors and With High Honors Certificates">
-            <span>Academic Honors</span>
-          </div>
+        <div class="ac-grid">
+          <figure><a href="images/honors.png" target="_blank" rel="noopener"><img src="images/honors.png" alt="With Honors and With High Honors Certificates"></a><figcaption>Academic Honors</figcaption></figure>
+          <figure><a href="images/IMG_20261112_222942.png" target="_blank" rel="noopener"><img src="images/IMG_20261112_222942.png" alt="Report of Grades"></a><figcaption>Report of Grades</figcaption></figure>
+          <figure><a href="images/IMG_20261112_222912.png" target="_blank" rel="noopener"><img src="images/IMG_20261112_222912.png" alt="Grade 12 SF9 Record"></a><figcaption>Grade 12 SF9 Record</figcaption></figure>
         </div>
-      </section>
+      </div>
 
-      <!-- Tab 3: Extracurricular Activities (quizbee.png + quizbee2.png cycled via arrows when expanded) -->
-      <section class="tab-card" aria-labelledby="ach-3"
-               data-extra='[{"src":"images/quizbee2.jpg","label":"UN Quiz Bee"}]'>
-        <div class="tab-head">
-          <h2 id="ach-3" class="tag">Extracurricular Activities</h2>
-          <button type="button" class="expand-btn" aria-label="Expand Extracurricular Activities"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
-        </div>
+      <div class="ac-group">
+        <h3>Extracurricular Activities</h3>
         <p>Activities and involvement outside regular academic classes.</p>
-        <div class="slots">
-          <div class="slot">
-            <img src="images/quizbee.png" alt="Champion in the Grade 12 United Nations Quiz Bee">
-            <span>UN Quiz Bee Champion</span>
-          </div>
+        <div class="ac-grid">
+          <figure><a href="images/quizbee.png" target="_blank" rel="noopener"><img src="images/quizbee.png" alt="Champion in the Grade 12 United Nations Quiz Bee"></a><figcaption>UN Quiz Bee Champion</figcaption></figure>
+          <figure><a href="images/quizbee2.jpg" target="_blank" rel="noopener"><img src="images/quizbee2.jpg" alt="UN Quiz Bee"></a><figcaption>UN Quiz Bee</figcaption></figure>
         </div>
-      </section>
+      </div>
 
-      <!-- Tab 4: Co-curricular Activities -->
-      <section class="tab-card" aria-labelledby="ach-4"
-               data-extra='[{"src":"images/hoj.jpg","label":"Heart of Jesus Hospital Immersion","isPhoto":true}]'>
-        <div class="tab-head">
-          <h2 id="ach-4" class="tag">Co-curricular Activities</h2>
-          <button type="button" class="expand-btn" aria-label="Expand Co-curricular Activities"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span>Expand</span></button>
-        </div>
+      <div class="ac-group">
+        <h3>Co-curricular Activities</h3>
         <p>School-related activities, organizations, seminars, and events.</p>
-        <div class="slots">
-          <div class="slot">
-            <img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital">
-            <span>Work Immersion</span>
-          </div>
+        <div class="ac-grid">
+          <figure><a href="images/workimmersion.png" target="_blank" rel="noopener"><img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital"></a><figcaption>Work Immersion</figcaption></figure>
+          <figure class="photo"><a href="images/hoj.jpg" target="_blank" rel="noopener"><img src="images/hoj.jpg" alt="Heart of Jesus Hospital immersion"></a><figcaption>Heart of Jesus Hospital Immersion</figcaption></figure>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+
+    <!-- Junior High School: replace the name, place, and the empty box. To add a picture, copy a <figure> from above into a <div class="ac-grid"> -->
+    <section id="junior-high" class="ac-school" aria-labelledby="jhs-h">
+      <div class="ac-head">
+        <span class="ac-level">Junior High School</span>
+        <h2 id="jhs-h">Junior High School Name</h2>
+        <p class="ac-where">City, Province</p>
+      </div>
+      <div class="ac-empty">Certificates, honors, and activity photos from this school will go here.</div>
+    </section>
+
+    <!-- Elementary: same as above -->
+    <section id="elementary" class="ac-school" aria-labelledby="elem-h">
+      <div class="ac-head">
+        <span class="ac-level">Elementary</span>
+        <h2 id="elem-h">Elementary School Name</h2>
+        <p class="ac-where">City, Province</p>
+      </div>
+      <div class="ac-empty">Certificates, honors, and activity photos from this school will go here.</div>
+    </section>
+
   </div>
 </main>
 
@@ -133,25 +309,15 @@
   </filter>
 </svg>
 
-<!-- Modal Backdrop & Expanded 16:9 Window -->
-<div id="preview-backdrop" class="preview-backdrop" aria-hidden="true"></div>
-<aside id="preview-win" class="preview-win" role="dialog" aria-modal="true" aria-labelledby="win-title" aria-hidden="true">
-  <div class="win-bar">
-    <div class="win-title-wrap">
-      <div class="win-dots" aria-hidden="true"><i></i><i></i><i></i></div>
-      <h3 id="win-title" class="win-title">Achievements</h3>
-      <p id="win-sub" class="win-sub"></p>
-    </div>
-    <div class="win-actions">
-      <span id="win-count" class="win-count"></span>
-      <button type="button" id="win-close" class="win-close">Close [Esc]</button>
-    </div>
-  </div>
-  <!-- 16:9 Image Holder with Left/Right Cycling Arrows -->
-  <div id="win-gallery" class="win-gallery"></div>
-</aside>
-
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
 <script src="script.js"></script>
+<script>
+// Highlight the school in the sidebar that matches the section being read
+const schoolLinks = [...document.querySelectorAll('.ac-schools a')];
+const spy = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) schoolLinks.forEach(a => a.toggleAttribute('aria-current', a.hash === '#' + e.target.id));
+}), { rootMargin: '-30% 0px -60% 0px' });
+document.querySelectorAll('.ac-school').forEach(s => spy.observe(s));
+</script>
 </body>
 </html>
