@@ -24,64 +24,72 @@
   filter: drop-shadow(0 4px 10px rgba(91, 63, 209, 0.25));
 }
 
-/* Layout: schools on the left, everything else on the right */
+/* Layout: schools on the left, one school's pictures on the right, all on one screen */
 .ac {
   display: grid;
-  grid-template-columns: 19rem minmax(0, 1fr);
-  gap: 3.5rem;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 2.5rem;
   width: min(1280px, 100% - 3rem);
   margin: 0 auto;
-  padding: 3rem 0 5rem;
-}
-.ac-side {
-  align-self: start;
-  position: sticky;
-  top: 2rem;
+  padding: clamp(0.5rem, 2vh, 1.5rem) 0;
 }
 .ac-eyebrow {
   font: 400 .85rem var(--mono);
   color: var(--signal);
 }
 .ac-side h1 {
-  margin: .5rem 0 .75rem;
-  font-size: 2.25rem;
+  margin: .4rem 0 .6rem;
+  font-size: clamp(1.75rem, 4.2vh, 2.25rem);
   line-height: 1.1;
   letter-spacing: -.025em;
   font-weight: 600;
 }
 .ac-side > p {
-  margin: 0 0 1.75rem;
+  margin: 0 0 clamp(1rem, 2.6vh, 1.75rem);
   color: var(--muted);
 }
+
+/* School switcher */
 .ac-schools {
   display: grid;
-  gap: .75rem;
+  gap: .7rem;
 }
-.ac-schools a {
+.ac-schools button {
   display: flex;
   align-items: center;
-  gap: .9rem;
-  padding: .8rem;
-  background: rgba(20, 23, 48, .45);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  transition: border-color .25s, box-shadow .25s;
+  gap: .85rem;
+  width: 100%;
+  padding: .65rem;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: linear-gradient(rgba(255,255,255,.75), rgba(255,255,255,.75)) padding-box,
+              linear-gradient(var(--line), var(--line)) border-box;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
-.ac-schools a:hover,
-.ac-schools a[aria-current] {
-  border-color: rgba(155, 140, 255, .6);
-  box-shadow: 0 0 24px -8px rgba(155, 140, 255, .5);
+.ac-schools button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -14px rgba(91, 63, 209, .55);
+}
+.ac-schools button[aria-selected="true"] {
+  background: linear-gradient(#fff, #fff) padding-box,
+              linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
+  box-shadow: 0 12px 24px -14px rgba(91, 63, 209, .6);
 }
 .ac-sp {
   display: grid;
   place-items: center;
   flex: none;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: 3rem;
+  height: 3rem;
   overflow: hidden;
-  font: 500 .8rem var(--mono);
+  font: 500 .75rem var(--mono);
   color: var(--accent);
-  background: rgba(255, 255, 255, .05);
+  background: #fff;
   border: 1px solid var(--line);
   border-radius: 10px;
 }
@@ -93,35 +101,40 @@
 .ac-schools b {
   display: block;
   font-weight: 600;
+  font-size: .95rem;
   line-height: 1.3;
 }
 .ac-schools small {
   display: block;
-  font-size: .85rem;
+  font-size: .82rem;
   color: var(--muted);
 }
 
-/* One section per school, newest first */
-.ac-school {
-  scroll-margin-top: 2rem;
-  margin-bottom: 4.5rem;
+/* The selected school */
+.ac-content {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
-.ac-school:last-child {
-  margin-bottom: 0;
+.ac-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ac-panel[hidden] {
+  display: none;
 }
 .ac-head {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid;
-  border-image: linear-gradient(90deg, var(--line), transparent) 1;
+  margin-bottom: clamp(.6rem, 2vh, 1.25rem);
 }
 .ac-level {
   font: 400 .85rem var(--mono);
   color: var(--accent);
 }
-.ac-school h2 {
-  margin: .25rem 0;
-  font-size: 1.75rem;
+.ac-panel h2 {
+  margin: .15rem 0;
+  font-size: clamp(1.25rem, 3.2vh, 1.65rem);
   line-height: 1.2;
   letter-spacing: -.02em;
 }
@@ -129,71 +142,193 @@
   margin: 0;
   color: var(--muted);
 }
-.ac-group {
-  margin-bottom: 2.5rem;
-}
-.ac-group h3 {
-  margin: 0 0 .25rem;
-  font-size: 1.15rem;
-}
-.ac-group > p {
-  margin: 0 0 1rem;
-  color: var(--muted);
-}
 
-/* Every picture is shown in full, uncropped */
-.ac-grid {
+/* Four columns, one per category: every picture visible at once */
+.ac-board {
+  flex: 1;
+  min-height: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: 1.25rem;
-  align-items: start;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
 }
-.ac-grid figure {
+.ac-col {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+.ac-col h3 {
   margin: 0;
+  font-size: clamp(.85rem, 1.9vh, 1rem);
+  line-height: 1.25;
+  font-weight: 600;
+}
+.ac-tiles {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: .75rem;
+}
+.ac-tiles figure {
+  min-height: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  background: rgba(10, 12, 24, .6);
+  background: rgba(255, 255, 255, .8);
   border: 1px solid var(--line);
   border-radius: 12px;
-  transition: border-color .25s, box-shadow .25s;
+  box-shadow: 0 8px 20px -14px rgba(91, 63, 209, .4);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
-.ac-grid figure:hover {
-  border-color: rgba(155, 140, 255, .6);
-  box-shadow: 0 0 28px -8px rgba(155, 140, 255, .5);
+.ac-tiles figure:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 92, 255, .6);
+  box-shadow: 0 14px 28px -14px rgba(91, 63, 209, .6);
 }
-.ac-grid a {
+.ac-open {
   display: block;
+  flex: 1;
+  min-height: 0;
+  padding: .4rem;
+  cursor: zoom-in;
 }
-.ac-grid img {
+.ac-open img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
 }
 /* strips pure black cutout backgrounds from certificate photos (not applied to real photos) */
-.ac-grid figure:not(.photo) img {
+.ac-tiles figure:not(.photo) img,
+.ac-lb img:not(.photo) {
   filter: url(#remove-black-bg);
 }
-.ac-grid figcaption {
-  padding: .7rem .9rem;
-  font: 400 .85rem var(--mono);
+.ac-tiles figcaption {
+  padding: .35rem .6rem;
+  font: 400 clamp(.68rem, 1.5vh, .8rem)/1.3 var(--mono);
+  text-wrap: balance;
   color: var(--muted);
   border-top: 1px solid var(--line);
 }
 .ac-empty {
+  flex: 1;
+  display: grid;
+  place-items: center;
   padding: 2rem;
   text-align: center;
   color: var(--muted);
-  border: 1px dashed var(--line);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, .5);
+  border: 2px dashed var(--line);
+  border-radius: 14px;
 }
 
+/* Picture viewer */
+.ac-lb {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+}
+.ac-lb[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+}
+.ac-lb::backdrop {
+  background: rgba(30, 24, 70, .55);
+  backdrop-filter: blur(8px);
+}
+.ac-lb img {
+  max-width: min(90vw, 1100px);
+  max-height: 78dvh;
+  object-fit: contain;
+  padding: .5rem;
+  background: rgba(255, 255, 255, .96);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(20, 10, 80, .6);
+}
+.lb-cap {
+  margin: 0;
+  padding: .35rem 1rem;
+  font: 400 .9rem var(--mono);
+  background: rgba(255, 255, 255, .96);
+  border-radius: 999px;
+}
+.lb-x, .lb-n {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+              linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
+}
+.lb-x {
+  top: 1.25rem;
+  right: 1.25rem;
+  padding: .45rem 1.1rem;
+  border-radius: 999px;
+}
+.lb-n {
+  top: 50%;
+  width: 3rem;
+  height: 3rem;
+  margin-top: -1.5rem;
+  font-size: 1.6rem;
+  line-height: 1;
+  border-radius: 50%;
+}
+.prev { left: 1.25rem; }
+.next { right: 1.25rem; }
+
+/* Desktop: lock to one screen, no scrolling */
+@media (min-width: 900px) {
+  html, body {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+  .bar {
+    padding: clamp(0.6rem, 1.8vh, 1.35rem) 0;
+    flex-shrink: 0;
+  }
+  footer {
+    padding: clamp(0.45rem, 1.4vh, 1rem);
+    font-size: clamp(0.72rem, 1.45vh, 0.85rem);
+    flex-shrink: 0;
+  }
+  .ac {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
+/* Phones and small tablets: stack and let the page scroll */
 @media (max-width: 899px) {
   .ac {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-top: 1.5rem;
+    grid-template-rows: auto;
+    gap: 1.5rem;
   }
-  .ac-side {
-    position: static;
+  .ac-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ac-tiles {
+    grid-auto-rows: auto;
+  }
+  .ac-open {
+    flex: none;
+    aspect-ratio: 4 / 3;
   }
 }
 </style>
@@ -211,85 +346,79 @@
     <span class="ac-eyebrow">&lt;achievements /&gt;</span>
     <h1>My Achievements</h1>
     <p>Awards, grades, and activities, each with its supporting proof.</p>
-    <nav class="ac-schools" aria-label="Schools">
-      <a href="#senior-high" aria-current="true">
+    <div class="ac-schools" role="tablist" aria-label="Schools">
+      <button type="button" role="tab" id="t-senior-high" data-p="senior-high" aria-selected="true" aria-controls="senior-high">
         <span class="ac-sp"><img src="images/schoolprofile.png" alt="" onerror="this.style.display='none';this.parentElement.textContent='SJCNHS'"></span>
         <span><b>San Jose City National High School</b><small>Senior High School</small></span>
-      </a>
-      <a href="#junior-high">
+      </button>
+      <button type="button" role="tab" id="t-junior-high" data-p="junior-high" aria-selected="false" aria-controls="junior-high">
         <span class="ac-sp">JHS</span>
         <span><b>Junior High School Name</b><small>Junior High School</small></span>
-      </a>
-      <a href="#elementary">
+      </button>
+      <button type="button" role="tab" id="t-elementary" data-p="elementary" aria-selected="false" aria-controls="elementary">
         <span class="ac-sp">ELEM</span>
         <span><b>Elementary School Name</b><small>Elementary</small></span>
-      </a>
-    </nav>
+      </button>
+    </div>
   </aside>
 
   <div class="ac-content">
 
     <!-- Senior High School -->
-    <section id="senior-high" class="ac-school" aria-labelledby="shs-h">
+    <section id="senior-high" class="ac-panel" role="tabpanel" aria-labelledby="t-senior-high">
       <div class="ac-head">
         <span class="ac-level">Senior High School</span>
-        <h2 id="shs-h">San Jose City National High School - Senior High School</h2>
+        <h2>San Jose City National High School - Senior High School</h2>
         <p class="ac-where">San Jose City, Nueva Ecija</p>
       </div>
-
-      <div class="ac-group">
-        <h3>Achievements</h3>
-        <p>Awards, certificates, recognitions, and other accomplishments.</p>
-        <div class="ac-grid">
-          <figure><a href="images/conduct.jpg" target="_blank" rel="noopener"><img src="images/conduct.jpg" alt="Conduct Awardee Certificate"></a><figcaption>Conduct Awardee</figcaption></figure>
-          <figure><a href="images/attendance.jpg" target="_blank" rel="noopener"><img src="images/attendance.jpg" alt="Perfect Attendance Award certificate"></a><figcaption>Perfect Attendance Award</figcaption></figure>
+      <div class="ac-board">
+        <div class="ac-col">
+          <h3>Achievements</h3>
+          <div class="ac-tiles">
+            <figure><a class="ac-open" href="images/conduct.jpg" target="_blank" rel="noopener"><img src="images/conduct.jpg" alt="Conduct Awardee Certificate"></a><figcaption>Conduct Awardee</figcaption></figure>
+            <figure><a class="ac-open" href="images/attendance.jpg" target="_blank" rel="noopener"><img src="images/attendance.jpg" alt="Perfect Attendance Award certificate"></a><figcaption>Perfect Attendance Award</figcaption></figure>
+          </div>
         </div>
-      </div>
-
-      <div class="ac-group">
-        <h3>Academic Performance</h3>
-        <p>Academic records, grades, honors, and evidence of progress.</p>
-        <div class="ac-grid">
-          <figure><a href="images/honors.png" target="_blank" rel="noopener"><img src="images/honors.png" alt="With Honors and With High Honors Certificates"></a><figcaption>Academic Honors</figcaption></figure>
-          <figure><a href="images/IMG_20261112_222942.png" target="_blank" rel="noopener"><img src="images/IMG_20261112_222942.png" alt="Report of Grades"></a><figcaption>Report of Grades</figcaption></figure>
-          <figure><a href="images/IMG_20261112_222912.png" target="_blank" rel="noopener"><img src="images/IMG_20261112_222912.png" alt="Grade 12 SF9 Record"></a><figcaption>Grade 12 SF9 Record</figcaption></figure>
+        <div class="ac-col">
+          <h3>Academic Performance</h3>
+          <div class="ac-tiles">
+            <figure><a class="ac-open" href="images/honors.png" target="_blank" rel="noopener"><img src="images/honors.png" alt="With Honors and With High Honors Certificates"></a><figcaption>Academic Honors</figcaption></figure>
+            <figure><a class="ac-open" href="images/IMG_20261112_222942.png" target="_blank" rel="noopener"><img src="images/IMG_20261112_222942.png" alt="Report of Grades"></a><figcaption>Report of Grades</figcaption></figure>
+            <figure><a class="ac-open" href="images/IMG_20261112_222912.png" target="_blank" rel="noopener"><img src="images/IMG_20261112_222912.png" alt="Grade 12 SF9 Record"></a><figcaption>Grade 12 SF9 Record</figcaption></figure>
+          </div>
         </div>
-      </div>
-
-      <div class="ac-group">
-        <h3>Extracurricular Activities</h3>
-        <p>Activities and involvement outside regular academic classes.</p>
-        <div class="ac-grid">
-          <figure><a href="images/quizbee.png" target="_blank" rel="noopener"><img src="images/quizbee.png" alt="Champion in the Grade 12 United Nations Quiz Bee"></a><figcaption>UN Quiz Bee Champion</figcaption></figure>
-          <figure><a href="images/quizbee2.jpg" target="_blank" rel="noopener"><img src="images/quizbee2.jpg" alt="UN Quiz Bee"></a><figcaption>UN Quiz Bee</figcaption></figure>
+        <div class="ac-col">
+          <h3>Extracurricular Activities</h3>
+          <div class="ac-tiles">
+            <figure><a class="ac-open" href="images/quizbee.png" target="_blank" rel="noopener"><img src="images/quizbee.png" alt="Champion in the Grade 12 United Nations Quiz Bee"></a><figcaption>UN Quiz Bee Champion</figcaption></figure>
+            <figure><a class="ac-open" href="images/quizbee2.jpg" target="_blank" rel="noopener"><img src="images/quizbee2.jpg" alt="UN Quiz Bee"></a><figcaption>UN Quiz Bee</figcaption></figure>
+          </div>
         </div>
-      </div>
-
-      <div class="ac-group">
-        <h3>Co-curricular Activities</h3>
-        <p>School-related activities, organizations, seminars, and events.</p>
-        <div class="ac-grid">
-          <figure><a href="images/workimmersion.png" target="_blank" rel="noopener"><img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital"></a><figcaption>Work Immersion</figcaption></figure>
-          <figure class="photo"><a href="images/hoj.jpg" target="_blank" rel="noopener"><img src="images/hoj.jpg" alt="Heart of Jesus Hospital immersion"></a><figcaption>Heart of Jesus Hospital Immersion</figcaption></figure>
+        <div class="ac-col">
+          <h3>Co-curricular Activities</h3>
+          <div class="ac-tiles">
+            <figure><a class="ac-open" href="images/workimmersion.png" target="_blank" rel="noopener"><img src="images/workimmersion.png" alt="80-Hours Work Immersion Certificate of Completion at Heart of Jesus Hospital"></a><figcaption>Work Immersion</figcaption></figure>
+            <figure class="photo"><a class="ac-open" href="images/hoj.jpg" target="_blank" rel="noopener"><img src="images/hoj.jpg" alt="Heart of Jesus Hospital immersion"></a><figcaption>Heart of Jesus Hospital Immersion</figcaption></figure>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Junior High School: replace the name, place, and the empty box. To add a picture, copy a <figure> from above into a <div class="ac-grid"> -->
-    <section id="junior-high" class="ac-school" aria-labelledby="jhs-h">
+    <!-- Junior High School: replace the name, place, and the empty box. To add pictures, copy the board above (the <div class="ac-board"> and everything inside it) and change the pictures and captions. -->
+    <section id="junior-high" class="ac-panel" role="tabpanel" aria-labelledby="t-junior-high">
       <div class="ac-head">
         <span class="ac-level">Junior High School</span>
-        <h2 id="jhs-h">Junior High School Name</h2>
+        <h2>Junior High School Name</h2>
         <p class="ac-where">City, Province</p>
       </div>
       <div class="ac-empty">Certificates, honors, and activity photos from this school will go here.</div>
     </section>
 
     <!-- Elementary: same as above -->
-    <section id="elementary" class="ac-school" aria-labelledby="elem-h">
+    <section id="elementary" class="ac-panel" role="tabpanel" aria-labelledby="t-elementary">
       <div class="ac-head">
         <span class="ac-level">Elementary</span>
-        <h2 id="elem-h">Elementary School Name</h2>
+        <h2>Elementary School Name</h2>
         <p class="ac-where">City, Province</p>
       </div>
       <div class="ac-empty">Certificates, honors, and activity photos from this school will go here.</div>
@@ -297,6 +426,15 @@
 
   </div>
 </main>
+
+<!-- Picture viewer: click any picture to enlarge it, then use the arrows or the left and right keys -->
+<dialog id="lb" class="ac-lb" aria-label="Picture viewer">
+  <button type="button" class="lb-x">Close</button>
+  <button type="button" class="lb-n prev" aria-label="Previous picture">&lsaquo;</button>
+  <img alt="">
+  <p class="lb-cap"></p>
+  <button type="button" class="lb-n next" aria-label="Next picture">&rsaquo;</button>
+</dialog>
 
 <!-- Automatically strips pure black cutout backgrounds from certificate photos -->
 <svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
@@ -312,12 +450,35 @@
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
 <script src="script.js"></script>
 <script>
-// Highlight the school in the sidebar that matches the section being read
-const schoolLinks = [...document.querySelectorAll('.ac-schools a')];
-const spy = new IntersectionObserver(entries => entries.forEach(e => {
-  if (e.isIntersecting) schoolLinks.forEach(a => a.toggleAttribute('aria-current', a.hash === '#' + e.target.id));
-}), { rootMargin: '-30% 0px -60% 0px' });
-document.querySelectorAll('.ac-school').forEach(s => spy.observe(s));
+// School switcher
+const tabs = [...document.querySelectorAll('.ac-schools button')], panels = [...document.querySelectorAll('.ac-panel')];
+const pick = id => {
+  tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.p === id));
+  panels.forEach(p => { p.hidden = p.id !== id; });
+};
+tabs.forEach(t => t.addEventListener('click', () => pick(t.dataset.p)));
+pick(panels.some(p => p.id === location.hash.slice(1)) ? location.hash.slice(1) : 'senior-high');
+
+// Picture viewer
+const lb = document.getElementById('lb'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+let list = [], cur = 0;
+const show = i => {
+  cur = (i + list.length) % list.length;
+  const a = list[cur], fig = a.closest('figure');
+  lbImg.src = a.href; lbImg.alt = a.querySelector('img').alt;
+  lbImg.classList.toggle('photo', fig.classList.contains('photo'));
+  lbCap.textContent = fig.querySelector('figcaption').textContent + ' (' + (cur + 1) + ' of ' + list.length + ')';
+};
+document.querySelectorAll('.ac-open').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  list = [...a.closest('.ac-panel').querySelectorAll('.ac-open')];
+  lb.showModal(); show(list.indexOf(a));
+}));
+lb.querySelector('.prev').addEventListener('click', () => show(cur - 1));
+lb.querySelector('.next').addEventListener('click', () => show(cur + 1));
+lb.querySelector('.lb-x').addEventListener('click', () => lb.close());
+lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); });
 </script>
 </body>
 </html>
