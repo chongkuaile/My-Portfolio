@@ -291,15 +291,13 @@
 .prev { left: 1.25rem; }
 .next { right: 1.25rem; }
 
-/* Junior High: two columns, one wide for the four academic certificates */
-.ac-board.two {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-}
-.ac-tiles.grid2 {
+/* Junior High: two equal columns, each picture sized to fit */
+.ac-board.duo {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.ac-tiles.one {
-  grid-auto-rows: minmax(0, calc(50% - .375rem));
+.ac-tiles.fit {
+  grid-auto-rows: auto;
+  align-content: start;
 }
 
 /* Desktop: lock to one screen, no scrolling */
@@ -337,7 +335,7 @@
   .ac-tiles {
     grid-auto-rows: auto;
   }
-  .ac-board.two {
+  .ac-board.duo {
     grid-template-columns: minmax(0, 1fr);
   }
   .ac-open {
@@ -426,20 +424,17 @@
         <p class="ac-where">City, Province</p>
       </div>
       <!-- "photo" on a figure skips the black-background filter, which these white-background certificates don't need -->
-      <div class="ac-board two">
+      <div class="ac-board duo">
         <div class="ac-col">
-          <h3>Achievements</h3>
-          <div class="ac-tiles one">
-            <figure class="photo"><a class="ac-open" href="images/junior-attendance.jpg" target="_blank" rel="noopener"><img src="images/junior-attendance.jpg" alt="Certificate of Commendation for Perfect Attendance, Grade 10, Third Quarter"></a><figcaption>Perfect Attendance, Grade 10 Q3</figcaption></figure>
+          <h3>Junior High Completion</h3>
+          <div class="ac-tiles fit">
+            <figure class="photo"><a class="ac-open" href="images/g10.jpg" target="_blank" rel="noopener"><img src="images/g10.jpg" alt="Katunayan, the Junior High School completion certificate"></a><figcaption>Katunayan, Junior High School</figcaption></figure>
           </div>
         </div>
         <div class="ac-col">
-          <h3>Academic Performance</h3>
-          <div class="ac-tiles grid2">
-            <figure class="photo"><a class="ac-open" href="images/g10.jpg" target="_blank" rel="noopener"><img src="images/g10.jpg" alt="Katunayan, the Junior High School completion certificate"></a><figcaption>Junior High Completion (Katunayan)</figcaption></figure>
-            <figure class="photo"><a class="ac-open" href="images/junior-q1.jpg" target="_blank" rel="noopener"><img src="images/junior-q1.jpg" alt="Certificate of Academic Excellence with honors, Grade 10, First Quarter"></a><figcaption>Academic Excellence, Grade 10 Q1</figcaption></figure>
-            <figure class="photo"><a class="ac-open" href="images/junior-q2.jpg" target="_blank" rel="noopener"><img src="images/junior-q2.jpg" alt="Certificate of Academic Excellence with honors, Grade 10, Second Quarter"></a><figcaption>Academic Excellence, Grade 10 Q2</figcaption></figure>
-            <figure class="photo"><a class="ac-open" href="images/junior-q3.jpg" target="_blank" rel="noopener"><img src="images/junior-q3.jpg" alt="Certificate of Academic Excellence with honors, Grade 10, Third Quarter"></a><figcaption>Academic Excellence, Grade 10 Q3</figcaption></figure>
+          <h3>Honors and Awards</h3>
+          <div class="ac-tiles fit">
+            <figure class="photo"><a class="ac-open" href="images/honorsjunior.jpg" target="_blank" rel="noopener"><img src="images/honorsjunior.jpg" alt="Four Grade 10 certificates: Academic Excellence with honors for the first, second and third quarters, and a Certificate of Commendation for Perfect Attendance in the third quarter"></a><figcaption>Grade 10 Academic Excellence and Perfect Attendance</figcaption></figure>
           </div>
         </div>
       </div>
