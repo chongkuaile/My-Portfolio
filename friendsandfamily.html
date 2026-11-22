@@ -10,17 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-html, body {
-  min-height: 100dvh;
-  overflow-x: hidden;
-}
-@media (min-width: 820px) and (min-height: 640px) {
-  html, body { height: 100dvh; max-height: 100dvh; overflow: hidden; }
-}
-@media (max-width: 819px) and (min-height: 560px) {
-  html, body { height: 100dvh; max-height: 100dvh; overflow: hidden; }
-}
-
 .bar { padding: clamp(0.6rem, 1.8vh, 1.35rem) 0; flex-shrink: 0; }
 .brand {
   display: inline-flex;
@@ -37,140 +26,145 @@ html, body {
 }
 footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh, 0.85rem); flex-shrink: 0; }
 
-.eyebrow {
+/* the photos reach the sides on this page, so the circuit lines and symbols stay hidden */
+.trace, .glyph { display: none !important; }
+
+/* Layout: a title row, then four big photo columns that fill the rest of the screen */
+.ff {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.8vh, 1.4rem);
+  width: calc(100% - 7rem);
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: clamp(0.4rem, 1.4vh, 1.25rem) 0;
+}
+.ff-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.25rem 2rem;
+}
+.ff-eyebrow {
   display: block;
-  margin-bottom: clamp(0.25rem, 0.8vh, 0.65rem);
-  font: 500 clamp(0.75rem, 1.5vh, 0.88rem) var(--mono);
+  margin-bottom: 0.2rem;
+  font: 500 clamp(0.8rem, 1.7vh, 1rem) var(--mono);
   color: var(--signal);
 }
-.side h1 {
-  font-size: clamp(1.5rem, 3.4vh, 2.25rem);
-  line-height: 1.12;
-  margin: 0 0 clamp(0.35rem, 1vh, 0.75rem);
+.ff-top h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5.4vh, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 600;
 }
-.side h1 span {
+.ff-top h1 span {
   background: linear-gradient(100deg, #6A47E0, #2F7CF6);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.side p {
-  font-size: clamp(0.82rem, 1.65vh, 0.98rem);
-  line-height: 1.5;
+.ff-top p {
+  margin: 0;
+  font-size: clamp(1rem, 2.3vh, 1.35rem);
+  color: var(--muted);
 }
 
-.page {
+.ff-gallery {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 15.5rem minmax(0, 1fr);
-  gap: clamp(1.5rem, 3.5vw, 3.5rem);
-  align-content: center;
-  align-items: start;
-  width: min(1080px, 100% - 3rem);
-  margin: 0 auto;
-  padding: clamp(0.4rem, 1.2vh, 1.25rem) 0;
-}
-.side { position: static; }
-
-.gallery {
-  display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(0.6rem, 1.6vw, 1.1rem);
-  height: clamp(15rem, 62dvh, 32rem);
-  min-height: 0;
+  grid-template-rows: minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
 }
-.photo {
+.ff-card {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.35rem, 0.9vh, 0.6rem);
+  gap: clamp(0.5rem, 1.3vh, 0.9rem);
   min-height: 0;
   margin: 0;
   animation: fade-up 0.7s ease backwards;
 }
-.photo:nth-child(1) { animation-delay: 0.1s; }
-.photo:nth-child(2) { animation-delay: 0.2s; }
-.photo:nth-child(3) { animation-delay: 0.3s; }
-.photo:nth-child(4) { animation-delay: 0.4s; }
-.frame {
+.ff-card:nth-child(1) { animation-delay: 0.1s; }
+.ff-card:nth-child(2) { animation-delay: 0.2s; }
+.ff-card:nth-child(3) { animation-delay: 0.3s; }
+.ff-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* the frame shows the file name until the photo is added */
+.ff-frame {
+  position: relative;
   flex: 1;
   min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   overflow: hidden;
-  font: 500 clamp(0.64rem, 1.3vh, 0.76rem) var(--mono);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  background: rgba(124,92,255,.06);
-  border: 1.5px dashed var(--line);
-  border-radius: 14px;
+  background: rgba(124, 92, 255, 0.06);
+  border: 2px dashed var(--line);
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.frame img {
+.ff-ph {
+  font: 500 clamp(0.8rem, 1.7vh, 1rem) var(--mono);
+  color: var(--accent);
+}
+.ff-frame img {
+  position: absolute;
+  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: 50% 30%;
 }
-.photo figcaption {
+.ff-frame:has(img) {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 40px -24px rgba(91, 63, 209, 0.55);
+}
+.ff-card:hover .ff-frame {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 46px -24px rgba(91, 63, 209, 0.7);
+}
+
+/* captions: edit the text in the HTML */
+.ff-card figcaption {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: clamp(0.84rem, 1.7vh, 1rem);
+  gap: 0.5rem;
+  font-size: clamp(1.05rem, 2.5vh, 1.5rem);
   font-weight: 500;
+  line-height: 1.25;
 }
-.photo figcaption::before {
+.ff-card figcaption::before {
   content: "//";
-  font: 500 clamp(0.74rem, 1.5vh, 0.9rem) var(--mono);
+  font: 500 0.85em var(--mono);
   color: var(--signal);
 }
 
-@media (min-width: 820px) and (max-height: 639px) {
-  .page { align-content: start; padding: 1.25rem 0 1.5rem; }
-}
-
 @media (max-width: 819px) {
-  .bar { width: min(1080px, 100% - 2rem); padding: clamp(0.4rem, 1.2dvh, 0.75rem) 0; }
-  footer {
-    padding: clamp(0.3rem, 1dvh, 0.6rem) 1rem calc(clamp(0.3rem, 1dvh, 0.6rem) + env(safe-area-inset-bottom, 0px));
-    font-size: 0.72rem;
-  }
-  .page {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.4rem, 1.3dvh, 0.9rem);
-    width: min(1080px, 100% - 2rem);
-    padding: clamp(0.25rem, 0.8dvh, 0.6rem) 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  .side {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.15rem 0.6rem;
-    padding-bottom: clamp(0.3rem, 0.9dvh, 0.6rem);
-    border-bottom: 1px solid var(--line);
-  }
-  .side .eyebrow { margin: 0; font-size: 0.75rem; }
-  .side h1 { font-size: clamp(1.25rem, 3dvh, 1.6rem); margin: 0; }
-  .side p { width: 100%; margin: 0; font-size: clamp(0.72rem, 1.6dvh, 0.88rem); line-height: 1.4; }
-  .gallery {
-    flex: 1;
-    height: auto;
+  .ff { width: min(1080px, 100% - 2rem); gap: clamp(0.4rem, 1.3dvh, 0.9rem); }
+  .ff-top h1 { font-size: clamp(1.5rem, 4dvh, 2.1rem); }
+  .ff-top p { font-size: clamp(0.8rem, 1.8dvh, 1rem); }
+  .ff-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem;
+    gap: 0.7rem;
   }
-  .frame { border-radius: 12px; }
-  .photo figcaption { font-size: clamp(0.76rem, 1.6dvh, 0.9rem); }
+  .ff-frame { border-radius: 14px; }
+  .ff-card figcaption { font-size: clamp(0.85rem, 1.9dvh, 1.05rem); }
 }
-@media (max-width: 819px) and (max-height: 700px) {
-  .side p { display: none; }
+/* very short screens: let the page scroll instead of squeezing the photos */
+@media (max-height: 520px) {
+  html, body { height: auto; max-height: none; overflow: auto; }
+  .ff-gallery { min-height: 26rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .photo { animation: none; }
+  .ff-card { animation: none; }
+  .ff-frame { transition: none; }
 }
 </style>
 </head>
@@ -179,31 +173,38 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 <header class="bar">
 <a class="brand" href="index.html"><img class="brand-logo" src="images/UC_Official_Seal.png" alt="UC Logo"><span>carlos<span>_</span></span></a>
 <button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
-<nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html">Achievements</a><a href="parents.html" aria-current="page">Parents</a></nav>
+<nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html">Personal Information</a><a href="achievements.html">Achievements</a><a href="friendsandfamily.html" aria-current="page">Friends &amp; Family</a></nav>
 </header>
 
-<main id="main" class="page">
-<aside class="side">
-<span class="eyebrow">&lt;people /&gt;</span>
+<main id="main" class="ff">
+<div class="ff-top">
+<div>
+<span class="ff-eyebrow">&lt;people /&gt;</span>
 <h1>Friends and <span>Family</span></h1>
+</div>
 <p>The people who matter most to me.</p>
-</aside>
+</div>
 
-<div class="gallery">
-<figure class="photo">
-<div class="frame">Photo</div>
+<div class="ff-gallery">
+<!-- Each card: the photo file goes in the images folder with the name shown. Edit the caption text under each photo. -->
+<figure class="ff-card">
+<div class="ff-frame"><span class="ff-ph">images/mother.jpg</span><img src="images/mother.jpg" alt="Me and my mother" onerror="this.remove()"></div>
+<!-- Edit this caption -->
 <figcaption>Me and my mother</figcaption>
 </figure>
-<figure class="photo">
-<div class="frame">Photo</div>
+<figure class="ff-card">
+<div class="ff-frame"><span class="ff-ph">images/father.jpg</span><img src="images/father.jpg" alt="Me and my father" onerror="this.remove()"></div>
+<!-- Edit this caption -->
 <figcaption>Me and my father</figcaption>
 </figure>
-<figure class="photo">
-<div class="frame">Photo</div>
+<figure class="ff-card">
+<div class="ff-frame"><span class="ff-ph">images/sibling.jpg</span><img src="images/sibling.jpg" alt="Me and my siblings" onerror="this.remove()"></div>
+<!-- Edit this caption -->
 <figcaption>Me and my siblings</figcaption>
 </figure>
-<figure class="photo">
-<div class="frame">Photo</div>
+<figure class="ff-card">
+<div class="ff-frame"><span class="ff-ph">images/friends.jpg</span><img src="images/friends.jpg" alt="Me and my friends" onerror="this.remove()"></div>
+<!-- Edit this caption -->
 <figcaption>Me and my friends</figcaption>
 </figure>
 </div>
