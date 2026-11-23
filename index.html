@@ -49,6 +49,9 @@ footer {
   flex-shrink: 0;
 }
 
+/* Image is briefly hidden while empty space around it is trimmed */
+.trim-pending .cutout img { opacity: 0; }
+
 /* Main wrapper */
 .home {
   flex: 1;
@@ -185,9 +188,9 @@ footer {
 .cutout::after {
   content: "";
   position: absolute;
-  width: clamp(20rem, 56dvh, 33rem);
+  width: clamp(18rem, 58dvh, 34rem);
   aspect-ratio: 1;
-  bottom: 20%;
+  bottom: 22%;
   z-index: -1;
   border-radius: 50%;
   background:
@@ -242,15 +245,15 @@ footer {
     width: 100%;
     height: 100%;
   }
-  /* Elevated cutout with a smooth fade at the bottom edge */
+  /* Full-length cutout: sized to its container so head-to-toe always fits */
   .cutout img {
     position: absolute !important;
-    bottom: 13% !important;
+    bottom: 2% !important;
     left: 50% !important;
     z-index: 1;
     width: auto !important;
     max-width: none !important;
-    height: 82dvh !important;
+    height: 95% !important;
     max-height: none !important;
     object-fit: contain !important;
     object-position: bottom center !important;
@@ -258,17 +261,17 @@ footer {
     border-radius: 0 !important;
     box-shadow: none !important;
     background: none !important;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0,0,0,0.45) 94%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0,0,0,0.45) 94%, transparent 100%);
-    filter: drop-shadow(0 18px 36px rgba(28, 27, 56, .24)) drop-shadow(0 0 22px rgba(124, 92, 255, .28));
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    filter: drop-shadow(0 14px 24px rgba(28, 27, 56, .22)) drop-shadow(0 0 18px rgba(124, 92, 255, .26));
     transform-origin: 50% 100% !important;
-    transform: translateX(-48%) scale(1.15) !important;
+    transform: translateX(-50%) !important;
     translate: calc(var(--px, 0) * 8px) 0;
-    transition: transform .5s cubic-bezier(.22, 1, .36, 1), translate .25s ease-out, filter .5s ease;
+    transition: transform .5s cubic-bezier(.22, 1, .36, 1), translate .25s ease-out, filter .5s ease, opacity .4s ease;
   }
   .cutout:hover img {
-    transform: translateX(-48%) scale(1.18) translateY(-4px) !important;
-    filter: drop-shadow(0 22px 42px rgba(91, 63, 209, .38));
+    transform: translateX(-50%) scale(1.02) !important;
+    filter: drop-shadow(0 18px 30px rgba(91, 63, 209, .34)) drop-shadow(0 0 22px rgba(124, 92, 255, .34));
   }
 }
 
@@ -329,25 +332,26 @@ footer {
     z-index: 1;
   }
   .cutout::after {
-    width: min(74vw, 38dvh);
-    bottom: 16%;
+    width: min(74vw, 40dvh);
+    bottom: 20%;
   }
   .cutout img {
     position: absolute !important;
-    bottom: 9% !important;
+    bottom: 2% !important;
     left: 50% !important;
     z-index: 1;
     width: auto !important;
-    height: 92% !important;
+    height: 95% !important;
     max-height: none !important;
     max-width: none !important;
     object-fit: contain !important;
     object-position: bottom center !important;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0,0,0,0.45) 94%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 84%, rgba(0,0,0,0.45) 94%, transparent 100%);
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
     transform-origin: 50% 100% !important;
-    transform: translateX(-50%) scale(1.12) !important;
-    filter: drop-shadow(0 16px 30px rgba(28, 27, 56, .24));
+    transform: translateX(-50%) !important;
+    filter: drop-shadow(0 12px 22px rgba(28, 27, 56, .22));
+    transition: opacity .4s ease;
   }
 }
 </style>
@@ -387,6 +391,40 @@ footer {
 </main>
 
 <footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
+<script>
+/* Trim transparent padding around the cutout so the figure fills its box head to toe */
+(function () {
+  var root = document.documentElement, img = document.querySelector('.cutout img');
+  if (!img) return;
+  root.classList.add('trim-pending');
+  var done = function () { root.classList.remove('trim-pending'); };
+  setTimeout(done, 2500);
+  function trim() {
+    try {
+      var w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h) return done();
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var cx = c.getContext('2d', { willReadFrequently: true });
+      cx.drawImage(img, 0, 0);
+      var d = cx.getImageData(0, 0, w, h).data, t = h, b = -1, l = w, r = -1, x, y;
+      for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+        if (d[(y * w + x) * 4 + 3] > 40) { if (y < t) t = y; if (y > b) b = y; if (x < l) l = x; if (x > r) r = x; }
+      }
+      var tw = r - l + 1, th = b - t + 1;
+      if (b < 0 || (tw >= w - 2 && th >= h - 2)) return done();
+      var o = document.createElement('canvas'); o.width = tw; o.height = th;
+      o.getContext('2d').drawImage(img, l, t, tw, th, 0, 0, tw, th);
+      o.toBlob(function (blob) {
+        if (!blob) return done();
+        img.onload = done;
+        img.width = tw; img.height = th;
+        img.style.aspectRatio = tw + ' / ' + th;
+        img.src = URL.createObjectURL(blob);
+      });
+    } catch (e) { done(); }
+  }
+  if (img.complete && img.naturalWidth) trim(); else { img.addEventListener('load', trim, { once: true }); img.addEventListener('error', done, { once: true }); }
+})();
+</script>
 <script src="script.js"></script>
 </body>
-</html>
