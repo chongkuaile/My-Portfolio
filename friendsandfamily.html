@@ -29,7 +29,7 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 /* the photos reach the sides on this page, so the circuit lines and symbols stay hidden */
 .trace, .glyph { display: none !important; }
 
-/* Layout: a title row, then four wide photos in a 2 by 2 grid that fills the rest of the screen */
+/* Layout: a title row, then four equal landscape frames in a 2 by 2 grid; each photo is shown whole, never stretched or cropped */
 .ff {
   flex: 1;
   min-height: 0;
@@ -40,9 +40,9 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
   max-width: 1800px;
   margin: 0 auto;
   padding: clamp(0.4rem, 1.4vh, 1.25rem) 0;
-  /* photos fill their frame and crop to fit; change cover to contain to show each whole photo instead */
-  --ff-fit: cover;
-  --ff-focus: 30%;
+  /* photos are never cropped or stretched: each one is shown whole inside its frame */
+  --ff-fit: contain;
+  --ff-focus: 50%;
 }
 .ff-top {
   display: flex;
@@ -111,11 +111,22 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .ff-ph {
+  position: relative;
+  z-index: 1;
   font: 500 clamp(0.8rem, 1.7vh, 1rem) var(--mono);
   color: var(--accent);
 }
+/* soft blurred copy of the photo behind it, so the sides never look empty */
+.ff-frame::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background: var(--src) center / cover no-repeat;
+  filter: blur(22px) saturate(1.15) brightness(0.9);
+}
 .ff-frame img {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: block;
   width: 100%;
@@ -124,7 +135,7 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
   object-position: 50% var(--ff-focus);
 }
 .ff-frame:has(img) {
-  background: #fff;
+  background: #e9e7f7;
   border: 1px solid var(--line);
   box-shadow: 0 20px 40px -24px rgba(91, 63, 209, 0.55);
 }
@@ -141,6 +152,8 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
   font-size: clamp(1.05rem, 2.5vh, 1.5rem);
   font-weight: 500;
   line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .ff-card figcaption::before {
   content: "//";
@@ -191,22 +204,22 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 <div class="ff-gallery">
 <!-- Each card: the photo file goes in the images folder with the name shown. Edit the caption text under each photo. -->
 <figure class="ff-card">
-<div class="ff-frame"><span class="ff-ph">images/mother.jpg</span><img src="images/mother.jpg" alt="Mom visiting me" onerror="this.remove()"></div>
+<div class="ff-frame" style="--src:url('images/mother.jpg')"><span class="ff-ph">images/mother.jpg</span><img src="images/mother.jpg" alt="Mom visiting me" onerror="this.remove()"></div>
 <!-- Edit this caption -->
 <figcaption>Mom visiting me</figcaption>
 </figure>
 <figure class="ff-card">
-<div class="ff-frame"><span class="ff-ph">images/father.jpg</span><img src="images/father.jpg" alt="Dad visiting me" onerror="this.remove()"></div>
+<div class="ff-frame" style="--src:url('images/father.jpg')"><span class="ff-ph">images/father.jpg</span><img src="images/father.jpg" alt="Dad visiting me" onerror="this.remove()"></div>
 <!-- Edit this caption -->
 <figcaption>Dad visiting me</figcaption>
 </figure>
 <figure class="ff-card">
-<div class="ff-frame"><span class="ff-ph">images/sibling.jpg</span><img src="images/sibling.jpg" alt="Night out with my kuya" onerror="this.remove()"></div>
+<div class="ff-frame" style="--src:url('images/sibling.jpg')"><span class="ff-ph">images/sibling.jpg</span><img src="images/sibling.jpg" alt="Night out with my kuya" onerror="this.remove()"></div>
 <!-- Edit this caption -->
 <figcaption>Night out with my kuya</figcaption>
 </figure>
 <figure class="ff-card">
-<div class="ff-frame"><span class="ff-ph">images/friends.jpg</span><img src="images/friends.jpg" alt="Hallway mirror check" onerror="this.remove()"></div>
+<div class="ff-frame" style="--src:url('images/friends.jpg')"><span class="ff-ph">images/friends.jpg</span><img src="images/friends.jpg" alt="Hallway mirror check" onerror="this.remove()"></div>
 <!-- Edit this caption -->
 <figcaption>Hallway mirror check</figcaption>
 </figure>
