@@ -29,7 +29,7 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 /* the photos reach the sides on this page, so the circuit lines and symbols stay hidden */
 .trace, .glyph { display: none !important; }
 
-/* Layout: a title row, then four equal landscape frames in a 2 by 2 grid; each photo is shown whole, never stretched or cropped */
+/* Layout: a title row, then tall portrait boxes for mother and father and wide boxes for siblings and friends; every photo is shown whole, never stretched or cropped */
 .ff {
   flex: 1;
   min-height: 0;
@@ -76,14 +76,29 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
   color: var(--muted);
 }
 
-.ff-gallery {
+/* the wrapper measures the space left on the screen; the gallery sizes its boxes from it */
+.ff-gwrap {
   flex: 1;
   min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  container-type: size;
 }
+.ff-gallery {
+  --gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  --cap: calc(clamp(1.05rem, 2.5vh, 1.5rem) * 1.25 + clamp(0.5rem, 1.3vh, 0.9rem));
+  --pw: min(calc((100cqh - var(--cap)) * 0.75), 29cqw);                 /* portrait box width (3:4) */
+  --lw: min(calc(((100cqh - var(--gap)) / 2 - var(--cap)) * 1.7778), 42cqw); /* wide box width (16:9) */
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  grid-template-columns: var(--pw) var(--pw) var(--lw);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  justify-content: center;
+  gap: var(--gap);
+}
+.ff-card:nth-child(1) { grid-column: 1; grid-row: 1 / span 2; }
+.ff-card:nth-child(2) { grid-column: 2; grid-row: 1 / span 2; }
+.ff-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+.ff-card:nth-child(4) { grid-column: 3; grid-row: 2; }
 .ff-card {
   display: flex;
   flex-direction: column;
@@ -161,22 +176,27 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
   color: var(--signal);
 }
 
+/* phones and tall windows: mother and father on top, siblings and friends underneath */
+@media (max-width: 819px), (max-aspect-ratio: 1/1) {
+  .ff-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr);
+    justify-content: stretch;
+  }
+  .ff-card:nth-child(n) { grid-column: auto; grid-row: auto; }
+}
 @media (max-width: 819px) {
   .ff { width: min(1080px, 100% - 2rem); gap: clamp(0.4rem, 1.3dvh, 0.9rem); }
   .ff-top h1 { font-size: clamp(1.5rem, 4dvh, 2.1rem); }
   .ff-top p { font-size: clamp(0.8rem, 1.8dvh, 1rem); }
-  .ff-gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    gap: 0.7rem;
-  }
+  .ff-gallery { gap: 0.7rem; }
   .ff-frame { border-radius: 14px; }
   .ff-card figcaption { font-size: clamp(0.85rem, 1.9dvh, 1.05rem); }
 }
 /* very short screens: let the page scroll instead of squeezing the photos */
 @media (max-height: 520px) {
   html, body { height: auto; max-height: none; overflow: auto; }
-  .ff-gallery { min-height: 26rem; }
+  .ff-gwrap { min-height: 26rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ff-card { animation: none; }
@@ -201,7 +221,7 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 <p>The people who matter most to me.</p>
 </div>
 
-<div class="ff-gallery">
+<div class="ff-gwrap"><div class="ff-gallery">
 <!-- Each card: the photo file goes in the images folder with the name shown. Edit the caption text under each photo. -->
 <figure class="ff-card">
 <div class="ff-frame" style="--src:url('images/mother.jpg')"><span class="ff-ph">images/mother.jpg</span><img src="images/mother.jpg" alt="Mom visiting me" onerror="this.remove()"></div>
@@ -223,6 +243,7 @@ footer { padding: clamp(0.45rem, 1.4vh, 1rem); font-size: clamp(0.72rem, 1.45vh,
 <!-- Edit this caption -->
 <figcaption>Hallway mirror check</figcaption>
 </figure>
+</div>
 </div>
 </main>
 
