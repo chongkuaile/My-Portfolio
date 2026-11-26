@@ -1,434 +1,184 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Carlos Blanca | Personal Information</title>
-<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<style>
-/* Base: never scroll sideways */
-html, body {
-  min-height: 100dvh;
-  overflow-x: hidden;
+// Mobile Navigation Menu Toggle
+const menu = document.querySelector('.menu'), nav = document.getElementById('nav');
+if (menu && nav) {
+  menu.addEventListener('click', () => {
+    menu.setAttribute('aria-expanded', nav.classList.toggle('open'));
+  });
 }
 
-/* Lock the page to the screen so everything is visible without scrolling */
-@media (min-width: 820px) and (min-height: 640px) {
-  html, body {
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
-  }
-}
-@media (max-width: 819px) and (min-height: 560px) {
-  html, body {
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
+// Home: glow and photo follow the pointer (skipped on touch screens and with reduced motion)
+{
+  const hero = document.querySelector('.hero');
+  if (hero && matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)').matches) {
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      hero.style.setProperty('--mx', x + 'px');
+      hero.style.setProperty('--my', y + 'px');
+      hero.style.setProperty('--px', (x / r.width - .5) * 2);
+      hero.style.setProperty('--py', (y / r.height - .5) * 2);
+    });
   }
 }
 
-/* Balanced header and footer + Top-left UC Seal logo */
-.bar {
-  padding: clamp(0.6rem, 1.8vh, 1.35rem) 0;
-  flex-shrink: 0;
-}
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.brand-logo {
-  width: clamp(2.6rem, 6.2vh, 3.6rem);
-  height: clamp(2.6rem, 6.2vh, 3.6rem);
-  object-fit: contain;
-  display: block;
-  flex-shrink: 0;
-  filter: drop-shadow(0 4px 10px rgba(91, 63, 209, 0.25));
-}
-footer {
-  padding: clamp(0.45rem, 1.4vh, 1rem);
-  font-size: clamp(0.72rem, 1.45vh, 0.85rem);
-  flex-shrink: 0;
-}
+// Achievements Page: Expand Button & 16:9 Image Holder with Left/Right Cycling Arrows
+{
+  const win = document.getElementById('preview-win');
+  const backdrop = document.getElementById('preview-backdrop');
+  const winTitle = document.getElementById('win-title');
+  const winSub = document.getElementById('win-sub');
+  const winGallery = document.getElementById('win-gallery');
+  const winCount = document.getElementById('win-count');
+  const winClose = document.getElementById('win-close');
+  const cards = document.querySelectorAll('.tab-card');
 
-/* Page-specific typography */
-.eyebrow {
-  display: block;
-  margin-bottom: clamp(0.25rem, 0.8vh, 0.65rem);
-  font: 500 clamp(0.75rem, 1.5vh, 0.88rem) var(--mono);
-  color: var(--signal);
-}
-.side h1 span {
-  background: linear-gradient(100deg, #6A47E0, #2F7CF6);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.about p {
-  margin: 0 0 clamp(0.4rem, 1.1vh, 0.75rem);
-  max-width: 46rem;
-  font-size: clamp(0.84rem, 1.75vh, 1.02rem);
-  line-height: 1.52;
-}
-.about p:last-child {
-  margin: 0;
-}
-.about .hl {
-  font-weight: 500;
-  color: var(--accent);
-}
-h2.tag {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: clamp(0.9rem, 1.85vh, 1.12rem);
-  margin: 0 0 clamp(0.35rem, 1vh, 0.7rem);
-}
-h2.tag::before {
-  content: "//";
-  font: 500 clamp(0.78rem, 1.6vh, 0.95rem) var(--mono);
-  color: var(--signal);
-}
+  if (win && backdrop && cards.length) {
+    let currentItems = [];
+    let currentIndex = 0;
+    let currentTitle = '';
 
-/* Main layout: vertically centered as a cohesive unit, no huge gaps */
-.page {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 15.5rem minmax(0, 1fr);
-  gap: clamp(1.5rem, 3.5vw, 3.5rem);
-  align-content: center;
-  align-items: start;
-  width: min(1080px, 100% - 3rem);
-  margin: 0 auto;
-  padding: clamp(0.4rem, 1.2vh, 1.25rem) 0;
-}
-.side {
-  position: static;
-}
-.side h1 {
-  font-size: clamp(1.5rem, 3.4vh, 2.25rem);
-  line-height: 1.12;
-  margin: 0 0 clamp(0.35rem, 1vh, 0.75rem);
-}
-.side p {
-  font-size: clamp(0.82rem, 1.65vh, 0.98rem);
-  line-height: 1.5;
-}
+    const leftArrowSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>`;
+    const rightArrowSVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>`;
 
-/* Tight, natural spacing between sections */
-.content-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(0.7rem, 2vh, 1.5rem);
-  min-height: 0;
-}
-.block {
-  margin: 0;
-  padding-bottom: clamp(0.7rem, 2vh, 1.5rem);
-  animation: fade-up 0.7s ease backwards;
-}
-.block:last-child {
-  padding-bottom: 0;
-}
-.block:nth-child(1) { animation-delay: 0.1s; }
-.block:nth-child(2) { animation-delay: 0.2s; }
-.block:nth-child(3) { animation-delay: 0.3s; }
+    const renderSlide = index => {
+      if (!currentItems.length) return;
+      currentIndex = (index + currentItems.length) % currentItems.length;
+      const item = currentItems[currentIndex];
+      const hasMultiple = currentItems.length > 1;
+      const photoClass = item.isPhoto ? ' photo-proof' : '';
+    
+      if (winCount) {
+        winCount.textContent = hasMultiple ? `${currentIndex + 1} / ${currentItems.length}` : '';
+      }
+    
+      winGallery.innerHTML = `<div class="win-item${photoClass}">
+        ${hasMultiple ? `<button type="button" class="win-nav prev" aria-label="Previous image">${leftArrowSVG}</button>` : ''}
+        <img src="${item.src}" alt="${item.label} - ${currentTitle}">
+        <span class="win-label">${item.label}</span>
+        ${hasMultiple ? `<button type="button" class="win-nav next" aria-label="Next image">${rightArrowSVG}</button>` : ''}
+      </div>`;
+    
+      if (hasMultiple) {
+        winGallery.querySelector('.win-nav.prev').addEventListener('click', e => {
+          e.stopPropagation();
+          renderSlide(currentIndex - 1);
+        });
+        winGallery.querySelector('.win-nav.next').addEventListener('click', e => {
+          e.stopPropagation();
+          renderSlide(currentIndex + 1);
+        });
+      }
+    };
 
-/* Emphasized Quick Facts */
-.facts {
-  padding: clamp(0.7rem, 1.8vh, 1.25rem) clamp(0.9rem, 2vw, 1.5rem);
-  border: 2px solid transparent;
-  border-image: none;
-  border-radius: 16px;
-  background: linear-gradient(rgba(255,255,255,.92), rgba(255,255,255,.92)) padding-box,
-              linear-gradient(120deg, #7c5cff, #2f7cf6 55%, #b28cff) border-box;
-  box-shadow: 0 18px 40px -24px rgba(91,63,209,.55);
-}
-.facts h2.tag {
-  margin-bottom: clamp(0.25rem, 0.7vh, 0.55rem);
-}
-.facts .kv {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(0.15rem, 0.5vh, 0.35rem) clamp(0.85rem, 2.2vw, 2rem);
-}
-.facts .kv div {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-content: start;
-  gap: 0.05rem;
-  padding: clamp(0.22rem, 0.65vh, 0.42rem) 0;
-  font-size: clamp(0.78rem, 1.6vh, 0.96rem);
-  line-height: 1.32;
-}
-.facts dt {
-  align-self: center;
-  font: 500 clamp(0.65rem, 1.3vh, 0.76rem) var(--mono);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-}
-.facts dd {
-  font-weight: 500;
-  margin: 0;
-  overflow-wrap: anywhere;
-}
+    const openPreview = card => {
+      cards.forEach(c => c.classList.toggle('active-tab', c === card));
 
-/* 3-Column Lists (Interests, Hobbies, Strengths) */
-.trio {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(0.5rem, 1.4vw, 1.2rem);
-  align-items: start;
-}
-.ticks {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(0.3rem, 0.85vh, 0.55rem);
-}
-.ticks li {
-  position: relative;
-  padding: clamp(0.32rem, 0.9vh, 0.55rem) 0.7rem clamp(0.32rem, 0.9vh, 0.55rem) 1.55rem;
-  font-size: clamp(0.74rem, 1.5vh, 0.92rem);
-  line-height: 1.32;
-  background: rgba(255,255,255,.65);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.ticks li::before {
-  content: "";
-  position: absolute;
-  left: 0.62rem;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  margin-top: -3px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--violet), var(--blue));
-  box-shadow: 0 0 8px rgba(124,92,255,.5);
-}
-.ticks li:hover {
-  transform: translateX(4px);
-  border-color: var(--accent);
-  box-shadow: 0 8px 20px -12px rgba(106,71,224,.5);
-}
+      currentTitle = card.querySelector('h2').textContent;
+      const desc = card.querySelector('p').textContent;
+      const slots = Array.from(card.querySelectorAll('.slot'));
 
-/* Short desktop windows: tighten spacing so the longer profile card still fits */
-@media (min-width: 820px) and (max-height: 800px) {
-  .about p { line-height: 1.42; margin-bottom: 0.3rem; }
-  .content-col { gap: 0.5rem; }
-  .block { padding-bottom: 0.3rem; }
-  .facts { padding: 0.5rem 1rem; }
-  .facts h2.tag { margin-bottom: 0.15rem; }
-  .facts .kv div { padding: 0.12rem 0; line-height: 1.25; }
-  .ticks { gap: 0.25rem; }
-  .ticks li { padding: 0.22rem 0.6rem 0.22rem 1.4rem; }
-  h2.tag { margin-bottom: 0.25rem; }
-}
+      currentItems = slots.map(slot => {
+        const label = slot.textContent.trim();
+        const imgEl = slot.querySelector('img');
+        const src = (imgEl && imgEl.getAttribute('src')) || slot.dataset.img || '';
+        return { src, label };
+      });
 
-/* Short desktop windows: let the page scroll */
-@media (min-width: 820px) and (max-height: 639px) {
-  .page {
-    align-content: start;
-    padding: 1.25rem 0 1.5rem;
-  }
-  .content-col {
-    gap: 1.25rem;
+      if (card.dataset.extra) {
+        try {
+          const extras = JSON.parse(card.dataset.extra);
+          currentItems.push(...extras);
+        } catch (e) {}
+      }
+
+      winTitle.textContent = currentTitle;
+      winSub.textContent = '— ' + desc;
+
+      renderSlide(0);
+
+      backdrop.classList.add('open');
+      win.classList.add('open');
+      win.setAttribute('aria-hidden', 'false');
+    };
+
+    const closePreview = () => {
+      backdrop.classList.remove('open');
+      win.classList.remove('open');
+      win.setAttribute('aria-hidden', 'true');
+      cards.forEach(c => c.classList.remove('active-tab'));
+    };
+
+    cards.forEach(card => {
+      const expandBtn = card.querySelector('.expand-btn');
+      const slots = card.querySelectorAll('.slot');
+
+      if (expandBtn) {
+        expandBtn.addEventListener('click', () => openPreview(card));
+      }
+      slots.forEach(slot => {
+        slot.addEventListener('click', () => openPreview(card));
+      });
+    });
+
+    if (winClose) winClose.addEventListener('click', closePreview);
+    backdrop.addEventListener('click', closePreview);
+
+    addEventListener('keydown', e => {
+      if (!win.classList.contains('open')) return;
+      if (e.key === 'Escape') closePreview();
+      if (e.key === 'ArrowLeft' && currentItems.length > 1) renderSlide(currentIndex - 1);
+      if (e.key === 'ArrowRight' && currentItems.length > 1) renderSlide(currentIndex + 1);
+    });
   }
 }
 
-/* Tablet and mobile (< 820px): compact layout that scales with screen height */
-@media (max-width: 819px) {
-  .bar {
-    width: min(1080px, 100% - 2rem);
-    padding: clamp(0.4rem, 1.2dvh, 0.75rem) 0;
-  }
-  footer {
-    padding: clamp(0.3rem, 1dvh, 0.6rem) 1rem calc(clamp(0.3rem, 1dvh, 0.6rem) + env(safe-area-inset-bottom, 0px));
-    font-size: 0.72rem;
-  }
-  .page {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    gap: clamp(0.4rem, 1.3dvh, 0.9rem);
-    width: min(1080px, 100% - 2rem);
-    padding: clamp(0.25rem, 0.8dvh, 0.6rem) 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  .side {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.15rem 0.6rem;
-    padding-bottom: clamp(0.3rem, 0.9dvh, 0.6rem);
-    border-bottom: 1px solid var(--line);
-  }
-  .side .eyebrow {
-    margin: 0;
-    font-size: 0.75rem;
-  }
-  .side h1 {
-    font-size: clamp(1.25rem, 3dvh, 1.6rem);
-    line-height: 1.15;
-    margin: 0;
-  }
-  .side p {
-    width: 100%;
-    margin: 0;
-    font-size: clamp(0.72rem, 1.6dvh, 0.88rem);
-    line-height: 1.4;
-  }
-  .content-col {
-    justify-content: flex-start;
-    gap: clamp(0.35rem, 1dvh, 0.7rem);
-  }
-  .block {
-    padding-bottom: 0;
-  }
-  h2.tag {
-    font-size: clamp(0.82rem, 1.8dvh, 0.98rem);
-    margin-bottom: clamp(0.2rem, 0.6dvh, 0.45rem);
-  }
-  h2.tag::before {
-    font-size: 0.75rem;
-  }
-  .about p {
-    font-size: clamp(0.7rem, 1.45dvh, 0.88rem);
-    line-height: 1.36;
-    margin-bottom: clamp(0.2rem, 0.55dvh, 0.4rem);
-  }
-  .facts {
-    padding: clamp(0.3rem, 0.8dvh, 0.6rem) 0.85rem;
-  }
-  .facts h2.tag {
-    margin-bottom: 0.1rem;
-  }
-  .facts .kv {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.1rem 0.8rem;
-  }
-  .facts .kv div {
-    grid-template-columns: 1fr;
-    gap: 0;
-    padding: clamp(0.05rem, 0.25dvh, 0.15rem) 0;
-    font-size: clamp(0.7rem, 1.45dvh, 0.84rem);
-    line-height: 1.25;
-  }
-  .facts .kv .wide {
-    grid-column: 1 / -1;
-  }
-  .facts dt {
-    line-height: 1.15;
-  }
-  .facts dt {
-    font-size: 0.62rem;
-  }
-  .trio {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.45rem;
-  }
-  .trio h2.tag {
-    font-size: clamp(0.76rem, 1.6dvh, 0.9rem);
-  }
-  .ticks {
-    gap: clamp(0.15rem, 0.45dvh, 0.3rem);
-  }
-  .ticks li {
-    padding: clamp(0.16rem, 0.45dvh, 0.3rem) 0.4rem;
-    font-size: clamp(0.62rem, 1.35dvh, 0.76rem);
-    line-height: 1.22;
-    border-radius: 8px;
-  }
-  .ticks li::before {
-    display: none;
-  }
-  .ticks li:hover {
-    transform: none;
-  }
+// Side decoration on wide screens: editor line numbers (left), circuit traces, scroll progress (right)
+{
+  const add = (cls, html, css) => {
+    const d = document.createElement('div');
+    d.className = 'deco ' + cls;
+    d.setAttribute('aria-hidden', 'true');
+    d.innerHTML = html;
+    if (css) d.style.cssText = css;
+    document.body.append(d);
+    return d;
+  };
+  const gutter = add('gutter', '');
+  let n = 0;
+  const fill = () => {
+    const c = Math.ceil(document.body.offsetHeight / 26);
+    if (c === n) return;
+    n = c;
+    gutter.innerHTML = Array.from({ length: c }, (_, i) => '<span>' + String(i + 1).padStart(2, '0') + '</span>').join('');
+  };
+  new ResizeObserver(fill).observe(document.body);
+  fill();
+  addEventListener('pointermove', e => {
+    const on = gutter.querySelector('.on'), el = gutter.children[Math.floor((e.clientY + scrollY) / 26)];
+    if (on) on.classList.remove('on');
+    if (el) el.classList.add('on');
+  }, { passive: true });
+
+  const P = ['M0 60H70L100 90V200L120 220H160', 'M0 260H40L70 290V380H130', 'M0 430H90L120 460H160'];
+  const C = [[160, 220], [130, 380], [160, 460]];
+  const svg = '<svg viewBox="0 0 160 520" preserveAspectRatio="xMinYMid meet">' +
+    P.map(d => '<path d="' + d + '"/>').join('') +
+    C.map(c => '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="3.5"/>').join('') +
+    P.map((d, i) => '<path class="pk" style="animation-delay:-' + i * 2.3 + 's" d="' + d + '"/>').join('') +
+    '</svg>';
+  add('trace tl', svg);
+  add('trace tr', svg);
+
+  [['{ }', 'left', 20, 2.2], ['</>', 'right', 30, 1.6], ['=>', 'left', 72, 1.6], ['01', 'right', 78, 2]]
+    .forEach(([t, s, y, z]) => add('glyph', t, s + ':calc((100vw - 1080px)/4);top:' + y + 'vh;font-size:' + z + 'rem'));
+
+  const prog = add('prog', '<b></b><i>0%</i>');
+  const upd = () => {
+    const m = document.documentElement.scrollHeight - innerHeight, p = m > 0 ? Math.min(1, scrollY / m) : 0;
+    prog.style.setProperty('--p', p);
+    prog.lastChild.textContent = Math.round(p * 100) + '%';
+  };
+  addEventListener('scroll', upd, { passive: true });
+  addEventListener('resize', upd);
+  new ResizeObserver(upd).observe(document.body);
+  upd();
 }
-
-/* Shorter phones: drop the intro line under the title to save space */
-@media (max-width: 819px) and (max-height: 700px) {
-  .side p {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .block {
-    animation: none;
-  }
-}
-</style>
-</head>
-<body>
-<a class="skip" href="#main">Skip to content</a>
-<header class="bar">
-<a class="brand" href="index.html"><img class="brand-logo" src="images/UC_Official_Seal.png" alt="UC Logo"><span>carlos<span>_</span></span></a>
-<button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
-<nav id="nav" aria-label="Main"><a href="index.html">Home</a><a href="personal-information.html" aria-current="page">Personal Information</a><a href="achievements.html">Achievements</a><a href="friendsandfamily.html">Friends &amp; Family</a></nav>
-</header>
-
-<main id="main" class="page">
-<aside class="side">
-<span class="eyebrow">&lt;about /&gt;</span>
-<h1>Personal <span>Information</span></h1>
-<p>A little more about who I am, what I enjoy, and what I bring to the table.</p>
-</aside>
-
-<div class="content-col">
-<section class="block about" aria-labelledby="about-h">
-<h2 id="about-h" class="tag">Here’s What You Should Know</h2>
-<p>Hi, I’m <span class="hl">Carlos David A. Blanca</span>, a Bachelor of Science in Computer Science student at the University of the Cordilleras. I'll guide you through how software works behind the scenes, and turn ideas into things people can actually click, read, and use.</p>
-<p>My focus is to create work that not only looks good but makes a lasting impression. As a Computer Science undergraduate, it has always been my passion to be a software engineer who will build functional programs that will be practical for daily use.</p>
-</section>
-
-<section class="block facts" aria-labelledby="facts-h">
-<h2 id="facts-h" class="tag">My Profile</h2>
-<dl class="kv">
-<div><dt>Full name</dt><dd>Carlos David A. Blanca</dd></div>
-<div><dt>Birthday</dt><dd>October 28, 2007</dd></div>
-<div><dt>Place of birth</dt><dd>Urdaneta City, Pangasinan</dd></div>
-<div><dt>Nationality</dt><dd>Filipino</dd></div>
-<div><dt>Height</dt><dd>1.74 m</dd></div>
-<div><dt>Eye color</dt><dd>Brown</dd></div>
-<div><dt>Blood type</dt><dd>To be added</dd></div>
-<div><dt>School</dt><dd>University of the Cordilleras</dd></div>
-<div class="wide"><dt>Course</dt><dd>Bachelor of Science in Computer Science</dd></div>
-</dl>
-</section>
-
-<section class="block trio" aria-label="Interests, hobbies and strengths">
-<div>
-<h2 class="tag">Interests</h2>
-<ul class="ticks"><li>Web development</li><li>Programming and problem solving</li><li>Artificial intelligence</li><li>Technology and gadgets</li></ul>
-</div>
-<div>
-<h2 class="tag">Hobbies</h2>
-<ul class="ticks"><li>Playing video games</li><li>Listening to music</li><li>Watching movies and series</li><li>Exploring new apps and tools</li></ul>
-</div>
-<div>
-<h2 class="tag">Strengths</h2>
-<ul class="ticks"><li>Quick learner</li><li>Analytical thinker</li><li>Detail-oriented</li><li>Team player</li></ul>
-</div>
-</section>
-</div>
-</main>
-
-<footer>&copy; 2026 Carlos Blanca. Template by <a href="https://templatesjungle.com/">TemplatesJungle</a>.</footer>
-<script src="script.js"></script>
-</body>
-</html>
