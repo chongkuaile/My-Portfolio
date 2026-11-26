@@ -35,7 +35,7 @@ html, body {
   object-fit: contain;
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 10px rgba(91, 63, 209, 0.25));
+  filter: drop-shadow(0 4px 10px rgba(140, 74, 39, 0.25));
 }
 
 footer {
@@ -43,7 +43,7 @@ footer {
   z-index: 5;
   padding: clamp(0.4rem, 1.2vh, 0.85rem) !important;
   font-size: clamp(0.72rem, 1.4vh, 0.85rem) !important;
-  background: rgba(243, 244, 250, 0.85);
+  background: rgba(14, 10, 8, 0.88);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   flex-shrink: 0;
@@ -70,9 +70,9 @@ footer {
   border-radius: 999px;
   font: 500 clamp(0.72rem, 1.4vh, 0.84rem) var(--mono);
   color: var(--accent);
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(106, 71, 224, 0.25);
-  box-shadow: 0 8px 20px -12px rgba(91, 63, 209, 0.35);
+  background: rgba(24, 17, 13, 0.92);
+  border: 1px solid rgba(212, 138, 76, 0.25);
+  box-shadow: 0 8px 20px -12px rgba(140, 74, 39, 0.35);
   white-space: nowrap;
   animation: fade-up 0.7s ease 0.05s backwards;
 }
@@ -123,17 +123,17 @@ footer {
   border: 2px solid transparent;
   border-radius: 14px;
   white-space: nowrap;
-  background: linear-gradient(#fff, #fff) padding-box,
-              linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
+  background: linear-gradient(#18110D, #18110D) padding-box,
+              linear-gradient(120deg, #D48A4C 0%, #8C4A27 55%, #E6A96B 100%) border-box;
   transition: transform .25s ease, box-shadow .25s ease;
 }
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -12px rgba(91, 63, 209, .6);
+  box-shadow: 0 12px 24px -12px rgba(140, 74, 39, .6);
 }
 .btn.fill {
-  color: #fff;
-  background: linear-gradient(120deg, #7c5cff, #2f7cf6) border-box;
+  color: #FFF7EE;
+  background: linear-gradient(120deg, #B8642E, #7D3D1C) border-box;
 }
 .btn svg {
   width: 1.15rem;
@@ -180,7 +180,7 @@ footer {
   bottom: 6%;
   z-index: -2;
   background:
-    radial-gradient(closest-side at 50% 44%, rgba(124, 92, 255, .34), rgba(47, 124, 246, .15) 60%, transparent 100%);
+    radial-gradient(closest-side at 50% 44%, rgba(212, 138, 76, .34), rgba(230, 169, 107, .15) 60%, transparent 100%);
   pointer-events: none;
 }
 
@@ -194,11 +194,11 @@ footer {
   z-index: -1;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.82), rgba(124, 92, 255, 0.18) 56%, rgba(47, 124, 246, 0.25) 100%);
-  border: 1.5px solid rgba(124, 92, 255, 0.3);
+    radial-gradient(circle at 35% 30%, rgba(230, 169, 107, 0.28), rgba(140, 74, 39, 0.26) 56%, rgba(20, 14, 10, 0.78) 100%);
+  border: 1.5px solid rgba(212, 138, 76, 0.3);
   box-shadow:
-    inset 0 0 46px rgba(124, 92, 255, 0.18),
-    0 28px 60px -20px rgba(91, 63, 209, 0.34);
+    inset 0 0 46px rgba(212, 138, 76, 0.18),
+    0 28px 60px -20px rgba(140, 74, 39, 0.34);
   translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
   transition: translate 0.3s ease-out, transform 0.5s ease, border-color 0.4s ease;
   pointer-events: none;
@@ -263,7 +263,7 @@ footer {
     background: none !important;
     -webkit-mask-image: none !important;
     mask-image: none !important;
-    filter: drop-shadow(0 14px 24px rgba(28, 27, 56, .22)) drop-shadow(0 0 18px rgba(124, 92, 255, .26));
+    filter: drop-shadow(0 14px 24px rgba(8, 5, 3, .22)) drop-shadow(0 0 18px rgba(212, 138, 76, .26));
     transform-origin: 50% 100% !important;
     transform: translateX(-50%) !important;
     translate: calc(var(--px, 0) * 8px) 0;
@@ -271,7 +271,7 @@ footer {
   }
   .cutout:hover img {
     transform: translateX(-50%) scale(1.02) !important;
-    filter: drop-shadow(0 18px 30px rgba(91, 63, 209, .34)) drop-shadow(0 0 22px rgba(124, 92, 255, .34));
+    filter: drop-shadow(0 18px 30px rgba(140, 74, 39, .34)) drop-shadow(0 0 22px rgba(212, 138, 76, .34));
   }
 }
 
@@ -350,7 +350,7 @@ footer {
     mask-image: none !important;
     transform-origin: 50% 100% !important;
     transform: translateX(-50%) !important;
-    filter: drop-shadow(0 12px 22px rgba(28, 27, 56, .22));
+    filter: drop-shadow(0 12px 22px rgba(8, 5, 3, .22));
     transition: opacity .4s ease;
   }
 }
