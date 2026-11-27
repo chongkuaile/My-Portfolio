@@ -217,19 +217,17 @@ footer {
 .cutout::after {
   content: "";
   position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 12%;
-  bottom: 2%;
+  width: clamp(18rem, 58dvh, 34rem);
+  aspect-ratio: 1;
+  bottom: 22%;
   z-index: -1;
-  border-radius: 24px;
+  border-radius: 50%;
   background:
-    linear-gradient(160deg, rgba(110, 90, 230, 0.75), rgba(60, 40, 160, 0.9) 50%, rgba(24, 34, 112, 0.95) 100%);
-  border: 1.5px solid rgba(124, 92, 255, 0.5);
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.82), rgba(124, 92, 255, 0.18) 56%, rgba(47, 124, 246, 0.25) 100%);
+  border: 1.5px solid rgba(124, 92, 255, 0.3);
   box-shadow:
-    inset 0 -34px 60px rgba(10, 10, 50, 0.55),
-    inset 0 0 46px rgba(124, 92, 255, 0.25),
-    0 40px 80px -20px rgba(30, 20, 100, 0.6);
+    inset 0 0 46px rgba(124, 92, 255, 0.18),
+    0 28px 60px -20px rgba(91, 63, 209, 0.34);
   translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
   transition: translate 0.3s ease-out, transform 0.5s ease, border-color 0.4s ease;
   pointer-events: none;
@@ -368,11 +366,8 @@ footer {
     z-index: 1;
   }
   .cutout::after {
-    left: 12%;
-    right: 12%;
-    top: 14%;
-    bottom: 2%;
-    border-radius: 18px;
+    width: min(74vw, 40dvh);
+    bottom: 20%;
   }
   .cutout img {
     position: absolute !important;
