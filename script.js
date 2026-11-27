@@ -182,3 +182,60 @@ if (menu && nav) {
   new ResizeObserver(upd).observe(document.body);
   upd();
 }
+
+// Page arrows: previous / next page on the left and right sides
+{
+  const pages = [
+    ['index.html', 'Home'],
+    ['personal-information.html', 'Personal Information'],
+    ['achievements.html', 'Achievements'],
+    ['friendsandfamily.html', 'Friends & Family']
+  ];
+  const file = location.pathname.split('/').pop() || 'index.html';
+  let i = pages.findIndex(p => p[0] === file);
+  if (i < 0) i = 0;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .pg-arrow {
+      position: fixed;
+      top: 50%;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      margin-top: -1.375rem;
+      color: #1c1b38;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      text-decoration: none;
+      background: linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95)) padding-box,
+                  linear-gradient(120deg, #7c5cff 0%, #2f7cf6 55%, #b28cff 100%) border-box;
+      box-shadow: 0 10px 24px -12px rgba(91, 63, 209, .6);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .pg-arrow:hover { transform: scale(1.08); box-shadow: 0 14px 28px -12px rgba(91, 63, 209, .75); }
+    .pg-arrow svg { width: 1.3rem; height: 1.3rem; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .pg-prev { left: .75rem; }
+    .pg-next { right: .75rem; }
+    @media (max-width: 819px) {
+      .pg-arrow { width: 2.1rem; height: 2.1rem; margin-top: -1.05rem; opacity: .85; }
+      .pg-prev { left: .3rem; }
+      .pg-next { right: .3rem; }
+      .pg-arrow svg { width: 1rem; height: 1rem; }
+    }`;
+  document.head.append(style);
+
+  const make = (cls, target, icon) => {
+    const a = document.createElement('a');
+    a.className = 'pg-arrow ' + cls;
+    a.href = target[0];
+    a.setAttribute('aria-label', (cls === 'pg-prev' ? 'Previous page: ' : 'Next page: ') + target[1]);
+    a.title = target[1];
+    a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + icon + '"/></svg>';
+    document.body.append(a);
+  };
+  make('pg-prev', pages[(i - 1 + pages.length) % pages.length], 'm15 18-6-6 6-6');
+  make('pg-next', pages[(i + 1) % pages.length], 'm9 18 6-6-6-6');
+}
