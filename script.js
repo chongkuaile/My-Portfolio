@@ -232,7 +232,7 @@ if (menu && nav) {
     a.className = 'pg-arrow ' + cls;
     a.href = target[0];
     a.setAttribute('aria-label', (cls === 'pg-prev' ? 'Previous page: ' : 'Next page: ') + target[1]);
-    a.title = target[1];
+    a.setAttribute('data-label', target[1]);
     a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + icon + '"/></svg>';
     document.body.append(a);
   };
