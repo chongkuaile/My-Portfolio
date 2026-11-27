@@ -154,12 +154,16 @@ h2.tag::before {
 .facts h2.tag {
   margin-bottom: clamp(0.25rem, 0.7vh, 0.55rem);
 }
+
+/* Profile grid: 12 columns so each fact can take a quarter (desktop), a third, or half of the row.
+   Rows are grouped: 1) identity and school, 2) birth and signs, 3) physical */
 .facts .kv {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: clamp(0.15rem, 0.5vh, 0.35rem) clamp(0.85rem, 2.2vw, 2rem);
 }
 .facts .kv div {
+  grid-column: span 3;
   display: grid;
   grid-template-columns: 1fr;
   align-content: start;
@@ -167,6 +171,9 @@ h2.tag::before {
   padding: clamp(0.22rem, 0.65vh, 0.42rem) 0;
   font-size: clamp(0.78rem, 1.6vh, 0.96rem);
   line-height: 1.32;
+}
+@media (min-width: 820px) and (max-width: 999px) {
+  .facts .kv div { grid-column: span 4; }
 }
 .facts dt {
   align-self: center;
@@ -316,11 +323,12 @@ h2.tag::before {
   .facts h2.tag {
     margin-bottom: 0.1rem;
   }
+  /* Mobile: half-width facts, full-width school and course, four short facts per row */
   .facts .kv {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.1rem 0.8rem;
   }
   .facts .kv div {
+    grid-column: span 6;
     grid-template-columns: 1fr;
     gap: 0;
     padding: clamp(0.05rem, 0.25dvh, 0.15rem) 0;
@@ -329,6 +337,9 @@ h2.tag::before {
   }
   .facts .kv .wide {
     grid-column: 1 / -1;
+  }
+  .facts .kv .s {
+    grid-column: span 3;
   }
   .facts dt {
     line-height: 1.15;
@@ -399,15 +410,21 @@ h2.tag::before {
 <section class="block facts" aria-labelledby="facts-h">
 <h2 id="facts-h" class="tag">My Profile</h2>
 <dl class="kv">
+<!-- Row 1: identity and school -->
 <div><dt>Full name</dt><dd>Carlos David A. Blanca</dd></div>
-<div><dt>Birthday</dt><dd>October 28, 2007</dd></div>
 <div><dt>Place of birth</dt><dd>Urdaneta City, Pangasinan</dd></div>
-<div><dt>Nationality</dt><dd>Filipino</dd></div>
-<div><dt>Height</dt><dd>1.74 m</dd></div>
-<div><dt>Eye color</dt><dd>Brown</dd></div>
-<div><dt>Blood type</dt><dd>A-</dd></div>
-<div><dt>School</dt><dd>University of the Cordilleras</dd></div>
+<div class="wide"><dt>School</dt><dd>University of the Cordilleras</dd></div>
 <div class="wide"><dt>Course</dt><dd>Bachelor of Science in Computer Science</dd></div>
+<!-- Row 2: birth and signs -->
+<div><dt>Birthday</dt><dd>October 28, 2007</dd></div>
+<div><dt>Nationality</dt><dd>Filipino</dd></div>
+<div><dt>Zodiac sign</dt><dd>Scorpio</dd></div>
+<div><dt>Chinese zodiac</dt><dd>Pig</dd></div>
+<!-- Row 3: physical. Change the weight to your real number -->
+<div class="s"><dt>Height</dt><dd>1.74 m</dd></div>
+<div class="s"><dt>Weight</dt><dd>00 kg</dd></div>
+<div class="s"><dt>Eye color</dt><dd>Brown</dd></div>
+<div class="s"><dt>Blood type</dt><dd>A-</dd></div>
 </dl>
 </section>
 
